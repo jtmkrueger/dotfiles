@@ -13,6 +13,13 @@ alias mate='open -a "TextMate"'
 alias gvim='open -a "MacVim"'
 #alias for dev tmux
 alias dev='tmux -f ~/dev.conf attach'
+#grc stuff
+GRC=`which grc`
+if [ "$TERM" != dumb ] && [ -n GRC ]
+then
+  alias colourify="$GRC -es --colour=auto"
+  alias ping='colourify ping'
+fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
 

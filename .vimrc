@@ -58,19 +58,16 @@ let g:ctrlp_arg_map = 1
 vnoremap < <gv
 vnoremap > >gv
 
-" change cursor shape in insert mode ONLY FOR ITERM2!
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-
 " mouse reporting for iterm2
 set mouse=a
 
 " clear search highlights with enter
 nnoremap <CR> :nohlsearch<CR>/<BS>
 
-
 :noremap <left> :tabprevious<CR>
 :noremap <right> :tabnext<CR>
 
 " Open new splits to the right/bottom
 set splitright splitbelow
+
+let g:user_zen_expandabbr_key = '<c-e>'
