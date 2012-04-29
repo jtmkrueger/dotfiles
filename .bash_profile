@@ -19,6 +19,7 @@ if [ "$TERM" != dumb ] && [ -n GRC ]
 then
   alias colourify="$GRC -es --colour=auto"
   alias ping='colourify ping'
+  alias ttytter='colourify ttytter'
 fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function

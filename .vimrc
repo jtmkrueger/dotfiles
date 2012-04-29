@@ -48,8 +48,8 @@ set formatoptions+=l
 nnoremap j gj
 nnoremap k gk
 
-" set cursorline
-" set cursorcolumn
+set cursorline
+set cursorcolumn
 
 " opening new tab with ctrlp
 let g:ctrlp_arg_map = 1
@@ -64,10 +64,14 @@ set mouse=a
 " clear search highlights with enter
 nnoremap <CR> :nohlsearch<CR>/<BS>
 
-:noremap <left> :tabprevious<CR>
-:noremap <right> :tabnext<CR>
-
 " Open new splits to the right/bottom
 set splitright splitbelow
 
-let g:user_zen_expandabbr_key = '<c-e>'
+" smart kid splits
+noremap <left> <C-w>>
+noremap <right> <C-w><
+noremap <up> <C-w>-
+noremap <down> <C-w>+
+
+let g:Powerline_symbols = 'fancy'
+" let g:user_zen_expandabbr_key = '<c-e>'
