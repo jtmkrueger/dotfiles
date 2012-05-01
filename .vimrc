@@ -10,9 +10,6 @@ noremap ; :
 
 set showtabline=2
 
-" change splits from normal mode
-nmap <Tab> <C-W>W
-
 au FocusLost * :silent! wall " Save on FocusLost
 au FocusLost * call feedkeys("\<C-\>\<C-n>") " Return to normal mode on FocustLost 
 
@@ -72,6 +69,12 @@ noremap <left> <C-w>>
 noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
+
+" smart kid window movement
+nnoremap <Tab>h <C-w>h
+nnoremap <Tab>j <C-w>j
+nnoremap <Tab>k <C-w>k
+nnoremap <Tab>l <C-w>l
 
 let g:Powerline_symbols = 'fancy'
 " let g:user_zen_expandabbr_key = '<c-e>'
