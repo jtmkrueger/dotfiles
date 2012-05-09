@@ -13,10 +13,6 @@ set showtabline=2
 au FocusLost * :silent! wall " Save on FocusLost
 au FocusLost * call feedkeys("\<C-\>\<C-n>") " Return to normal mode on FocustLost 
 
-" easier beginning & end of lines
-noremap H ^
-noremap L $
-
 " make it easier to ack
 noremap <C-l> :Ack! 
 
@@ -76,5 +72,12 @@ nnoremap <Tab>j <C-w>j
 nnoremap <Tab>k <C-w>k
 nnoremap <Tab>l <C-w>l
 
+" absolute line numbers in insert mode, relative otherwise for easy movement
+set rnu
+au InsertEnter * :set nu
+au InsertLeave * :set rnu
+
 let g:Powerline_symbols = 'fancy'
 " let g:user_zen_expandabbr_key = '<c-e>'
+
+set clipboard=unnamed
