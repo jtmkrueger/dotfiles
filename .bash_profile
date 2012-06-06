@@ -12,7 +12,7 @@ alias mate='open -a "TextMate"'
 #alias for macvim
 alias gvim='open -a "MacVim"'
 #alias for dev tmux
-alias dev='tmux -f ~/dev.conf attach'
+alias devmux='tmux attach'
 #grc stuff
 GRC=`which grc`
 if [ "$TERM" != dumb ] && [ -n GRC ]

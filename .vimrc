@@ -1,5 +1,9 @@
 set encoding=utf-8
-color solarized
+set t_Co=256
+set background=dark
+colorscheme tomorrow-night
+
+set tabstop=2 softtabstop=2 shiftwidth=2
 
 " set clipboard=unnamed
 "Map shift + enter to esc
@@ -42,7 +46,6 @@ nnoremap j gj
 nnoremap k gk
 
 set cursorline
-set cursorcolumn
 
 " opening new tab with ctrlp
 let g:ctrlp_arg_map = 1
@@ -72,12 +75,30 @@ nnoremap <Tab>j <C-w>j
 nnoremap <Tab>k <C-w>k
 nnoremap <Tab>l <C-w>l
 
-" absolute line numbers in insert mode, relative otherwise for easy movement
-set rnu
-au InsertEnter * :set nu
-au InsertLeave * :set rnu
-
 let g:Powerline_symbols = 'fancy'
 " let g:user_zen_expandabbr_key = '<c-e>'
 
 set clipboard=unnamed
+
+let g:syntastic_ruby_exec = '/Users/jtmkrueger/.rvm/rubies/ruby-1.9.3-p125/bin/ruby'
+
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+" Merge a tab into a split in the previous window
+function! MergeTabs()
+  if tabpagenr() == 1
+   return
+  endif
+  let bufferName = bufname("%")
+  if tabpagenr("$") == tabpagenr()
+   close!
+  else
+   close!
+   tabprev
+  endif
+  vsplit
+  execute "buffer " . bufferName
+endfunction
+
+nmap <C-W>u :call MergeTabs()<CR>
