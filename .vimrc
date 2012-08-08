@@ -1,16 +1,13 @@
 set encoding=utf-8
 set t_Co=256
-set background=dark
-colorscheme tomorrow-night
+colorscheme tomorrow
+"set background=dark
 
 set tabstop=2 softtabstop=2 shiftwidth=2
 
 " set clipboard=unnamed
 "Map shift + enter to esc
 inoremap jj <Esc>
-
-" just hit semi instead
-noremap ; :
 
 set showtabline=2
 
@@ -85,20 +82,7 @@ let g:syntastic_ruby_exec = '/Users/jtmkrueger/.rvm/rubies/ruby-1.9.3-p125/bin/r
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
-" Merge a tab into a split in the previous window
-function! MergeTabs()
-  if tabpagenr() == 1
-   return
-  endif
-  let bufferName = bufname("%")
-  if tabpagenr("$") == tabpagenr()
-   close!
-  else
-   close!
-   tabprev
-  endif
-  vsplit
-  execute "buffer " . bufferName
-endfunction
-
-nmap <C-W>u :call MergeTabs()<CR>
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=0
+let g:indent_guides_color_change_percent = 9

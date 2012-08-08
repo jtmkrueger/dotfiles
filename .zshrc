@@ -1,3 +1,12 @@
+#ORACLE garbage
+export DYLD_LIBRARY_PATH="/Applications/Oracle"
+export SQLPATH="/Applications/Oracle"
+export TNS_ADMIN="/Applications/Oracle/network/admin"
+export NLS_LANG="AMERICAN_AMERICA.UTF8"
+export PATH=$PATH:$DYLD_LIBRARY_PATH
+export RC_ARCHS=i386
+export INSTANT_CLIENT_DIRECTORY="/Applications/Oracle"
+
 alias rvm-prompt=$HOME/.rvm/bin/rvm-prompt
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
@@ -35,7 +44,7 @@ DISABLE_AUTO_TITLE="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git rails rails3 ruby zsh-syntax-highlighting)
+plugins=(git svn rails rails3 ruby zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -53,5 +62,7 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 __rvm_project_rvmrc
 
 # To have paths colored instead of underlined
-ZSH_HIGHLIGHT_STYLES[path]='fg=magenta'
+ZSH_HIGHLIGHT_STYLES[path]='fg=yellow'
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=cyan'
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

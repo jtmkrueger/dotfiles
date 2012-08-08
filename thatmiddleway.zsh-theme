@@ -1,4 +1,3 @@
-# ZSH Theme - Preview: http://gyazo.com/8becc8a7ed5ab54a0262a470555c3eed.png
 local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
 
 local user_host='%{$terminfo[bold]$fg[green]%}%n@%m%{$reset_color%}'
@@ -12,10 +11,16 @@ else
   fi
 fi
 local git_branch='$(git_prompt_info)%{$reset_color%}'
+local svn_branch='$(svn_prompt_info)%{$reset_color%}'
 
-PROMPT="${current_dir} ${git_branch} ${rvm_ruby}
+PROMPT="${current_dir} ${git_branch} ${svn_branch} ${rvm_ruby}
 %B->%b "
 RPS1="${return_code}"
 
 ZSH_THEME_GIT_PROMPT_PREFIX="(%{$fg[yellow]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%})"
+
+ZSH_THEME_SVN_PROMPT_PREFIX="("
+ZSH_THEME_SVN_PROMPT_SUFFIX=")"
+ZSH_THEME_SVN_PROMPT_DIRTY="%{$fg[red]%} ✘ %{$reset_color%}"
+ZSH_THEME_SVN_PROMPT_CLEAN=" "
