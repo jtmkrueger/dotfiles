@@ -7,7 +7,7 @@ if which rvm-prompt &> /dev/null; then
   rvm_ruby='%{$terminfo[bold]$fg[green]%}$(rvm-prompt i v g)%{$reset_color%}'
 else
   if which rbenv &> /dev/null; then
-    rvm_ruby='%{$fg[red]%}($(rbenv version | sed -e "s/ (set.*$//"))%{$reset_color%}'
+    rvm_ruby='%{$terminfo[bold]$fg[green]%}($(rbenv version | sed -e "s/ (set.*$//"))%{$reset_color%}'
   fi
 fi
 local git_branch='$(git_prompt_info)%{$reset_color%}'

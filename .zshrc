@@ -1,5 +1,5 @@
 #ORACLE garbage
-export DYLD_LIBRARY_PATH="/Applications/Oracle"
+export DYLD_LIBRARY_PATH="/Applications/Oracle:/Users/jkrueger/nrel/lib"
 export SQLPATH="/Applications/Oracle"
 export TNS_ADMIN="/Applications/Oracle/network/admin"
 export NLS_LANG="AMERICAN_AMERICA.UTF8"
@@ -7,7 +7,6 @@ export PATH=$PATH:$DYLD_LIBRARY_PATH
 export RC_ARCHS=i386
 export INSTANT_CLIENT_DIRECTORY="/Applications/Oracle"
 
-alias rvm-prompt=$HOME/.rvm/bin/rvm-prompt
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -49,20 +48,19 @@ plugins=(git svn rails rails3 ruby zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-# export PATH=/Users/jtmkrueger/.rvm/gems/ruby-1.9.2-p290@aba/bin:/Users/jtmkrueger/.rvm/gems/ruby-1.9.2-p290@global/bin:/Users/jtmkrueger/.rvm/rubies/ruby-1.9.2-p290/bin:/Users/jtmkrueger/.rvm/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/usr/local/go/bin
 
 #node.js module
 export NODE_PATH="/usr/local/lib/node"
 
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
-__rvm_project_rvmrc
-
 # To have paths colored instead of underlined
 ZSH_HIGHLIGHT_STYLES[path]='fg=yellow'
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=cyan'
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# set up vim mode & escape key
+bindkey -v
+bindkey -M viins 'jj' vi-cmd-mode
+bindkey '^R' history-incremental-search-backward
+
+eval "$(rbenv init -)"
