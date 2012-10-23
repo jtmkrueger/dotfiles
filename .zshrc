@@ -58,9 +58,9 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 ZSH_HIGHLIGHT_STYLES[path]='fg=yellow'
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=cyan'
 
-# set up vim mode & escape key
-bindkey -v
-bindkey -M viins 'jj' vi-cmd-mode
-bindkey '^R' history-incremental-search-backward
+# # set up vim mode & escape key
+# bindkey -v
+# bindkey -M viins 'jj' vi-cmd-mode
+# bindkey '^R' history-incremental-search-backward
 
 eval "$(rbenv init -)"
