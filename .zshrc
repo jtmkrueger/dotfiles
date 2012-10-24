@@ -63,4 +63,7 @@ ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=cyan'
 # bindkey -M viins 'jj' vi-cmd-mode
 # bindkey '^R' history-incremental-search-backward
 
+# sorta nrel specific, autocomplete is searching through the name db :(
+unsetopt cdablevars
+
 eval "$(rbenv init -)"
