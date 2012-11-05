@@ -1,22 +1,10 @@
-color railscasts2
-set guifont=Menlo:h17
-highlight Comment cterm=italic
-
-set list
-set listchars=tab:▸\ ,trail:⋅
-highlight NonText ctermfg=Red
-highlight SpecialKey ctermfg=Red
+colorscheme Tomorrow-Night
+set guifont=Source\ Code\ Pro\ Semibold:h12
+highlight Comment cterm=italic gui=italic
 
 set guioptions-=T
-set transp=2
 
 "hide the scrollbars
 set guioptions=aAce
 
-set ts=4 sw=4 et
-let g:indent_guides_start_level=2
-let g:indent_guides_guide_size=1
-let g:indent_guides_color_change_percent=1
-let g:indent_guides_enable_on_vim_startup=1
-
-set nocuc
+set shell=bash
