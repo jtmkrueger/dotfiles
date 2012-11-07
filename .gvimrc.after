@@ -1,5 +1,5 @@
 colorscheme Tomorrow-Night
-set guifont=Source\ Code\ Pro\ Semibold:h12
+set guifont=Source\ Code\ Pro\ for\ Powerline:h12
 highlight Comment cterm=italic gui=italic
 
 set guioptions-=T
