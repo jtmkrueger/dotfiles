@@ -1,64 +1,52 @@
+syntax on
+filetype plugin indent on
 set encoding=utf-8
 set t_Co=256
-colorscheme tomorrow
-"set background=dark
-
+set laststatus=2
+set nocompatible
 set tabstop=2 softtabstop=2 shiftwidth=2
-
-" set clipboard=unnamed
-"Map shift + enter to esc
-inoremap jj <Esc>
-
 set showtabline=2
-
-au FocusLost * :silent! wall " Save on FocusLost
-au FocusLost * call feedkeys("\<C-\>\<C-n>") " Return to normal mode on FocustLost 
-
-" make it easier to ack
-noremap <C-l> :Ack! 
-
-" I want my custom commands
-imap <C-n> <%= %><Left><Left><Left>
-
-" turn on wildmenu
-set wildmenu
-
-" search gems in guardfile with ctags
-set tags+=gems.tags
-
-" trailing white space and tabs
-set listchars=tab:▸\ ,trail:⋅
-
-highlight NonText ctermfg=Red
-highlight SpecialKey ctermfg=Red
-
+set wildmenu " turn on wildmenu
+set tags+=gems.tags " search gems in guardfile with ctags
+set listchars=tab:▸\ ,trail:⋅ " trailing white space and tabs
 set wrap
 set linebreak
 set textwidth=0
 set wrapmargin=0
 set formatoptions+=l
+" Open new splits to the right/bottom
+set splitright splitbelow
+set clipboard=unnamed
 
+highlight NonText ctermfg=Red
+highlight SpecialKey ctermfg=Red
+
+call pathogen#infect()
+
+inoremap jj <Esc>
+" make it easier to ack
+noremap <C-l> :Ag! 
+noremap <C-c> :! 
+" I want my custom commands
+imap <C-e> <%= %><Left><Left><Left>
+imap <C-n> $()<Left>
 " up/down on wrapped lines
 nnoremap j gj
 nnoremap k gk
-
-set cursorline
-
-" opening new tab with ctrlp
-let g:ctrlp_arg_map = 1
 
 " Reselect visual block after indent
 vnoremap < <gv
 vnoremap > >gv
 
-" mouse reporting for iterm2
-set mouse=a
-
 " clear search highlights with enter
 nnoremap <CR> :nohlsearch<CR>/<BS>
 
-" Open new splits to the right/bottom
-set splitright splitbelow
+" Bubble single lines of text
+nmap <C-k> [e
+nmap <C-j> ]e
+" Bubble multiple lines of text
+vmap <C-k> [egv
+vmap <C-j> ]egv
 
 " smart kid splits
 noremap <left> <C-w>>
@@ -72,17 +60,5 @@ nnoremap <Tab>j <C-w>j
 nnoremap <Tab>k <C-w>k
 nnoremap <Tab>l <C-w>l
 
-let g:Powerline_symbols = 'fancy'
-" let g:user_zen_expandabbr_key = '<c-e>'
-
-set clipboard=unnamed
-
-let g:syntastic_ruby_exec = '/Users/jtmkrueger/.rvm/rubies/ruby-1.9.3-p125/bin/ruby'
-
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=0
-let g:indent_guides_color_change_percent = 9
+" additional syntaxes
+au BufNewFile,BufRead *.csvbuilder set filetype=ruby
