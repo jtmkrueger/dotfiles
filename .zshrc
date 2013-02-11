@@ -66,4 +66,7 @@ ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=cyan'
 # sorta nrel specific, autocomplete is searching through the name db :(
 unsetopt cdablevars
 
-eval "$(rbenv init -)"
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" 
+
+PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'

@@ -1,11 +1,17 @@
+"set background=dark
+"colorscheme solarized
 syntax on
-filetype plugin indent on
+"filetype plugin indent on
 set encoding=utf-8
 set t_Co=256
-set laststatus=2
+"set laststatus=2
 set nocompatible
 set tabstop=2 softtabstop=2 shiftwidth=2
-set showtabline=2
+hi CursorLine   cterm=NONE ctermbg=17
+hi CursorColumn ctermbg=17
+set cursorline
+set cursorcolumn
+"set showtabline=2
 set wildmenu " turn on wildmenu
 set tags+=gems.tags " search gems in guardfile with ctags
 set listchars=tab:▸\ ,trail:⋅ " trailing white space and tabs
@@ -21,11 +27,11 @@ set clipboard=unnamed
 highlight NonText ctermfg=Red
 highlight SpecialKey ctermfg=Red
 
-call pathogen#infect()
+"call pathogen#infect()
 
 inoremap jj <Esc>
 " make it easier to ack
-noremap <C-l> :Ag! 
+noremap <C-l> :Ack! 
 noremap <C-c> :! 
 " I want my custom commands
 imap <C-e> <%= %><Left><Left><Left>
@@ -61,4 +67,9 @@ nnoremap <Tab>k <C-w>k
 nnoremap <Tab>l <C-w>l
 
 " additional syntaxes
-au BufNewFile,BufRead *.csvbuilder set filetype=ruby
+"au BufNewFile,BufRead *.csvbuilder set filetype=ruby
+
+" the silver searcher
+let g:ackprg = 'ag --nogroup --nocolor --column'
+
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
