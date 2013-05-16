@@ -11,6 +11,7 @@ endif
 set nocompatible
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2
+set backspace=start,eol,indent
 set wildmenu " turn on wildmenu
 set listchars=tab:▸\ ,trail:⋅ " trailing white space and tabs
 set wrap
