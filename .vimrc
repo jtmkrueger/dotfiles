@@ -1,23 +1,36 @@
 syntax on
 " set background=dark
-"filetype plugin indent on
 set encoding=utf-8
 set t_Co=256
 set laststatus=2
+" change status line based on mode
+if version >= 700
+  au InsertEnter * hi StatusLine ctermfg=5
+  au InsertLeave * hi StatusLine ctermfg=2
+endif
 set nocompatible
+set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2
 set wildmenu " turn on wildmenu
 set listchars=tab:▸\ ,trail:⋅ " trailing white space and tabs
 set wrap
 set linebreak
+set autoindent
+set smartindent
 set textwidth=0
 set wrapmargin=0
 set formatoptions+=l
 set number
-set directory=~/tmp
+set showtabline=2
+
+" set directory=~/vimtmp//
+set nobackup
+set nowritebackup
+
 " Open new splits to the right/bottom
 set splitright splitbelow
 set clipboard=unnamed
+set mouse=a
 
 highlight NonText ctermfg=Red
 highlight SpecialKey ctermfg=Red
