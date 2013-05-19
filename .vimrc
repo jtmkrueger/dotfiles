@@ -1,13 +1,14 @@
 syntax on
-" set background=dark
+set background=light
 set encoding=utf-8
 set t_Co=256
 set laststatus=2
 " change status line based on mode
 if version >= 700
-  au InsertEnter * hi StatusLine ctermfg=5
-  au InsertLeave * hi StatusLine ctermfg=2
+  au InsertEnter * hi StatusLine ctermfg=5 guibg=DarkYellow
+  au InsertLeave * hi StatusLine ctermfg=2 guibg=#255150
 endif
+set cursorline
 set nocompatible
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2
