@@ -7,6 +7,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 Bundle 'kchmck/vim-coffee-script.git'
+Bundle 'scrooloose/syntastic.git'
 Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-surround.git'
 filetype plugin indent on
@@ -72,3 +73,10 @@ noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
 
+" syntastic
+let g:syntastic_check_on_open=1
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_jump=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_enable_highlighting=1
+let g:syntastic_echo_current_error=1

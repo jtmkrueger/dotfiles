@@ -52,7 +52,7 @@ source $ZSH/oh-my-zsh.sh
 #node.js module
 export NODE_PATH="/usr/local/lib/node"
 
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
 
 # To have paths colored instead of underlined
 ZSH_HIGHLIGHT_STYLES[path]='fg=yellow'
