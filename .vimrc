@@ -1,3 +1,17 @@
+set nocompatible
+
+" vundle
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+Bundle 'gmarik/vundle'
+
+Bundle 'kchmck/vim-coffee-script.git'
+Bundle 'tpope/vim-rails.git'
+Bundle 'tpope/vim-surround.git'
+filetype plugin indent on
+" END vundle
+
 syntax on
 " set background=dark
 set encoding=utf-8
@@ -8,7 +22,6 @@ if version >= 700
   au InsertEnter * hi StatusLine ctermfg=5
   au InsertLeave * hi StatusLine ctermfg=2
 endif
-set nocompatible
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2
 set backspace=start,eol,indent
@@ -58,3 +71,4 @@ noremap <left> <C-w>>
 noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
+
