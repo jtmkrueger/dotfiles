@@ -7,9 +7,13 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 Bundle 'kchmck/vim-coffee-script.git'
-Bundle 'scrooloose/syntastic.git'
+Bundle 'mileszs/ack.vim'
+Bundle 'ervandew/supertab.git'
+Bundle 'kien/ctrlp.vim'
+Bundle 'mattn/zencoding-vim.git'
 Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-surround.git'
+Bundle 'tpope/vim-fugitive.git'
 filetype plugin indent on
 " END vundle
 
