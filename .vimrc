@@ -1,12 +1,18 @@
 set nocompatible
 
-" vundle
+" vundle ----------------------------
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 
+" syntaxes
 Bundle 'kchmck/vim-coffee-script.git'
+Bundle 'pangloss/vim-javascript'
+Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'vim-ruby/vim-ruby.git'
+
+" tools
 Bundle 'mileszs/ack.vim'
 Bundle 'ervandew/supertab.git'
 Bundle 'kien/ctrlp.vim'
@@ -14,11 +20,11 @@ Bundle 'mattn/zencoding-vim.git'
 Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-fugitive.git'
+Bundle 'tpope/vim-commentary.git'
 filetype plugin indent on
-" END vundle
+" END vundle ------------------------
 
 syntax on
-" set background=dark
 set encoding=utf-8
 set t_Co=256
 set laststatus=2
@@ -30,7 +36,7 @@ endif
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2
 set backspace=start,eol,indent
-set wildmenu " turn on wildmenu
+set wildmenu
 set listchars=tab:▸\ ,trail:⋅ " trailing white space and tabs
 set wrap
 set linebreak
@@ -44,7 +50,7 @@ set showtabline=2
 set hlsearch
 set cursorline
 
-" set directory=~/vimtmp//
+" what happens when you have a govenrnment computer :(
 set nobackup
 set nowritebackup
 
@@ -56,7 +62,7 @@ set mouse=a
 highlight NonText ctermfg=Red
 highlight SpecialKey ctermfg=Red
 
-" I want my custom commands
+" I want my custom commands!
 imap <C-e> <%= %><Left><Left><Left>
 imap <C-n> $()<Left>
 
@@ -76,11 +82,3 @@ noremap <left> <C-w>>
 noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
-
-" syntastic
-let g:syntastic_check_on_open=1
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_jump=1
-let g:syntastic_auto_loc_list=1
-let g:syntastic_enable_highlighting=1
-let g:syntastic_echo_current_error=1
