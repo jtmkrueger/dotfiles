@@ -1,7 +1,8 @@
 --type-add=js=.ejs
---type-add=ruby=.erb
---type-add=css=.sass
---type-add=ruby=.feature
 --type-add=js=.coffee
+--type-add=ruby=.erb
+--type-add=ruby=.feature
+--type-add=ruby=.rake
+--type-add=css=.sass
 --type-add=css=.scss
 --type-add=css=.less
