@@ -28,11 +28,7 @@ syntax on
 set encoding=utf-8
 set t_Co=256
 set laststatus=2
-" change status line based on mode
-if version >= 700
-  au InsertEnter * hi StatusLine ctermfg=5
-  au InsertLeave * hi StatusLine ctermfg=2
-endif
+set statusline=%<%f\ %h%m%r%=%-14.(Σ=%L%)
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2
 set backspace=start,eol,indent
@@ -65,6 +61,10 @@ highlight SpecialKey ctermfg=Red
 " I want my custom commands!
 imap <C-e> <%= %><Left><Left><Left>
 imap <C-n> $()<Left>
+
+" start of my awesome plugin...
+imap <c-cr> <CR><CR><C-o>k<Tab>
+nmap <c-cr> i<cr><Esc>
 
 " up/down on wrapped lines
 nnoremap j gj
