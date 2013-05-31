@@ -82,3 +82,11 @@ noremap <left> <C-w>>
 noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
+
+function Closer()
+  let  prevchar = getline(".")[col(".")-2]
+  if prevchar ==# "{"
+  elseif prevchar ==# "["
+  elseif prevchar ==# "("
+  endif
+endfunction
