@@ -13,6 +13,7 @@ Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'vim-ruby/vim-ruby.git'
 
 " tools
+Bundle 'jtmkrueger/vim-c-cr'
 Bundle 'mileszs/ack.vim'
 Bundle 'ervandew/supertab.git'
 Bundle 'kien/ctrlp.vim'
@@ -26,34 +27,40 @@ filetype plugin indent on
 
 syntax on
 set encoding=utf-8
+set fileencoding=utf-8
 set t_Co=256
-set laststatus=2
+set laststatus=2 " show status line
 set statusline=%<%f\ %h%m%r%=%-14.(Σ=%L%)
-set expandtab
+set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
-set backspace=start,eol,indent
-set wildmenu
+set backspace=start,eol,indent " always allow backspaces
+set wildmenu " trick out command mode
+set incsearch " highlight search pattern as it's typed
 set listchars=tab:▸\ ,trail:⋅ " trailing white space and tabs
-set wrap
-set linebreak
+set wrap " textwrap
+set linebreak " wrap lines at spaces
+set wrapmargin=0 " wrap at last column
 set autoindent
 set smartindent
-set textwidth=0
-set wrapmargin=0
-set formatoptions+=l
-set number
-set showtabline=2
-set hlsearch
-set cursorline
+set textwidth=0 " disable auto line breaking on paste
+set formatoptions+=l " don't break lines till after insert mode
+set number " line numbers
+set showtabline=2 " always show tabs
+set showcmd " show the command line
+set scrolloff=5 " 5 line buffer below cursor when scrolling
+set hlsearch " highlight search results
+set cursorline " highlight line cursor is on
+set colorcolumn=80 " highlight col 80
+set clipboard=unnamed " copy to system register
+set mouse=a " turn on all mouse functionality
 
-" what happens when you have a govenrnment computer :(
+" what happens when you have a gov't computer :(
 set nobackup
 set nowritebackup
 
 " Open new splits to the right/bottom
 set splitright splitbelow
-set clipboard=unnamed
-set mouse=a
+
 
 highlight NonText ctermfg=Red
 highlight SpecialKey ctermfg=Red
@@ -61,9 +68,6 @@ highlight SpecialKey ctermfg=Red
 " I want my custom commands!
 imap <C-e> <%= %><Left><Left><Left>
 imap <C-n> $()<Left>
-
-" start of my awesome plugin...
-imap <c-cr> <CR><CR><C-o>k<Tab>
 nmap <c-cr> i<cr><Esc>
 
 " up/down on wrapped lines
@@ -82,11 +86,3 @@ noremap <left> <C-w>>
 noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
-
-function Closer()
-  let  prevchar = getline(".")[col(".")-2]
-  if prevchar ==# "{"
-  elseif prevchar ==# "["
-  elseif prevchar ==# "("
-  endif
-endfunction
