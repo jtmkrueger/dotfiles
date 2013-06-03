@@ -51,7 +51,8 @@ set showcmd " show the command line
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
-set colorcolumn=80 " highlight col 80
+set colorcolumn=81 " highlight col 80
+highlight ColorColumn guibg=gray99
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 
