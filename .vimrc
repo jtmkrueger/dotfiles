@@ -37,6 +37,8 @@ set tabstop=2 softtabstop=2 shiftwidth=2
 set backspace=start,eol,indent " always allow backspaces
 set wildmenu " trick out command mode
 set incsearch " highlight search pattern as it's typed
+set ignorecase " searches are case insensitive...
+set smartcase " ... unless they contain at least one capital letter
 set listchars=tab:▸\ ,trail:⋅ " trailing white space and tabs
 set wrap " textwrap
 set linebreak " wrap lines at spaces
