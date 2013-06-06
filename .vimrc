@@ -11,6 +11,7 @@ Bundle 'kchmck/vim-coffee-script.git'
 Bundle 'pangloss/vim-javascript'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'vim-ruby/vim-ruby.git'
+Bundle 'chriskempson/base16-vim'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
@@ -26,6 +27,8 @@ filetype plugin indent on
 " END vundle ------------------------
 
 syntax on
+set background=dark
+colorscheme base16-default
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -54,13 +57,14 @@ set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
 set colorcolumn=81 " highlight col 80
-highlight ColorColumn guibg=gray99
+highlight ColorColumn guibg=black
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 
-" what happens when you have a gov't computer :(
-set nobackup
-set nowritebackup
+" Store temporary files in a central spot
+set backup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
 " Open new splits to the right/bottom
 set splitright splitbelow
