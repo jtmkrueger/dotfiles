@@ -11,7 +11,7 @@ Bundle 'kchmck/vim-coffee-script.git'
 Bundle 'pangloss/vim-javascript'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'vim-ruby/vim-ruby.git'
-Bundle 'chriskempson/base16-vim'
+Bundle 'jtmkrueger/base16-vim'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
