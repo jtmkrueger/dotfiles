@@ -11,6 +11,8 @@ Bundle 'kchmck/vim-coffee-script.git'
 Bundle 'pangloss/vim-javascript'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'vim-ruby/vim-ruby.git'
+
+" colorscheme
 Bundle 'jtmkrueger/base16-vim'
 
 " tools
