@@ -6,3 +6,5 @@ set guioptions-=T
 set guioptions=aAce
 
 set shell=bash
+
+set transparency=5
