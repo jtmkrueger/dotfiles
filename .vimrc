@@ -36,7 +36,7 @@ set fileencoding=utf-8
 set t_Co=256
 set laststatus=2 " show status line
 " set statusline=%<%f\ %h%m%r%=%-14.(Σ=%L%)
-set statusline=%<\ %F%=\ %{fugitive#statusline()}\ \|\ %{&fileformat}\ \|\ %{&fileencoding}\ \|\ %{&filetype}\ \|\ %p%%\ \|\ LN\ %l:%c
+set statusline=%<\ %F%=\ %{fugitive#statusline()}\ \|\ %{&filetype}\ \|\ LN\ %l/%L(%p%%):%c
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
 set backspace=start,eol,indent " always allow backspaces
