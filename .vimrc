@@ -16,8 +16,8 @@ Bundle 'vim-ruby/vim-ruby.git'
 Bundle 'jtmkrueger/base16-vim'
 
 " tools
-Bundle 'basilgor/vim-autotags'
 Bundle 'jtmkrueger/vim-c-cr'
+Bundle 'sjl/vitality.vim'
 Bundle 'mileszs/ack.vim'
 Bundle 'ervandew/supertab.git'
 Bundle 'kien/ctrlp.vim'
@@ -26,7 +26,6 @@ Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-fugitive.git'
 Bundle 'tpope/vim-commentary.git'
-Bundle 'sjl/vitality.vim'
 filetype plugin indent on
 " END vundle ------------------------
 
