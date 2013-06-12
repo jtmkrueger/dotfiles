@@ -36,6 +36,8 @@ colorscheme base16-default
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
+set autoread " auto read when a file is changed from the outside
+set magic "for regular epressions turn magic on
 set laststatus=2 " show status line
 " set statusline=%<%f\ %h%m%r%=%-14.(Σ=%L%)
 set statusline=%<\ %F%=\ \|\ %{fugitive#head()}\ \|\ %{&filetype}\ \|\ LN\ %l/%L(%p%%):%c
@@ -47,6 +49,8 @@ set incsearch " highlight search pattern as it's typed
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
 set listchars=tab:▸\ ,trail:⋅ " trailing white space and tabs
+highlight NonText ctermfg=Red
+highlight SpecialKey ctermfg=Red
 set wrap " textwrap
 set linebreak " wrap lines at spaces
 set wrapmargin=0 " wrap at last column
@@ -60,7 +64,7 @@ set showcmd " show the command line
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
-set colorcolumn=81 " highlight col 80
+set colorcolumn=81 " highlight col 81
 highlight ColorColumn ctermbg=black guibg=black
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
@@ -73,14 +77,13 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 " Open new splits to the right/bottom
 set splitright splitbelow
 
-
-highlight NonText ctermfg=Red
-highlight SpecialKey ctermfg=Red
-
 " I want my custom commands!
 imap <C-e> <%= %><Left><Left><Left>
 imap <C-n> $()<Left>
 nmap <c-cr> i<cr><Esc>
+
+" cycle through buffers
+nnoremap <C-n> :bnext<CR>
 
 " up/down on wrapped lines
 nnoremap j gj
