@@ -17,9 +17,10 @@ Bundle 'jtmkrueger/base16-vim'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
+Bundle 'benmills/vimux'
 Bundle 'sjl/vitality.vim'
 Bundle 'mileszs/ack.vim'
-Bundle 'ervandew/supertab.git'
+Bundle 'Valloric/YouCompleteMe'
 Bundle 'kien/ctrlp.vim'
 Bundle 'mattn/zencoding-vim.git'
 Bundle 'tpope/vim-rails.git'
@@ -100,3 +101,10 @@ noremap <left> <C-w>>
 noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
+
+let g:vitality_fix_focus=0
+
+" Vimux
+" Prompt for a command to run map
+noremap <Leader>v :VimuxPromptCommand<CR>
+let g:VimuxPromptString="VIMUX-> "
