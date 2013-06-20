@@ -33,8 +33,8 @@ filetype plugin indent on
 
 syntax on
 set background=light
-" colorscheme base16-default
 colorscheme solarized
+" colorscheme base16-default
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -84,6 +84,9 @@ set splitright splitbelow
 imap <C-e> <%= %><Left><Left><Left>
 imap <C-n> $()<Left>
 nmap <c-cr> i<cr><Esc>
+
+" easy search
+nnoremap <c-a> :Ack!<Space>
 
 " cycle through buffers
 nnoremap <C-n> :bnext<CR>
