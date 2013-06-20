@@ -12,8 +12,9 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'vim-ruby/vim-ruby.git'
 
-" colorscheme
+" colorschemes
 Bundle 'jtmkrueger/base16-vim'
+Bundle 'altercation/vim-colors-solarized'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
@@ -31,8 +32,9 @@ filetype plugin indent on
 " END vundle ------------------------
 
 syntax on
-set background=dark
-colorscheme base16-default
+set background=light
+" colorscheme base16-default
+colorscheme solarized
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -43,6 +45,7 @@ set laststatus=2 " show status line
 set statusline=%<\ %F%=\ \|\ %{fugitive#head()}\ \|\ %{&filetype}\ \|\ LN\ %l/%L(%p%%):%c
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
+set smarttab " start tabbed in
 set backspace=start,eol,indent " always allow backspaces
 set wildmenu " trick out command mode
 set incsearch " highlight search pattern as it's typed
@@ -65,7 +68,7 @@ set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
 set colorcolumn=81 " highlight col 81
-highlight ColorColumn ctermbg=black guibg=black
+highlight ColorColumn ctermbg=white guibg=white
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 
