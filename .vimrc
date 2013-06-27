@@ -43,7 +43,7 @@ set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 set laststatus=2 " show status line
 " set statusline=%<%f\ %h%m%r%=%-14.(Σ=%L%)
-set statusline=%<\ %F%=\ \|\ %{fugitive#head()}\ \|\ %{&filetype}\ \|\ LN\ %l/%L(%p%%):%c
+set statusline=%<\ %F%=\ \⮃\ %{fugitive#head()}\ \⮃\ %{&filetype}\ \⮃\ LN\ %l/%L(%p%%):%c
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
 set smarttab " start tabbed in
@@ -115,3 +115,11 @@ let g:vitality_fix_focus=0
 " Prompt for a command to run map
 noremap <Leader>v :VimuxPromptCommand<CR>
 let g:VimuxPromptString="VIMUX-> "
+
+" syntastic
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_check_on_open=0
+let g:syntastic_javascript_checkers = ['jsl']
+let g:syntastic_quiet_warnings=1
