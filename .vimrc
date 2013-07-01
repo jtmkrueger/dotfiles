@@ -42,8 +42,7 @@ set t_Co=256
 set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 set laststatus=2 " show status line
-" set statusline=%<%f\ %h%m%r%=%-14.(Σ=%L%)
-set statusline=%<\ %F%=\ \⮃\ %{fugitive#head()}\ \⮃\ %{&filetype}\ \⮃\ LN\ %l/%L(%p%%):%c
+set statusline=%<\ %F%=\ \⮃\ \⭠\ %{fugitive#head()}\ \⮃\⭢\⭣\ %{&filetype}\ \⮃\ ⭡\ %l/%L(%p%%):%c
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
 set smarttab " start tabbed in
