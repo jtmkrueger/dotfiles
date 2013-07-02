@@ -13,15 +13,12 @@ Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'vim-ruby/vim-ruby.git'
 
 " colorschemes
-Bundle 'jtmkrueger/base16-vim'
 Bundle 'altercation/vim-colors-solarized'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
-Bundle 'jtmkrueger/vim-airline'
-Bundle 'benmills/vimux'
-Bundle 'sjl/vitality.vim'
 Bundle 'mileszs/ack.vim'
+Bundle 'sjl/vitality.vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
@@ -48,7 +45,7 @@ set statusline=%<\ %F%=\ \⮃\ \⭠\ %{fugitive#head()}\ \⮃\⭢\⭣\ %{&filety
 " now set it up to change the status line based on mode
 if version >= 700
   au InsertEnter * hi StatusLine ctermfg=DarkBlue ctermbg=Black
-  au InsertLeave * hi StatusLine ctermfg=Cyan ctermbg=Black
+  au InsertLeave * hi StatusLine ctermfg=cyan ctermbg=Black
 endif
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
@@ -74,10 +71,9 @@ set showcmd " show the command line
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
-set colorcolumn=81 " highlight col 81
-highlight ColorColumn ctermbg=black guibg=black
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
+set timeoutlen=0 " Time to wait after ESC (default causes an annoying delay)
 
 " Store temporary files in a central spot
 set backup
