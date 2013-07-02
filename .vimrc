@@ -18,6 +18,7 @@ Bundle 'altercation/vim-colors-solarized'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
+Bundle 'jtmkrueger/vim-airline'
 Bundle 'benmills/vimux'
 Bundle 'sjl/vitality.vim'
 Bundle 'mileszs/ack.vim'
@@ -33,8 +34,9 @@ filetype plugin indent on
 " END vundle ------------------------
 
 syntax on
-set background=light
+set background=dark
 colorscheme solarized
+" let g:solarized_termcolors= 256
 " colorscheme base16-default
 set encoding=utf-8
 set fileencoding=utf-8
@@ -43,6 +45,11 @@ set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 set laststatus=2 " show status line
 set statusline=%<\ %F%=\ \⮃\ \⭠\ %{fugitive#head()}\ \⮃\⭢\⭣\ %{&filetype}\ \⮃\ ⭡\ %l/%L(%p%%):%c
+" now set it up to change the status line based on mode
+if version >= 700
+  au InsertEnter * hi StatusLine ctermfg=DarkBlue ctermbg=Black
+  au InsertLeave * hi StatusLine ctermfg=Cyan ctermbg=Black
+endif
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
 set smarttab " start tabbed in
@@ -68,7 +75,7 @@ set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
 set colorcolumn=81 " highlight col 81
-highlight ColorColumn ctermbg=white guibg=white
+highlight ColorColumn ctermbg=black guibg=black
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 
@@ -122,3 +129,11 @@ let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=0
 let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_quiet_warnings=1
+
+" airline
+let g:airline_enable_fugitive=1
+let g:airline_enable_syntastic=1
+let g:airline_powerline_fonts=1
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline_theme='default'
