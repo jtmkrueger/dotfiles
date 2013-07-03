@@ -17,6 +17,7 @@ Bundle 'altercation/vim-colors-solarized'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
+Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
 Bundle 'sjl/vitality.vim'
 Bundle 'Valloric/YouCompleteMe'
@@ -41,7 +42,7 @@ set t_Co=256
 set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 set laststatus=2 " show status line
-set statusline=%<\ %F%=\ \⮃\ \⭠\ %{fugitive#head()}\ \⮃\⭢\⭣\ %{&filetype}\ \⮃\ ⭡\ %l/%L(%p%%):%c
+set statusline=%<\ %F%=\ \⮃\ \⭠\ %{fugitive#head()}\ \⮃\⭢\⭣\ %{&filetype}
 " now set it up to change the status line based on mode
 if version >= 700
   au InsertEnter * hi StatusLine ctermfg=DarkBlue ctermbg=Black
@@ -113,11 +114,6 @@ noremap <down> <C-w>+
 
 let g:vitality_fix_focus=0
 
-" Vimux
-" Prompt for a command to run map
-noremap <Leader>v :VimuxPromptCommand<CR>
-let g:VimuxPromptString="VIMUX-> "
-
 " syntastic
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_enable_signs=1
@@ -126,10 +122,5 @@ let g:syntastic_check_on_open=0
 let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_quiet_warnings=1
 
-" airline
-let g:airline_enable_fugitive=1
-let g:airline_enable_syntastic=1
-let g:airline_powerline_fonts=1
-let g:airline_left_sep=''
-let g:airline_right_sep=''
-let g:airline_theme='default'
+" tagbar
+noremap <C-\> :TagbarToggle<CR>
