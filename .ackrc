@@ -1,5 +1,6 @@
 --type-add=js=.ejs
 --type-add=js=.coffee
+--type-add=js=.hbs
 --type-add=ruby=.erb
 --type-add=ruby=.feature
 --type-add=ruby=.rake

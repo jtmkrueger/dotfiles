@@ -11,13 +11,14 @@ Bundle 'kchmck/vim-coffee-script.git'
 Bundle 'pangloss/vim-javascript'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'vim-ruby/vim-ruby.git'
+Bundle 'nono/vim-handlebars'
 
 " colorschemes
 Bundle 'altercation/vim-colors-solarized'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
-Bundle 'majutsushi/tagbar'
+Bundle 'bling/vim-airline'
 Bundle 'mileszs/ack.vim'
 Bundle 'sjl/vitality.vim'
 Bundle 'Valloric/YouCompleteMe'
@@ -27,7 +28,7 @@ Bundle 'mattn/zencoding-vim.git'
 Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-fugitive.git'
-Bundle 'tpope/vim-commentary.git'
+Bundle 'tomtom/tcomment_vim'
 filetype plugin indent on
 " END vundle ------------------------
 
@@ -122,5 +123,13 @@ let g:syntastic_check_on_open=0
 let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_quiet_warnings=1
 
-" tagbar
-noremap <C-\> :TagbarToggle<CR>
+" airline
+let g:airline_powerline_fonts=1
+let g:airline_theme='solarized'
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = '' "''
+let g:airline_right_alt_sep = ''
+let g:airline_fugitive_prefix = ' '
+let g:airline_readonly_symbol = ''
+let g:airline_linecolumn_prefix = ' '
