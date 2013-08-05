@@ -1,7 +1,8 @@
 #ORACLE garbage
-export DYLD_LIBRARY_PATH="/Applications/Oracle:/Users/jkrueger/nrel/lib"
+export DYLD_LIBRARY_PATH="/Applications/Oracle"
 export SQLPATH="/Applications/Oracle"
-export TNS_ADMIN="/Applications/Oracle/network/admin"
+export TNS_ADMIN="/Applications/Oracle"
+export ORACLE_HOME="/Applications/Oracle"
 export NLS_LANG="AMERICAN_AMERICA.UTF8"
 export PATH=$PATH:$DYLD_LIBRARY_PATH
 export RC_ARCHS=i386
@@ -45,6 +46,9 @@ DISABLE_AUTO_TITLE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git svn rails rails3 ruby zsh-syntax-highlighting)
 
+# make sure rvm has an alias for prompt
+alias rvm-prompt=$HOME/.rvm/bin/rvm-prompt
+
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
@@ -52,7 +56,8 @@ source $ZSH/oh-my-zsh.sh
 #node.js module
 export NODE_PATH="/usr/local/lib/node"
 
-export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/local/Cellar/qt/4.8.2/bin:/usr/local/share/npm/bin:$PATH
+
 
 # To have paths colored instead of underlined
 ZSH_HIGHLIGHT_STYLES[path]='fg=yellow'
