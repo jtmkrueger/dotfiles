@@ -41,8 +41,7 @@ set t_Co=256
 set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 set laststatus=2 " show status line
-set statusline=%<\ %F%m%=\ \|\⅄%{fugitive#head()}\ \|\⨍%{&filetype}
-" set statusline=%<\ %F%m%=\ \|\ %{&filetype}\ 
+set statusline=%<\ %F%m%=\ \|\⅄%{fugitive#head()}\ \|\⨍%{&filetype}\ 
 " change the status line based on mode
 if version >= 700
   au InsertEnter * hi StatusLine ctermfg=DarkBlue ctermbg=Black
