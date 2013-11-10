@@ -18,33 +18,32 @@ Bundle 'altercation/vim-colors-solarized'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
-Bundle 'bling/vim-airline'
 Bundle 'mileszs/ack.vim'
-Bundle 'sjl/vitality.vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
-Bundle 'mattn/zencoding-vim.git'
+Bundle 'mattn/emmet-vim'
+Bundle 'sjl/vitality.vim'
 Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-fugitive.git'
-Bundle 'tomtom/tcomment_vim'
+Bundle 'tpope/vim-commentary.git'
 filetype plugin indent on
 " END vundle ------------------------
 
 syntax on
+set shell=/bin/bash
 set background=dark
 colorscheme solarized
-" let g:solarized_termcolors= 256
-" colorscheme base16-default
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
 set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 set laststatus=2 " show status line
-set statusline=%<\ %F%=\ \⮃\ \⭠\ %{fugitive#head()}\ \⮃\⭢\⭣\ %{&filetype}
-" now set it up to change the status line based on mode
+set statusline=%<\ %F%m%=\ \⮃\ \⭠\ %{fugitive#head()}\ \⮃\⭢\⭣\ %{&filetype}
+" set statusline=%<\ %F%m%=\ \|\ %{&filetype}\ 
+" change the status line based on mode
 if version >= 700
   au InsertEnter * hi StatusLine ctermfg=DarkBlue ctermbg=Black
   au InsertLeave * hi StatusLine ctermfg=cyan ctermbg=Black
@@ -73,9 +72,10 @@ set showcmd " show the command line
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
+set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
-set timeoutlen=0 " Time to wait after ESC (default causes an annoying delay)
+set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 
 " Store temporary files in a central spot
 set backup
@@ -104,6 +104,17 @@ nnoremap k gk
 vnoremap < <gv
 vnoremap > >gv
 
+" make . work in visual mode
+:vnoremap . :norm.<cr>
+
+" visual mode macro execution
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+
 " clear search highlights with enter
 nnoremap <CR> :nohlsearch<CR>/<BS>
 
@@ -113,8 +124,6 @@ noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
 
-let g:vitality_fix_focus=0
-
 " syntastic
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_enable_signs=1
@@ -122,14 +131,7 @@ let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=0
 let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_quiet_warnings=1
+let g:syntastic_ruby_exec = '~/usr/local/var/rbenv/versions/1.9.3-p194/bin/ruby'
 
-" airline
-let g:airline_powerline_fonts=1
-let g:airline_theme='solarized'
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = '' "''
-let g:airline_right_alt_sep = ''
-let g:airline_fugitive_prefix = ' '
-let g:airline_readonly_symbol = ''
-let g:airline_linecolumn_prefix = ' '
+" emmet
+let g:user_emmet_leader_key = '<c-s>'

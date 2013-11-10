@@ -22,8 +22,6 @@ then
   alias ttytter='colourify ttytter'
 fi
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
-
 #color and git branch
 parse_git_branch() {  
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
@@ -35,4 +33,3 @@ export LSCOLORS=gxfxcxdxbxegedabagacad
 PS1='\n\[\e[0;34m\]\w \[\e[m\]\[\e[0;33m\]$(parse_git_branch)\[\e[m\] \[\e[1;32m\]$(~/.rvm/bin/rvm-prompt)\[\e[m\] \n\[\e[1;35m\]\[\e[m\]\[\e[0;32m\]> \[\e[m\]'
 
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
