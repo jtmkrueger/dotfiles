@@ -15,6 +15,8 @@ Bundle 'nono/vim-handlebars'
 
 " colorschemes
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'coryf/vim-pathogen-tomorrow-theme'
+Bundle 'chriskempson/base16-vim'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
@@ -22,7 +24,8 @@ Bundle 'mileszs/ack.vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
-Bundle 'mattn/emmet-vim'
+" Bundle 'mattn/emmet-vim'
+Bundle 'tristen/vim-sparkup'
 Bundle 'sjl/vitality.vim'
 Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-surround.git'
@@ -34,7 +37,7 @@ filetype plugin indent on
 syntax on
 set shell=/bin/bash
 set background=dark
-colorscheme solarized
+colorscheme base16-default
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -42,10 +45,11 @@ set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 set laststatus=2 " show status line
 set statusline=%<\ %F%m%=\ \|\⅄%{fugitive#head()}\ \|\⨍%{&filetype}\ 
+hi StatusLine ctermfg=DarkBlue  ctermbg=234
 " change the status line based on mode
 if version >= 700
-  au InsertEnter * hi StatusLine ctermfg=DarkBlue ctermbg=Black
-  au InsertLeave * hi StatusLine ctermfg=cyan ctermbg=Black
+  au InsertEnter * hi StatusLine term=reverse ctermfg=black ctermbg=DarkBlue
+  au InsertLeave * hi StatusLine term=reverse ctermfg=DarkBlue ctermbg=234
 endif
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
@@ -86,8 +90,6 @@ set splitright splitbelow
 
 " I want my custom commands!
 imap <C-e> <%= %><Left><Left><Left>
-imap <C-n> $()<Left>
-nmap <c-cr> i<cr><Esc>
 
 " easy search
 nnoremap <c-a> :Ack!<Space>
@@ -132,5 +134,9 @@ let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_quiet_warnings=1
 let g:syntastic_ruby_exec = '~/usr/local/var/rbenv/versions/1.9.3-p194/bin/ruby'
 
-" emmet
-let g:user_emmet_leader_key = '<c-s>'
+augroup sparkup_types
+  " Remove ALL autocommands of the current group.
+  autocmd!
+  " Add sparkup to new filetypes
+  autocmd FileType ruby,eruby,erb,js runtime! ftplugin/html/sparkup.vim
+augroup END
