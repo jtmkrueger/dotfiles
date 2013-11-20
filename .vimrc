@@ -42,14 +42,17 @@ set fileencoding=utf-8
 set t_Co=256
 set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
+
+" statusline
 set laststatus=2 " show status line
-set statusline=%<\ %F%m%=\ \|\⅄%{fugitive#head()}\ \|\⨍%{&filetype}\ 
+set statusline=%<\ %f%m%=\ \|\⅄\ %{fugitive#head()}\ \|\⨍\ %{&filetype}\ 
 hi StatusLine ctermfg=DarkBlue  ctermbg=236
 " change the status line based on mode
 if version >= 700
   au InsertEnter * hi StatusLine term=reverse ctermfg=black ctermbg=DarkBlue
   au InsertLeave * hi StatusLine term=reverse ctermfg=DarkBlue ctermbg=236
 endif
+
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
 set smarttab " start tabbed in
