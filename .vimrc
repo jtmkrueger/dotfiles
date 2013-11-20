@@ -15,8 +15,7 @@ Bundle 'nono/vim-handlebars'
 
 " colorschemes
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'coryf/vim-pathogen-tomorrow-theme'
-Bundle 'chriskempson/base16-vim'
+Bundle 'jtmkrueger/base16-vim'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
@@ -45,11 +44,11 @@ set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 set laststatus=2 " show status line
 set statusline=%<\ %F%m%=\ \|\⅄%{fugitive#head()}\ \|\⨍%{&filetype}\ 
-hi StatusLine ctermfg=DarkBlue  ctermbg=234
+hi StatusLine ctermfg=DarkBlue  ctermbg=236
 " change the status line based on mode
 if version >= 700
   au InsertEnter * hi StatusLine term=reverse ctermfg=black ctermbg=DarkBlue
-  au InsertLeave * hi StatusLine term=reverse ctermfg=DarkBlue ctermbg=234
+  au InsertLeave * hi StatusLine term=reverse ctermfg=DarkBlue ctermbg=236
 endif
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
