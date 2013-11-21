@@ -91,7 +91,7 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set splitright splitbelow
 
 " I want my custom commands!
-imap <C-e> <%= %><Left><Left><Left>
+imap <C-s> <%= %><Left><Left><Left>
 
 " easy search
 nnoremap <c-a> :Ack!<Space>
