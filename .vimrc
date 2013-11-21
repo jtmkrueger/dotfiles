@@ -103,6 +103,9 @@ nnoremap <C-n> :bnext<CR>
 nnoremap j gj
 nnoremap k gk
 
+" quickly pull up the relative path
+cnoremap <c-r> <Space>%:h<c-a>
+
 " Reselect visual block after indent
 vnoremap < <gv
 vnoremap > >gv
