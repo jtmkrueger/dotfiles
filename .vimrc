@@ -16,6 +16,7 @@ Bundle 'nono/vim-handlebars'
 " colorschemes
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'jtmkrueger/base16-vim'
+Bundle 'junegunn/seoul256.vim'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
@@ -23,6 +24,10 @@ Bundle 'mileszs/ack.vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
+Bundle 'Yggdroot/indentLine'
+Bundle 'bilalq/lite-dfm'
+Bundle 'ivyl/vim-bling'
+
 " Bundle 'mattn/emmet-vim'
 Bundle 'tristen/vim-sparkup'
 Bundle 'sjl/vitality.vim'
@@ -35,8 +40,10 @@ filetype plugin indent on
 
 syntax on
 set shell=/bin/bash
-set background=dark
-colorscheme base16-default
+" set background=dark
+" colorscheme base16-default
+let g:seoul256_background = 234
+colorscheme seoul256
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -45,7 +52,7 @@ set magic "for regular epressions turn magic on
 
 " statusline
 set laststatus=2 " show status line
-set statusline=%<\ %f%m%=\ \|\⅄\ %{fugitive#head()}\ \|\⨍\ %{&filetype}\ 
+set statusline=%<\ %f%m%=\ \\ \\ %{fugitive#head()}\ \\ \⨍\ %{&filetype}\ 
 hi StatusLine ctermfg=DarkBlue  ctermbg=236
 " change the status line based on mode
 if version >= 700
@@ -91,7 +98,7 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set splitright splitbelow
 
 " I want my custom commands!
-imap <C-s> <%= %><Left><Left><Left>
+imap <C-e> <%= %><Left><Left><Left>
 
 " easy search
 nnoremap <c-a> :Ack!<Space>
@@ -104,7 +111,7 @@ nnoremap j gj
 nnoremap k gk
 
 " quickly pull up the relative path
-cnoremap <c-r> <Space>%:h<c-a>
+" cnoremap <c-i> <Space>%:h<c-a>
 
 " Reselect visual block after indent
 vnoremap < <gv
@@ -139,9 +146,23 @@ let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_quiet_warnings=1
 let g:syntastic_ruby_exec = '~/usr/local/var/rbenv/versions/1.9.3-p194/bin/ruby'
 
+let g:indentLine_color_term = 235
+let g:indentLine_faster = 1
+let g:indentLine_char = '¦'
+
+nnoremap <Leader>z :LiteDFMToggle<CR>:silent !tmux set status > /dev/null 2>&1<CR>:redraw!<CR>
+
 augroup sparkup_types
   " Remove ALL autocommands of the current group.
   autocmd!
   " Add sparkup to new filetypes
   autocmd FileType ruby,eruby,erb,js runtime! ftplugin/html/sparkup.vim
+augroup END
+
+" set tmux window name automatically
+augroup Tmux "{{{2
+  au!
+
+  autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
+  autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
 augroup END
