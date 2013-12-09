@@ -14,9 +14,7 @@ Bundle 'vim-ruby/vim-ruby.git'
 Bundle 'nono/vim-handlebars'
 
 " colorschemes
-Bundle 'altercation/vim-colors-solarized'
 Bundle 'jtmkrueger/base16-vim'
-Bundle 'junegunn/seoul256.vim'
 
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
@@ -24,11 +22,9 @@ Bundle 'mileszs/ack.vim'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
-Bundle 'Yggdroot/indentLine'
-Bundle 'bilalq/lite-dfm'
 Bundle 'ivyl/vim-bling'
+Bundle 'szw/vim-tags'
 
-" Bundle 'mattn/emmet-vim'
 Bundle 'tristen/vim-sparkup'
 Bundle 'sjl/vitality.vim'
 Bundle 'tpope/vim-rails.git'
@@ -39,11 +35,11 @@ filetype plugin indent on
 " END vundle ------------------------
 
 syntax on
+set ttyfast
+set lazyredraw
 set shell=/bin/bash
-" set background=dark
-" colorscheme base16-default
-let g:seoul256_background = 234
-colorscheme seoul256
+set background=dark
+colorscheme base16-default
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -68,10 +64,9 @@ set wildmenu " trick out command mode
 set incsearch " highlight search pattern as it's typed
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
-set listchars=tab:▸\ ,trail:⋅ " trailing white space and tabs
-highlight NonText ctermfg=Red
-highlight SpecialKey ctermfg=Red
 set wrap " textwrap
+" set to no show for speed
+hi NonText cterm=NONE ctermfg=NONE
 set linebreak " wrap lines at spaces
 set wrapmargin=0 " wrap at last column
 set autoindent
@@ -79,6 +74,7 @@ set smartindent
 set textwidth=0 " disable auto line breaking on paste
 set formatoptions+=l " don't break lines till after insert mode
 set number " line numbers
+set relativenumber 
 set showtabline=2 " always show tabs
 set showcmd " show the command line
 set scrolloff=5 " 5 line buffer below cursor when scrolling
@@ -98,7 +94,7 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set splitright splitbelow
 
 " I want my custom commands!
-imap <C-e> <%= %><Left><Left><Left>
+imap <C-s> <%= %><Left><Left><Left>
 
 " easy search
 nnoremap <c-a> :Ack!<Space>
@@ -109,9 +105,6 @@ nnoremap <C-n> :bnext<CR>
 " up/down on wrapped lines
 nnoremap j gj
 nnoremap k gk
-
-" quickly pull up the relative path
-" cnoremap <c-i> <Space>%:h<c-a>
 
 " Reselect visual block after indent
 vnoremap < <gv
@@ -144,12 +137,9 @@ let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=0
 let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_quiet_warnings=1
-let g:syntastic_ruby_exec = '~/usr/local/var/rbenv/versions/1.9.3-p194/bin/ruby'
+let g:syntastic_ruby_exec = '/usr/local/var/rbenv/versions/1.9.3-p194/bin/ruby'
 
-let g:indentLine_color_term = 235
-let g:indentLine_faster = 1
-let g:indentLine_char = '¦'
-
+" clears tmux line when going into distraction-free mode
 nnoremap <Leader>z :LiteDFMToggle<CR>:silent !tmux set status > /dev/null 2>&1<CR>:redraw!<CR>
 
 augroup sparkup_types
