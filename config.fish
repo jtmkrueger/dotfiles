@@ -2,7 +2,7 @@ alias vim 'mvim -v'
 
 set brew_rbenv "/usr/local/var/rbenv/shims"
 # put homebrew and rbenv at the front of $PATH
-set -gx PATH "/usr/local/bin:/usr/local/var/rbenv/shims" $PATH
+set -gx PATH "/usr/local/bin:/usr/local/share/npm/bin:/usr/local/var/rbenv/shims" $PATH
 set -gx RBENV_ROOT "/usr/local/var/rbenv"
 
 # ORACLE garbage

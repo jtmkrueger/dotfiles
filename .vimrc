@@ -11,7 +11,9 @@ Bundle 'kchmck/vim-coffee-script.git'
 Bundle 'pangloss/vim-javascript'
 Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'vim-ruby/vim-ruby.git'
-Bundle 'nono/vim-handlebars'
+Bundle 'mustache/vim-mustache-handlebars'
+Bundle 'othree/javascript-libraries-syntax.vim'
+Bundle 'briancollins/vim-jst'
 
 " colorschemes
 Bundle 'jtmkrueger/base16-vim'
@@ -24,9 +26,11 @@ Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
 Bundle 'ivyl/vim-bling'
 Bundle 'szw/vim-tags'
+Bundle 'blueyed/vim-diminactive'
 
 Bundle 'tristen/vim-sparkup'
 Bundle 'sjl/vitality.vim'
+Bundle 'tpope/vim-vinegar'
 Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-fugitive.git'
@@ -74,7 +78,7 @@ set smartindent
 set textwidth=0 " disable auto line breaking on paste
 set formatoptions+=l " don't break lines till after insert mode
 set number " line numbers
-set relativenumber 
+set relativenumber " show relative line number in gutter
 set showtabline=2 " always show tabs
 set showcmd " show the command line
 set scrolloff=5 " 5 line buffer below cursor when scrolling
@@ -96,7 +100,8 @@ set splitright splitbelow
 " I want my custom commands!
 imap <C-s> <%= %><Left><Left><Left>
 
-" easy search
+" easy search with the silver searcher
+let g:ackprg = 'ag --nogroup --column'
 nnoremap <c-a> :Ack!<Space>
 
 " cycle through buffers
@@ -124,6 +129,8 @@ endfunction
 " clear search highlights with enter
 nnoremap <CR> :nohlsearch<CR>/<BS>
 
+let g:javascript_enable_domhtmlcss=1
+
 " make resizing windows a bit easier
 noremap <left> <C-w>>
 noremap <right> <C-w><
@@ -136,17 +143,22 @@ let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=0
 let g:syntastic_javascript_checkers = ['jsl']
-let g:syntastic_quiet_warnings=1
+let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_ruby_exec = '/usr/local/var/rbenv/versions/1.9.3-p194/bin/ruby'
 
-" clears tmux line when going into distraction-free mode
-nnoremap <Leader>z :LiteDFMToggle<CR>:silent !tmux set status > /dev/null 2>&1<CR>:redraw!<CR>
+" catch very long wrapped lines with diminactive
+let g:diminactive_max_cols = 1000
+
+" read ejs as html
+" au BufNewFile,BufRead *.ejs set filetype=html
+" json is json
+au BufRead,BufNewFile *.json set filetype=json
 
 augroup sparkup_types
   " Remove ALL autocommands of the current group.
   autocmd!
   " Add sparkup to new filetypes
-  autocmd FileType ruby,eruby,erb,js runtime! ftplugin/html/sparkup.vim
+  autocmd FileType ruby,eruby,erb,js,ejs runtime! ftplugin/html/sparkup.vim
 augroup END
 
 " set tmux window name automatically
