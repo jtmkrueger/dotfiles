@@ -87,7 +87,6 @@ set cursorline " highlight line cursor is on
 set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
-set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 
 " Store temporary files in a central spot
 set backup
@@ -168,3 +167,13 @@ augroup Tmux "{{{2
   autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
   autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
 augroup END
+
+" get rid of lame timeoutlen delay on <C-[>
+if ! has('gui_running')
+  set ttimeoutlen=10
+  augroup FastEscape
+    autocmd!
+    au InsertEnter * set timeoutlen=0
+    au InsertLeave * set timeoutlen=1000
+  augroup END
+endif
