@@ -165,7 +165,7 @@ augroup sparkup_types
   " Remove ALL autocommands of the current group.
   autocmd!
   " Add sparkup to new filetypes
-  autocmd FileType ruby,eruby,erb,js,ejs runtime! ftplugin/html/sparkup.vim
+  autocmd FileType ruby,eruby,erb,js,ejs,html runtime! ftplugin/html/sparkup.vim
 augroup END
 
 " set tmux window name automatically

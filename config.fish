@@ -32,7 +32,7 @@ set -g __fish_git_prompt_char_upstream_ahead "↑"
 set -g __fish_git_prompt_char_upstream_behind "↓"
 set -g __fish_git_prompt_char_upstream_prefix ""
 set -g __fish_git_prompt_char_stagedstate "●"
-set -g __fish_git_prompt_char_dirtystate "⚡"
+set -g __fish_git_prompt_char_dirtystate "Δ"
 set -g __fish_git_prompt_char_stagedstate '→'
 set -g __fish_git_prompt_char_stashstate '↩'
 set -g __fish_git_prompt_char_untrackedfiles "…"
@@ -43,7 +43,7 @@ set -g __fish_git_prompt_color_dirtystate blue
 set -g __fish_git_prompt_color_stagedstate yellow
 set -g __fish_git_prompt_color_invalidstate red
 set -g __fish_git_prompt_color_untrackedfiles magenta
-set -g __fish_git_prompt_color_cleanstate green bold
+set -g __fish_git_prompt_color_cleanstate green
 
 function fish_prompt --description 'Write out the prompt'
   echo
