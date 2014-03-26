@@ -28,7 +28,7 @@ Bundle 'ivyl/vim-bling'
 Bundle 'szw/vim-tags'
 Bundle 'blueyed/vim-diminactive'
 
-Bundle 'tristen/vim-sparkup'
+Bundle 'mattn/emmet-vim'
 Bundle 'sjl/vitality.vim'
 Bundle 'tpope/vim-vinegar'
 Bundle 'tpope/vim-rails.git'
@@ -145,6 +145,7 @@ noremap <up> <C-w>-
 noremap <down> <C-w>+
 
 " syntastic
+let g:ycm_collect_identifiers_from_tags_files = 0
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
@@ -152,6 +153,9 @@ let g:syntastic_check_on_open=0
 let g:syntastic_javascript_checkers = ['jsl']
 let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_ruby_exec = '/usr/local/var/rbenv/versions/1.9.3-p194/bin/ruby'
+
+" compile ctags so ycm can use them
+let g:vim_tags_use_ycm = 1
 
 " catch very long wrapped lines with diminactive
 let g:diminactive_max_cols = 1000
@@ -161,12 +165,8 @@ let g:diminactive_max_cols = 1000
 " json is json
 au BufRead,BufNewFile *.json set filetype=json
 
-augroup sparkup_types
-  " Remove ALL autocommands of the current group.
-  autocmd!
-  " Add sparkup to new filetypes
-  autocmd FileType ruby,eruby,erb,js,ejs,html runtime! ftplugin/html/sparkup.vim
-augroup END
+" tab for emmet expansions
+imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
 
 " set tmux window name automatically
 augroup Tmux "{{{2
