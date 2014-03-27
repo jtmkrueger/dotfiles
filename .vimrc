@@ -97,6 +97,7 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 " map leader to space
 let mapleader = "\<Space>"
 
+" leader mappings
 nnoremap <leader>v :vs<space>
 nnoremap <leader>t :tabe<space>
 nnoremap <leader>s :sp<space>
@@ -145,8 +146,10 @@ noremap <up> <C-w>-
 noremap <down> <C-w>+
 
 " syntastic
-let g:ycm_collect_identifiers_from_tags_files = 0
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
 let g:syntastic_always_populate_loc_list=1
+let g:ycm_seed_identifiers_with_syntax = 1
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=0
@@ -160,12 +163,10 @@ let g:vim_tags_use_ycm = 1
 " catch very long wrapped lines with diminactive
 let g:diminactive_max_cols = 1000
 
-" read ejs as html
-" au BufNewFile,BufRead *.ejs set filetype=html
 " json is json
 au BufRead,BufNewFile *.json set filetype=json
 
-" tab for emmet expansions
+" emmet expansions
 imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
 
 " set tmux window name automatically
