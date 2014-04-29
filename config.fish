@@ -5,8 +5,11 @@ set brew_rbenv "/usr/local/var/rbenv/shims"
 set -gx PATH "/usr/local/bin:/usr/local/share/npm/bin:/usr/local/var/rbenv/shims" $PATH
 set -gx RBENV_ROOT "/usr/local/var/rbenv"
 
+set -gx VIMRUNTIME '/usr/local/Cellar/macvim/7.4-72/MacVim.app/Contents/Resources/vim/runtime'
+
 # ORACLE garbage
 set -gx DYLD_LIBRARY_PATH "/Applications/Oracle"
+set -gx LD_LIBRARY_PATH "/Applications/Oracle"
 set -gx SQLPATH "/Applications/Oracle"
 set -gx TNS_ADMIN "/Applications/Oracle"
 set -gx ORACLE_HOME "/Applications/Oracle"
@@ -58,7 +61,7 @@ function fish_prompt --description 'Write out the prompt'
 
   # PWD
   set_color $fish_color_pwd
-  echo -n (prompt_pwd)
+  echo -n (pwd) # prompt_pwd for the shortened version
   set_color normal
   echo -n ' '
 

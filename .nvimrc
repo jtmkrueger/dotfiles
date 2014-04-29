@@ -2,8 +2,8 @@ set nocompatible
 
 " START vundle ----------------------------
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.nvim/bundle/vundle/
+call vundle#rc("~/.nvim/bundle")
 Bundle 'gmarik/vundle'
 
 " syntaxes
@@ -21,7 +21,7 @@ Bundle 'jtmkrueger/base16-vim'
 " tools
 Bundle 'jtmkrueger/vim-c-cr'
 Bundle 'mileszs/ack.vim'
-Bundle 'Valloric/YouCompleteMe'
+Bundle 'shougo/neocomplcache'
 Bundle 'scrooloose/syntastic'
 Bundle 'kien/ctrlp.vim'
 Bundle 'ivyl/vim-bling'
@@ -52,7 +52,7 @@ set magic "for regular epressions turn magic on
 
 " statusline
 set laststatus=2 " show status line
-set statusline=%<\ %f%m%=\ \\ \\ %{fugitive#head()}\ \\ \⨍\ %{&filetype}\ 
+set statusline=%<\ %f%m%=\ \\ \\ \\ \⨍\ %{&filetype}\ \\ \c\o\l\:\ %c\ \\ \l\i\n\e\/\t\o\t\a\l\:\ %l\/%L\ \\ %p%%
 hi StatusLine ctermfg=DarkBlue  ctermbg=236
 " change the status line based on mode
 if version >= 700
@@ -88,6 +88,7 @@ set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
+set omnifunc=syntaxcomplete#Complete
 
 " Store temporary files in a central spot
 set backup
@@ -123,18 +124,8 @@ vnoremap > >gv
 " make . work in visual mode
 :vnoremap . :norm.<cr>
 
-" visual mode macro execution
-xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
-
-function! ExecuteMacroOverVisualRange()
-  echo "@".getcmdline()
-  execute ":'<,'>normal @".nr2char(getchar())
-endfunction
-
 " clear search highlights with enter
 nnoremap <CR> :nohlsearch<CR>/<BS>
-
-let g:javascript_enable_domhtmlcss=1
 
 " make resizing windows a bit easier
 noremap <left> <C-w>>
@@ -142,30 +133,19 @@ noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
 
-" quick buffer switching
-nnoremap <Tab> :bnext<CR>
-nnoremap <S-Tab> :bprevious<CR>
-
 " syntastic
-" let g:ycm_collect_identifiers_from_comments_and_strings = 1
-" let g:ycm_collect_identifiers_from_tags_files = 1
 let g:syntastic_always_populate_loc_list=1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=1
-let g:syntastic_check_on_open=0
-let g:syntastic_javascript_checkers = ['jsl']
-let g:syntastic_quiet_messages = {'level': 'warnings'}
-let g:syntastic_ruby_exec = '/usr/local/var/rbenv/versions/1.9.3-p194/bin/ruby'
-
-" compile ctags so ycm can use them
-let g:vim_tags_use_ycm = 1
 
 " catch very long wrapped lines with diminactive
 let g:diminactive_max_cols = 1000
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_check_on_open=0
+let g:syntastic_quiet_messages = {'level': 'warnings'}
 
-" json is json
-au BufRead,BufNewFile *.json set filetype=json
+let g:acp_enableAtStartup = 0
+let g:neocomplcache_enable_at_startup = 1
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " emmet expansions
 imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
