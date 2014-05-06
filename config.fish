@@ -1,4 +1,4 @@
-alias vim 'mvim -v'
+alias vim 'nvim'
 
 set brew_rbenv "/usr/local/var/rbenv/shims"
 # put homebrew and rbenv at the front of $PATH
@@ -73,7 +73,7 @@ function fish_prompt --description 'Write out the prompt'
   set_color $fish_color_error
   end
 
-  echo -n '➤ '
+  echo -n '☄  '
   set_color normal
 end
 # end prompt

@@ -7,34 +7,35 @@ call vundle#rc("~/.nvim/bundle")
 Bundle 'gmarik/vundle'
 
 " syntaxes
-Bundle 'kchmck/vim-coffee-script.git'
-Bundle 'pangloss/vim-javascript'
-Bundle 'cakebaker/scss-syntax.vim'
-Bundle 'vim-ruby/vim-ruby.git'
-Bundle 'mustache/vim-mustache-handlebars'
-Bundle 'othree/javascript-libraries-syntax.vim'
-Bundle 'briancollins/vim-jst'
+Plugin 'kchmck/vim-coffee-script.git'
+Plugin 'pangloss/vim-javascript'
+Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'vim-ruby/vim-ruby.git'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'briancollins/vim-jst'
 
 " colorschemes
-Bundle 'jtmkrueger/base16-vim'
+Plugin 'jtmkrueger/base16-vim'
 
 " tools
-Bundle 'jtmkrueger/vim-c-cr'
-Bundle 'mileszs/ack.vim'
-Bundle 'shougo/neocomplcache'
-Bundle 'scrooloose/syntastic'
-Bundle 'kien/ctrlp.vim'
-Bundle 'ivyl/vim-bling'
-Bundle 'szw/vim-tags'
-Bundle 'blueyed/vim-diminactive'
+Plugin 'jtmkrueger/vim-c-cr'
+Plugin 'mileszs/ack.vim'
+Plugin 'shougo/neocomplcache'
+Plugin 'scrooloose/syntastic'
+Plugin 'kien/ctrlp.vim'
+Plugin 'ivyl/vim-bling'
+Plugin 'szw/vim-tags'
+Plugin 'blueyed/vim-diminactive'
+Plugin 'Raimondi/delimitMate'
 
-Bundle 'mattn/emmet-vim'
-Bundle 'sjl/vitality.vim'
-Bundle 'tpope/vim-vinegar'
-Bundle 'tpope/vim-rails.git'
-Bundle 'tpope/vim-surround.git'
-Bundle 'tpope/vim-fugitive.git'
-Bundle 'tpope/vim-commentary.git'
+Plugin 'mattn/emmet-vim'
+Plugin 'sjl/vitality.vim'
+Plugin 'tpope/vim-vinegar'
+Plugin 'tpope/vim-rails.git'
+Plugin 'tpope/vim-surround.git'
+Plugin 'tpope/vim-fugitive.git'
+Plugin 'tpope/vim-commentary.git'
 filetype plugin indent on
 " END vundle ------------------------
 
@@ -52,7 +53,7 @@ set magic "for regular epressions turn magic on
 
 " statusline
 set laststatus=2 " show status line
-set statusline=%<\ %f%m%=\ \\ \\ \\ \⨍\ %{&filetype}\ \\ \c\o\l\:\ %c\ \\ \l\i\n\e\/\t\o\t\a\l\:\ %l\/%L\ \\ %p%%
+set statusline=%<\ %f%m%=\ \\ \\ %{fugitive#head()}\ \\ \⨍\ %{&filetype}\ \\ \⇌\ %c\ \\ \⇳\ \ %l\/%L\ \\ %p%%
 hi StatusLine ctermfg=DarkBlue  ctermbg=236
 " change the status line based on mode
 if version >= 700
@@ -150,10 +151,12 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " emmet expansions
 imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
 
+" delimate
+let g:delimitMate_expand_cr = 1
+
 " set tmux window name automatically
 augroup Tmux "{{{2
   au!
-
   autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
   autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
 augroup END
