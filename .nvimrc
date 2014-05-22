@@ -31,6 +31,7 @@ Plugin 'Raimondi/delimitMate'
 
 Plugin 'mattn/emmet-vim'
 Plugin 'sjl/vitality.vim'
+Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-vinegar'
 Plugin 'tpope/vim-rails.git'
 Plugin 'tpope/vim-surround.git'
@@ -143,6 +144,8 @@ let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=0
 let g:syntastic_quiet_messages = {'level': 'warnings'}
+let g:syntastic_ruby_checkers = ['mri'] " ... we'll see
+let g:syntastic_eruby_checkers = ['mri']
 
 let g:acp_enableAtStartup = 0
 let g:neocomplcache_enable_at_startup = 1

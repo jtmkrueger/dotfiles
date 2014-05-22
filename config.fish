@@ -1,5 +1,5 @@
 alias vim 'nvim'
-
+alias psql "'/Applications/Postgres.app/Contents/Versions/9.3/bin'/psql -p5432"
 set brew_rbenv "/usr/local/var/rbenv/shims"
 # put homebrew and rbenv at the front of $PATH
 set -gx PATH "/usr/local/bin:/usr/local/share/npm/bin:/usr/local/var/rbenv/shims" $PATH
@@ -17,6 +17,8 @@ set -gx NLS_LANG "AMERICAN_AMERICA.UTF8"
 set -gx PATH $PATH:$DYLD_LIBRARY_PATH
 set -gx RC_ARCHS i386
 set -gx INSTANT_CLIENT_DIRECTORY "/Applications/Oracle"
+
+set -gx JRUBY_OPTS "-J-Xmx2g -J-XX:+UseConcMarkSweepGC -J-XX:MaxPermSize=512m"
 
 # start prompt
 set -xg fish_color_user magenta
@@ -65,7 +67,13 @@ function fish_prompt --description 'Write out the prompt'
   set_color normal
   echo -n ' '
 
+  # git
   printf '%s ' (__fish_git_prompt)
+
+  # rbenv
+  set_color green
+  echo -n (rbenv version-name)
+  set_color normal
   echo
 
   set_color $fish_color_prompt
@@ -82,3 +90,6 @@ function fish_right_prompt --description 'write out right prompt'
   echo -n (date)
 end
 # end right prompt
+
+# archey!!
+archey
