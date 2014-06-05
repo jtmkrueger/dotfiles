@@ -54,7 +54,7 @@ set magic "for regular epressions turn magic on
 
 " statusline
 set laststatus=2 " show status line
-set statusline=%<\ %f%m%=\ \\ \\ %{fugitive#head()}\ \\ \⨍\ %{&filetype}\ \\ \⇌\ %c\ \\ \⇳\ \ %l\/%L\ \\ %p%%
+set statusline=%<\ %f%m%=\ \\ \\ %{fugitive#head()}\ \\ \⨍\ %{&filetype}\ \\ \⇌\ \ %c\ \\ \⇳\ \ %l\/%L\ \\ %p%%
 hi StatusLine ctermfg=DarkBlue  ctermbg=236
 " change the status line based on mode
 if version >= 700
@@ -135,17 +135,18 @@ noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
 
-" syntastic
-let g:syntastic_always_populate_loc_list=1
-
 " catch very long wrapped lines with diminactive
 let g:diminactive_max_cols = 1000
+
+" syntastic
+let g:syntastic_always_populate_loc_list=1
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=0
 let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_ruby_checkers = ['mri'] " ... we'll see
 let g:syntastic_eruby_checkers = ['mri']
+let g:syntastic_scss_checkers = ['sassc']
 
 let g:acp_enableAtStartup = 0
 let g:neocomplcache_enable_at_startup = 1
