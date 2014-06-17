@@ -2,8 +2,9 @@ set nocompatible
 
 " START vundle ----------------------------
 filetype off
-set rtp+=~/.nvim/bundle/vundle/
-call vundle#rc("~/.nvim/bundle")
+set rtp+=~/.nvim/bundle/Vundle.vim
+let path='~/.nvim/bundle'
+call vundle#begin(path)
 Bundle 'gmarik/vundle'
 
 " syntaxes
@@ -28,6 +29,7 @@ Plugin 'ivyl/vim-bling'
 Plugin 'szw/vim-tags'
 Plugin 'blueyed/vim-diminactive'
 Plugin 'Raimondi/delimitMate'
+Plugin 'bling/vim-airline'
 
 Plugin 'mattn/emmet-vim'
 Plugin 'sjl/vitality.vim'
@@ -37,6 +39,7 @@ Plugin 'tpope/vim-rails.git'
 Plugin 'tpope/vim-surround.git'
 Plugin 'tpope/vim-fugitive.git'
 Plugin 'tpope/vim-commentary.git'
+call vundle#end() 
 filetype plugin indent on
 " END vundle ------------------------
 
@@ -51,16 +54,9 @@ set fileencoding=utf-8
 set t_Co=256
 set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
-
-" statusline
-set laststatus=2 " show status line
-set statusline=%<\ %f%m%=\ \\ \\ %{fugitive#head()}\ \\ \⨍\ %{&filetype}\ \\ \⇌\ \ %c\ \\ \⇳\ \ %l\/%L\ \\ %p%%
-hi StatusLine ctermfg=DarkBlue  ctermbg=236
-" change the status line based on mode
-if version >= 700
-  au InsertEnter * hi StatusLine term=reverse ctermfg=black ctermbg=DarkBlue
-  au InsertLeave * hi StatusLine term=reverse ctermfg=DarkBlue ctermbg=236
-endif
+set laststatus=2 " turn on statusline
+set noerrorbells " no errorbells!
+set vb t_vb= " seriously, no errorbells!!
 
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
@@ -104,6 +100,10 @@ let mapleader = "\<Space>"
 nnoremap <leader>v :vs<space>
 nnoremap <leader>t :tabe<space>
 nnoremap <leader>s :sp<space>
+" buffer navigation
+nnoremap <leader>n :bnext<CR>
+nnoremap <leader>b :bprevious<CR>
+nnoremap <leader>c :bp\|bd #<CR>
 
 " Open new splits to the right/bottom
 set splitright splitbelow
@@ -139,14 +139,15 @@ noremap <down> <C-w>+
 let g:diminactive_max_cols = 1000
 
 " syntastic
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=1
+" let g:syntastic_always_populate_loc_list=1
+" let g:syntastic_enable_signs=1
+" let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=0
-let g:syntastic_quiet_messages = {'level': 'warnings'}
+" let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_ruby_checkers = ['mri'] " ... we'll see
 let g:syntastic_eruby_checkers = ['mri']
 let g:syntastic_scss_checkers = ['sassc']
+let g:syntastic_ruby_exec = "/usr/local/var/rbenv/versions/2.0.0-p481/bin/ruby"
 
 let g:acp_enableAtStartup = 0
 let g:neocomplcache_enable_at_startup = 1
@@ -157,6 +158,14 @@ imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
 
 " delimate
 let g:delimitMate_expand_cr = 1
+
+" airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 1
+let g:airline_powerline_fonts = 1
+" let g:airline#extensions#whitespace#enabled = 0
+" let g:airline_section_warning=""
+" let g:airline#extensions#syntastic#enabled = 0
 
 " set tmux window name automatically
 augroup Tmux "{{{2
