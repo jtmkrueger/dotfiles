@@ -25,11 +25,11 @@ Plugin 'mileszs/ack.vim'
 Plugin 'shougo/neocomplcache'
 Plugin 'scrooloose/syntastic'
 Plugin 'kien/ctrlp.vim'
-Plugin 'ivyl/vim-bling'
 Plugin 'szw/vim-tags'
 Plugin 'blueyed/vim-diminactive'
 Plugin 'Raimondi/delimitMate'
 Plugin 'bling/vim-airline'
+Plugin 'schickling/vim-bufonly'
 
 Plugin 'mattn/emmet-vim'
 Plugin 'sjl/vitality.vim'
@@ -39,7 +39,7 @@ Plugin 'tpope/vim-rails.git'
 Plugin 'tpope/vim-surround.git'
 Plugin 'tpope/vim-fugitive.git'
 Plugin 'tpope/vim-commentary.git'
-call vundle#end() 
+call vundle#end()
 filetype plugin indent on
 " END vundle ------------------------
 
@@ -148,6 +148,7 @@ let g:syntastic_ruby_checkers = ['mri'] " ... we'll see
 let g:syntastic_eruby_checkers = ['mri']
 let g:syntastic_scss_checkers = ['sassc']
 let g:syntastic_ruby_exec = "/usr/local/var/rbenv/versions/2.0.0-p481/bin/ruby"
+let g:syntastic_javascript_checkers = ['jshint']
 
 let g:acp_enableAtStartup = 0
 let g:neocomplcache_enable_at_startup = 1
