@@ -89,9 +89,9 @@ set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 set omnifunc=syntaxcomplete#Complete
 
 " Store temporary files in a central spot
-set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+" set backup
+" set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+" set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
 " map leader to space
 let mapleader = "\<Space>"
@@ -104,6 +104,7 @@ nnoremap <leader>s :sp<space>
 nnoremap <leader>n :bnext<CR>
 nnoremap <leader>b :bprevious<CR>
 nnoremap <leader>c :bp\|bd #<CR>
+nnoremap <leader>o :Bonly<CR>
 
 " Open new splits to the right/bottom
 set splitright splitbelow
@@ -155,7 +156,8 @@ let g:neocomplcache_enable_at_startup = 1
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " emmet expansions
-imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
+" imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
+let g:user_emmet_leader_key = '<c-e>'
 
 " delimate
 let g:delimitMate_expand_cr = 1
