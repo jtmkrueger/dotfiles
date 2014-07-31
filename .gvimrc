@@ -5,6 +5,8 @@ set guioptions-=T
 "hide the scrollbars
 set guioptions=aAce
 
+set guifont=Fantasque\ Sans\ Mono:h16
+
 set shell=bash
 
-set transparency=5
+" set transparency=5

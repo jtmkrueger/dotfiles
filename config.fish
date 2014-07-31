@@ -1,11 +1,13 @@
-alias vim 'nvim'
+# set -gx VIM '/Users/jkrueger/Code/vimscript/runtime'
+
+# alias vim 'nvim'
+alias vim 'mvim -v'
 # alias psql "'/Applications/Postgres.app/Contents/Versions/9.3/bin'/psql -p5432"
 set brew_rbenv "/usr/local/var/rbenv/shims"
 # put homebrew and rbenv at the front of $PATH
 set -gx PATH "/usr/local/bin:/usr/local/share/npm/bin:/usr/local/var/rbenv/shims" $PATH
 set -gx RBENV_ROOT "/usr/local/var/rbenv"
 
-set -gx VIMRUNTIME '/usr/local/Cellar/macvim/7.4-73/MacVim.app/Contents/Resources/vim/runtime'
 
 # ORACLE garbage
 set -gx DYLD_LIBRARY_PATH "/Applications/Oracle"
