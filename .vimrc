@@ -17,8 +17,7 @@ Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'briancollins/vim-jst'
 
 " colorschemes
-Plugin 'jtmkrueger/base16-vim'
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'w0ng/vim-hybrid'
 
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
@@ -49,7 +48,8 @@ set ttyfast
 set lazyredraw
 set shell=/bin/bash
 set background=light
-colorscheme solarized " base16-default
+let g:hybrid_use_iTerm_colors = 1
+colorscheme hybrid
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -73,6 +73,8 @@ hi NonText cterm=NONE ctermfg=NONE
 set linebreak " wrap lines at spaces
 set wrapmargin=0 " wrap at last column
 set autoindent
+set autoread " automatically reads file in
+set cmdheight=1
 set smartindent
 set textwidth=0 " disable auto line breaking on paste
 " set formatoptions+=l " don't break lines till after insert mode
@@ -91,9 +93,9 @@ set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 au VimResized * :wincmd =
 
 " Store temporary files in a central spot
-" set backup
-" set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-" set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
 " map leader to space
 let mapleader = "\<Space>"
@@ -116,7 +118,7 @@ nnoremap <leader>o :Bonly<CR>
 set splitright splitbelow
 
 " I want my custom commands!
-imap <C-s> <%= %><Left><Left><Left>
+imap <C-t> <%= %><Left><Left><Left>
 
 " easy search with the silver searcher
 let g:ackprg = 'ag --nogroup --column'

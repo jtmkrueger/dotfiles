@@ -2,10 +2,10 @@ set nocompatible
 
 " START vundle ----------------------------
 filetype off
-set rtp+=~/.nvim/bundle/Vundle.vim
+set rtp+=~/.nvim/bundle/vundle
 let path='~/.nvim/bundle'
 call vundle#begin(path)
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 
 " syntaxes
 Plugin 'kchmck/vim-coffee-script.git'
@@ -18,6 +18,7 @@ Plugin 'briancollins/vim-jst'
 
 " colorschemes
 Plugin 'jtmkrueger/base16-vim'
+Plugin 'altercation/vim-colors-solarized'
 
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
@@ -27,9 +28,10 @@ Plugin 'scrooloose/syntastic'
 Plugin 'kien/ctrlp.vim'
 Plugin 'szw/vim-tags'
 Plugin 'blueyed/vim-diminactive'
-Plugin 'Raimondi/delimitMate'
+" Plugin 'Raimondi/delimitMate'
 Plugin 'bling/vim-airline'
 Plugin 'schickling/vim-bufonly'
+
 
 Plugin 'mattn/emmet-vim'
 Plugin 'sjl/vitality.vim'
@@ -47,8 +49,8 @@ syntax on
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
-set background=dark
-colorscheme base16-default
+set background=light
+colorscheme solarized " base16-default
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -136,6 +138,17 @@ noremap <right> <C-w><
 noremap <up> <C-w>-
 noremap <down> <C-w>+
 
+" Keep search matches in the middle of the window.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Easier to type, and I never use the default behavior.
+noremap H ^
+noremap L $
+vnoremap L g_
+
+noremap <TAB> % " easer to hit
+
 " catch very long wrapped lines with diminactive
 let g:diminactive_max_cols = 1000
 
@@ -171,8 +184,8 @@ let g:airline_powerline_fonts = 1
 " let g:airline#extensions#syntastic#enabled = 0
 
 " set tmux window name automatically
-augroup Tmux "{{{2
-  au!
-  autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
-  autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
-augroup END
+" augroup Tmux "{{{2
+"   au!
+"   autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
+"   autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
+" augroup END
