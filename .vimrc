@@ -2,39 +2,31 @@ set nocompatible
 
 " START vundle ----------------------------
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-Bundle 'gmarik/vundle'
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/vundle'
 
 " syntaxes
-Bundle 'kchmck/vim-coffee-script.git'
-Bundle 'pangloss/vim-javascript'
-Bundle 'cakebaker/scss-syntax.vim'
-Bundle 'vim-ruby/vim-ruby.git'
-Bundle 'mustache/vim-mustache-handlebars'
-Bundle 'othree/javascript-libraries-syntax.vim'
-Bundle 'briancollins/vim-jst'
+Plugin 'kchmck/vim-coffee-script.git'
+Plugin 'pangloss/vim-javascript'
+Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'othree/javascript-libraries-syntax.vim'
 
-" colorschemes
-Bundle 'jtmkrueger/base16-vim'
+" colorscheme
+Plugin 'altercation/vim-colors-solarized'
 
 " tools
-Bundle 'jtmkrueger/vim-c-cr'
-Bundle 'mileszs/ack.vim'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'scrooloose/syntastic'
-Bundle 'kien/ctrlp.vim'
-Bundle 'ivyl/vim-bling'
-Bundle 'szw/vim-tags'
-Bundle 'blueyed/vim-diminactive'
+Plugin 'jtmkrueger/vim-c-cr'
+Plugin 'mileszs/ack.vim'
+Plugin 'kien/ctrlp.vim'
 
-Bundle 'mattn/emmet-vim'
-Bundle 'sjl/vitality.vim'
-Bundle 'tpope/vim-vinegar'
-Bundle 'tpope/vim-rails.git'
-Bundle 'tpope/vim-surround.git'
-Bundle 'tpope/vim-fugitive.git'
-Bundle 'tpope/vim-commentary.git'
+Plugin 'mattn/emmet-vim'
+Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-vinegar'
+Plugin 'tpope/vim-surround.git'
+Plugin 'tpope/vim-fugitive.git'
+Plugin 'tpope/vim-commentary.git'
+call vundle#end()
 filetype plugin indent on
 " END vundle ------------------------
 
@@ -42,24 +34,12 @@ syntax on
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
-set background=dark
-colorscheme base16-default
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
 set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
-
-" statusline
-set laststatus=2 " show status line
-set statusline=%<\ %f%m%=\ \\ \\ %{fugitive#head()}\ \\ \⨍\ %{&filetype}\ 
-hi StatusLine ctermfg=DarkBlue  ctermbg=236
-" change the status line based on mode
-if version >= 700
-  au InsertEnter * hi StatusLine term=reverse ctermfg=black ctermbg=DarkBlue
-  au InsertLeave * hi StatusLine term=reverse ctermfg=DarkBlue ctermbg=236
-endif
-
+set spell spelllang=en_us " yes, we want to be spellchecking!
 set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
 set smarttab " start tabbed in
@@ -78,16 +58,14 @@ set smartindent
 set textwidth=0 " disable auto line breaking on paste
 set formatoptions+=l " don't break lines till after insert mode
 set number " line numbers
-set relativenumber " show relative line number in gutter
 set showtabline=2 " always show tabs
 set showcmd " show the command line
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
-set cursorline " highlight line cursor is on
-set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
+:set laststatus=2 " turn on status line
 
 " Store temporary files in a central spot
 set backup
@@ -115,6 +93,8 @@ nnoremap <c-a> :Ack!<Space>
 " up/down on wrapped lines
 nnoremap j gj
 nnoremap k gk
+vnoremap j gj
+vnoremap k gk
 
 " Reselect visual block after indent
 vnoremap < <gv
@@ -136,6 +116,9 @@ nnoremap <CR> :nohlsearch<CR>/<BS>
 
 let g:javascript_enable_domhtmlcss=1
 
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
 " make resizing windows a bit easier
 noremap <left> <C-w>>
 noremap <right> <C-w><
@@ -146,34 +129,5 @@ noremap <down> <C-w>+
 nnoremap <Tab> :bnext<CR>
 nnoremap <S-Tab> :bprevious<CR>
 
-" syntastic
-" let g:ycm_collect_identifiers_from_comments_and_strings = 1
-" let g:ycm_collect_identifiers_from_tags_files = 1
-let g:syntastic_always_populate_loc_list=1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=1
-let g:syntastic_check_on_open=0
-let g:syntastic_javascript_checkers = ['jsl']
-let g:syntastic_quiet_messages = {'level': 'warnings'}
-let g:syntastic_ruby_exec = '/usr/local/var/rbenv/versions/1.9.3-p194/bin/ruby'
-
-" compile ctags so ycm can use them
-let g:vim_tags_use_ycm = 1
-
-" catch very long wrapped lines with diminactive
-let g:diminactive_max_cols = 1000
-
-" json is json
-au BufRead,BufNewFile *.json set filetype=json
-
 " emmet expansions
 imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
-
-" set tmux window name automatically
-augroup Tmux "{{{2
-  au!
-
-  autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
-  autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
-augroup END

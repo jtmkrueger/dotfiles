@@ -1,25 +1,3 @@
-alias vim 'nvim'
-# alias psql "'/Applications/Postgres.app/Contents/Versions/9.3/bin'/psql -p5432"
-set brew_rbenv "/usr/local/var/rbenv/shims"
-# put homebrew and rbenv at the front of $PATH
-set -gx PATH "/usr/local/bin:/usr/local/share/npm/bin:/usr/local/var/rbenv/shims" $PATH
-set -gx RBENV_ROOT "/usr/local/var/rbenv"
-
-set -gx VIMRUNTIME '/usr/local/Cellar/macvim/7.4-73/MacVim.app/Contents/Resources/vim/runtime'
-
-# ORACLE garbage
-set -gx DYLD_LIBRARY_PATH "/Applications/Oracle"
-set -gx LD_LIBRARY_PATH "/Applications/Oracle"
-set -gx SQLPATH "/Applications/Oracle"
-set -gx TNS_ADMIN "/Applications/Oracle"
-set -gx ORACLE_HOME "/Applications/Oracle"
-set -gx NLS_LANG "AMERICAN_AMERICA.UTF8"
-set -gx PATH $PATH:$DYLD_LIBRARY_PATH
-set -gx RC_ARCHS i386
-set -gx INSTANT_CLIENT_DIRECTORY "/Applications/Oracle"
-
-set -gx JRUBY_OPTS "-J-Xmx2g -J-XX:+UseConcMarkSweepGC -J-XX:MaxPermSize=512m"
-
 # start prompt
 set -xg fish_color_user magenta
 set -xg fish_color_prompt blue
@@ -69,12 +47,6 @@ function fish_prompt --description 'Write out the prompt'
 
   # git
   printf '%s ' (__fish_git_prompt)
-
-  # rbenv
-  set_color green
-  echo -n (rbenv version-name)
-  set_color normal
-  echo
 
   set_color $fish_color_prompt
   if not test $last_status -eq 0
