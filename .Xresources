@@ -29,6 +29,7 @@
 *color7: #707880
 *color15: #C5C8C6
 
+! sort of a lot to get fonts set up.
 xterm*termName: xterm-256color
 xterm*utf8: 2
 xTerm*locale: true
@@ -38,8 +39,10 @@ xterm*preeditType: Root
 xterm*xftAntialias: true
 xterm*faceName: Fantasque Sans Mono:size=14:antialias=true
 
+! command-v paste for mac
 *VT100.translations: #override  Meta <KeyPress> V:  insert-selection(PRIMARY, CUT_BUFFER0) \n
 
+! I use ctrl-h as my meta key for tmux, this gives me that back (and a couple other oddities)
 *VT100.Translations: #override \
   <Key>BackSpace: string(0x7F)\n\
   <Key>Delete:    string("\033[3~")\n\
