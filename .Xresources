@@ -37,7 +37,10 @@ xterm*utf8Title: true
 xterm*renderFont: true
 xterm*preeditType: Root
 xterm*xftAntialias: true
-xterm*faceName: Fantasque Sans Mono:size=14:antialias=true
+xterm*faceName: xft:Fantasque Sans Mono:size=14:antialias=true:style=Regular
+xterm*faceNameDoublesize:   xft:Fantasque Sans Mono:style=Regular
+xterm*font:     -misc-fixed-medium-r-normal--18-120-100-100-c-90-iso10646-1
+xterm*wideFont: -misc-fixed-medium-r-normal-ja-18-120-100-100-c-180-iso10646-1
 
 ! command-v paste for mac
 *VT100.translations: #override  Meta <KeyPress> V:  insert-selection(PRIMARY, CUT_BUFFER0) \n

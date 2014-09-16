@@ -26,13 +26,12 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 " Plugin 'kien/ctrlp.vim'
 Plugin 'szw/vim-tags'
-Plugin 'blueyed/vim-diminactive'
 Plugin 'bling/vim-airline'
 Plugin 'schickling/vim-bufonly'
 " Plugin 'severin-lemaignan/vim-minimap'
 
 Plugin 'mattn/emmet-vim'
-Plugin 'sjl/vitality.vim'
+Plugin 'jszakmeister/vim-togglecursor'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-vinegar'
 Plugin 'tpope/vim-rails.git'
@@ -48,11 +47,13 @@ set ttyfast
 set lazyredraw
 set shell=/bin/bash
 set background=light
-let g:hybrid_use_iTerm_colors = 1
+" let g:hybrid_use_iTerm_colors = 1
+let g:hybrid_use_Xresources = 1
 colorscheme hybrid
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
+set term=xterm-256color
 " set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 set laststatus=2 " turn on statusline
