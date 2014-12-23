@@ -1,5 +1,7 @@
 set nocompatible
 
+runtime! plugin/python_setup.vim
+
 " START vundle ----------------------------
 filetype off
 set rtp+=~/.nvim/bundle/vundle
@@ -17,24 +19,21 @@ Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'briancollins/vim-jst'
 
 " colorschemes
-Plugin 'jtmkrueger/base16-vim'
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'w0ng/vim-hybrid'
 
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
 Plugin 'mileszs/ack.vim'
-Plugin 'shougo/neocomplcache'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
-Plugin 'kien/ctrlp.vim'
 Plugin 'szw/vim-tags'
-Plugin 'blueyed/vim-diminactive'
-" Plugin 'Raimondi/delimitMate'
 Plugin 'bling/vim-airline'
 Plugin 'schickling/vim-bufonly'
+Plugin 'Yggdroot/indentLine'
 
 
 Plugin 'mattn/emmet-vim'
-Plugin 'sjl/vitality.vim'
+Plugin 'jszakmeister/vim-togglecursor'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-vinegar'
 Plugin 'tpope/vim-rails.git'
@@ -49,8 +48,9 @@ syntax on
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
-set background=light
-colorscheme solarized " base16-default
+let g:hybrid_use_iTerm_colors = 1
+" let g:hybrid_use_Xresources = 1
+colorscheme hybrid
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -64,6 +64,8 @@ set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
 set smarttab " start tabbed in
 set backspace=start,eol,indent " always allow backspaces
+set listchars=tab:→\ ,trail:¨
+set list
 set wildmenu " trick out command mode
 set incsearch " highlight search pattern as it's typed
 set ignorecase " searches are case insensitive...
@@ -78,7 +80,7 @@ set smartindent
 set textwidth=0 " disable auto line breaking on paste
 set formatoptions+=l " don't break lines till after insert mode
 set number " line numbers
-set relativenumber " show relative line number in gutter
+" set relativenumber " show relative line number in gutter
 set showtabline=2 " always show tabs
 set showcmd " show the command line
 set scrolloff=5 " 5 line buffer below cursor when scrolling
@@ -112,7 +114,7 @@ nnoremap <leader>o :Bonly<CR>
 set splitright splitbelow
 
 " I want my custom commands!
-imap <C-s> <%= %><Left><Left><Left>
+imap <C-t> <%= %><Left><Left><Left>
 
 " easy search with the silver searcher
 let g:ackprg = 'ag --nogroup --column'
@@ -149,43 +151,37 @@ vnoremap L g_
 
 noremap <TAB> % " easer to hit
 
-" catch very long wrapped lines with diminactive
-let g:diminactive_max_cols = 1000
+let g:indentLine_char = '┊'
+let g:indentLine_color_term = 235
+let g:indentLine_noConcealCursor = 1
 
 " syntastic
-" let g:syntastic_always_populate_loc_list=1
-" let g:syntastic_enable_signs=1
-" let g:syntastic_auto_loc_list=1
+let g:syntastic_error_symbol = '💥'
+let g:syntastic_warning_symbol = '😾'
+let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open=0
-" let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_ruby_checkers = ['mri'] " ... we'll see
 let g:syntastic_eruby_checkers = ['mri']
-let g:syntastic_scss_checkers = ['sassc']
+" let g:syntastic_scss_checkers = ['sassc']
 let g:syntastic_ruby_exec = "/usr/local/var/rbenv/versions/2.0.0-p481/bin/ruby"
 let g:syntastic_javascript_checkers = ['jshint']
 
-let g:acp_enableAtStartup = 0
-let g:neocomplcache_enable_at_startup = 1
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" let g:acp_enableAtStartup = 0
+" let g:neocomplcache_enable_at_startup = 1
+" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" One day, but it just crushes my ram :(
+" let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_filetype_blacklist = {'log': 1}
+let g:ycm_seed_identifiers_with_syntax = 1
+
+let g:vim_tags_ignore_files = ['.gitignore', '.svnignore', '.cvsignore', '*.log']
 
 " emmet expansions
 " imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
 let g:user_emmet_leader_key = '<c-e>'
 
-" delimate
-let g:delimitMate_expand_cr = 1
-
 " airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline_powerline_fonts = 1
-" let g:airline#extensions#whitespace#enabled = 0
-" let g:airline_section_warning=""
-" let g:airline#extensions#syntastic#enabled = 0
-
-" set tmux window name automatically
-" augroup Tmux "{{{2
-"   au!
-"   autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
-"   autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
-" augroup END
