@@ -30,6 +30,8 @@ Plugin 'szw/vim-tags'
 Plugin 'bling/vim-airline'
 Plugin 'schickling/vim-bufonly'
 Plugin 'Yggdroot/indentLine'
+Plugin 'osyo-manga/vim-brightest'
+" Plugin 'blueyed/vim-diminactive'
 
 
 Plugin 'mattn/emmet-vim'
@@ -64,7 +66,7 @@ set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
 set smarttab " start tabbed in
 set backspace=start,eol,indent " always allow backspaces
-set listchars=tab:→\ ,trail:¨
+set listchars=tab:→\ ,trail:·
 set list
 set wildmenu " trick out command mode
 set incsearch " highlight search pattern as it's typed
@@ -151,13 +153,16 @@ vnoremap L g_
 
 noremap <TAB> % " easer to hit
 
+" let g:brightest#highlight_in_cursorline = {"Group": "BrightestCursorLineBg"} " something like this would be better...
+let g:brightest#highlight = {"group": "BrightestUnderline"}
+
 let g:indentLine_char = '┊'
 let g:indentLine_color_term = 235
 let g:indentLine_noConcealCursor = 1
 
 " syntastic
-let g:syntastic_error_symbol = '💥'
-let g:syntastic_warning_symbol = '😾'
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚐'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open=0
 let g:syntastic_ruby_checkers = ['mri'] " ... we'll see
