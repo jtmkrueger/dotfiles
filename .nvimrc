@@ -31,8 +31,8 @@ Plugin 'bling/vim-airline'
 Plugin 'schickling/vim-bufonly'
 Plugin 'Yggdroot/indentLine'
 Plugin 'osyo-manga/vim-brightest'
-" Plugin 'blueyed/vim-diminactive'
 
+Plugin 'ryanss/vim-hackernews'
 
 Plugin 'mattn/emmet-vim'
 Plugin 'jszakmeister/vim-togglecursor'
@@ -94,6 +94,9 @@ set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 set omnifunc=syntaxcomplete#Complete
 
+" for xlsx templates
+au! BufNewFile,BufRead *.axlsx set filetype=ruby
+
 " Store temporary files in a central spot
 " set backup
 " set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -104,8 +107,11 @@ let mapleader = "\<Space>"
 
 " leader mappings
 nnoremap <leader>v :vs<space>
+" nnoremap <leader>V :Vex<CR>
 nnoremap <leader>t :tabe<space>
 nnoremap <leader>s :sp<space>
+" nnoremap <leader>S :Sex<CR>
+
 " buffer navigation
 nnoremap <leader>n :bnext<CR>
 nnoremap <leader>b :bprevious<CR>
@@ -153,7 +159,7 @@ vnoremap L g_
 
 noremap <TAB> % " easer to hit
 
-" let g:brightest#highlight_in_cursorline = {"Group": "BrightestCursorLineBg"} " something like this would be better...
+let g:brightest#highlight_in_cursorline = {"group": "BrightestCursorLineBg"}
 let g:brightest#highlight = {"group": "BrightestUnderline"}
 
 let g:indentLine_char = '┊'
@@ -165,19 +171,27 @@ let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚐'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open=0
-let g:syntastic_ruby_checkers = ['mri'] " ... we'll see
-let g:syntastic_eruby_checkers = ['mri']
+let g:syntastic_ruby_exec = "/usr/local/var/rbenv/versions/2.0.0-p598/bin/ruby"
+let g:syntastic_ruby_checkers = ['rubylint'] " ... we'll see
+let g:syntastic_eruby_checkers = ['rubylint']
 " let g:syntastic_scss_checkers = ['sassc']
-let g:syntastic_ruby_exec = "/usr/local/var/rbenv/versions/2.0.0-p481/bin/ruby"
+" let g:syntastic_eruby_ruby_exec = 'rubylint'
 let g:syntastic_javascript_checkers = ['jshint']
-
-" let g:acp_enableAtStartup = 0
-" let g:neocomplcache_enable_at_startup = 1
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " One day, but it just crushes my ram :(
 " let g:ycm_collect_identifiers_from_tags_files = 1
 " let g:ycm_filetype_blacklist = {'log': 1}
+
+" Try and make omnifunc as smart as possible
+setlocal omnifunc=syntaxcomplete#Complete
+if has("autocmd")
+    autocmd FileType ruby set omnifunc=rubycomplete#Complete
+    autocmd FileType ruby let g:rubycomplete_rails = 1
+    autocmd FileType ruby let g:rubycomplete_completions = 1
+    autocmd FileType ruby let g:rubycomplete_buffer_loading=1
+    autocmd FileType ruby let g:rubycomplete_classes_in_global=1
+endif
+
 let g:ycm_seed_identifiers_with_syntax = 1
 
 let g:vim_tags_ignore_files = ['.gitignore', '.svnignore', '.cvsignore', '*.log']
