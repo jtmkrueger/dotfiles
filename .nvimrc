@@ -40,6 +40,7 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-vinegar'
 Plugin 'tpope/vim-rails.git'
 Plugin 'tpope/vim-surround.git'
+Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-fugitive.git'
 Plugin 'tpope/vim-commentary.git'
 call vundle#end()
