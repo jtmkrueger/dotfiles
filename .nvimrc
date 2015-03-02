@@ -4,7 +4,7 @@ runtime! plugin/python_setup.vim
 
 " START vundle ----------------------------
 filetype off
-set rtp+=~/.nvim/bundle/vundle
+set rtp+=~/.nvim/bundle/Vundle.vim
 let path='~/.nvim/bundle'
 call vundle#begin(path)
 Plugin 'gmarik/vundle'
@@ -20,6 +20,7 @@ Plugin 'briancollins/vim-jst'
 
 " colorschemes
 Plugin 'w0ng/vim-hybrid'
+Plugin 'altercation/vim-colors-solarized'
 
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
@@ -51,9 +52,10 @@ syntax on
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
-let g:hybrid_use_iTerm_colors = 1
+" let g:hybrid_use_iTerm_colors = 1
 " let g:hybrid_use_Xresources = 1
-colorscheme hybrid
+set background=dark
+colorscheme solarized
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256

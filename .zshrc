@@ -37,3 +37,20 @@ export LC_CTYPE=en_US.UTF-8
 tmux list-sessions 2> /dev/null
 
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+# Setup zsh-autosuggestions
+source /home/john/.zsh-autosuggestions/autosuggestions.zsh
+
+# Enable autosuggestions automatically
+zle-line-init() {
+    zle autosuggest-start
+}
+
+zle -N zle-line-init
+
+# use ctrl+t to toggle autosuggestions(hopefully this wont be needed as
+# zsh-autosuggestions is designed to be unobtrusive)
+bindkey '^T' autosuggest-toggle
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
