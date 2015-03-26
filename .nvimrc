@@ -20,6 +20,7 @@ Plugin 'briancollins/vim-jst'
 
 " colorschemes
 Plugin 'w0ng/vim-hybrid'
+Plugin 'altercation/vim-colors-solarized'
 
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
@@ -31,8 +32,6 @@ Plugin 'bling/vim-airline'
 Plugin 'schickling/vim-bufonly'
 Plugin 'Yggdroot/indentLine'
 Plugin 'osyo-manga/vim-brightest'
-
-Plugin 'ryanss/vim-hackernews'
 
 Plugin 'mattn/emmet-vim'
 Plugin 'jszakmeister/vim-togglecursor'
@@ -48,12 +47,13 @@ filetype plugin indent on
 " END vundle ------------------------
 
 syntax on
-set ttyfast
+" set ttyfast
 set lazyredraw
 set shell=/bin/bash
-let g:hybrid_use_iTerm_colors = 1
+" let g:hybrid_use_iTerm_colors = 1
 " let g:hybrid_use_Xresources = 1
-colorscheme hybrid
+set background=dark
+colorscheme solarized
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -123,7 +123,7 @@ nnoremap <leader>o :Bonly<CR>
 set splitright splitbelow
 
 " I want my custom commands!
-imap <C-t> <%= %><Left><Left><Left>
+imap <c-t> <%= %><Left><Left><Left>
 
 " easy search with the silver searcher
 let g:ackprg = 'ag --nogroup --column'
