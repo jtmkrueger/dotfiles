@@ -1000,9 +1000,9 @@
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>1409 437 459 270 0 0 2560 1418 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>226 454 918 464 0 0 1680 1028 </string>
+	<string>489 590 918 381 0 0 1680 1028 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>528 493 620 392 0 0 1680 1050 </string>
+	<string>968 786 620 392 0 0 2560 1440 </string>
 	<key>NSWindow Frame SUUpdateAlertFrame</key>
 	<string>990 769 575 392 0 0 2560 1418 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
@@ -1579,11 +1579,11 @@
 			<key>Name</key>
 			<string>Default</string>
 			<key>Non Ascii Font</key>
-			<string>ConsolasForPowerline 16</string>
+			<string>FantasqueSansMono-Regular 15</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>FantasqueSansMono-Regular 16</string>
+			<string>FantasqueSansMono-Regular 15</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -1702,13 +1702,15 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-03-19T18:59:01Z</date>
+	<date>2015-04-08T22:47:59Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Show Toolbelt</key>
 	<false/>
 	<key>ShowPaneTitles</key>
 	<false/>
+	<key>TabStyle</key>
+	<integer>1</integer>
 	<key>TabViewType</key>
 	<integer>1</integer>
 	<key>ThreeFingerEmulates</key>
@@ -1716,6 +1718,10 @@
 	<key>ToolbeltTools</key>
 	<array>
 		<string>Jobs</string>
+		<string>Captured Output</string>
+		<string>Command History</string>
+		<string>Paste History</string>
+		<string>Recent Directories</string>
 	</array>
 	<key>URLHandlersByGuid</key>
 	<dict/>
@@ -1728,7 +1734,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>2.9.20150309-nightly</string>
+	<string>2.9.20150406-nightly</string>
 	<key>kPreferenceKeyWindowStyle</key>
 	<integer>0</integer>
 </dict>

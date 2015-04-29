@@ -164,7 +164,7 @@ let g:brightest#highlight_in_cursorline = {"group": "BrightestCursorLineBg"}
 let g:brightest#highlight = {"group": "BrightestUnderline"}
 
 let g:indentLine_char = '┊'
-let g:indentLine_color_term = 235
+" let g:indentLine_color_term = 235
 let g:indentLine_noConcealCursor = 1
 
 " syntastic
