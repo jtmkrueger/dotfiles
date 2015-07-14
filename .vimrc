@@ -22,13 +22,10 @@ Plugin 'w0ng/vim-hybrid'
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
 Plugin 'mileszs/ack.vim'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
-" Plugin 'kien/ctrlp.vim'
 Plugin 'szw/vim-tags'
 Plugin 'bling/vim-airline'
 Plugin 'schickling/vim-bufonly'
-" Plugin 'severin-lemaignan/vim-minimap'
 
 Plugin 'mattn/emmet-vim'
 Plugin 'jszakmeister/vim-togglecursor'

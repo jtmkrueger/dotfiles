@@ -1,2 +1,12 @@
 set visualbell
 set noerrorbells
+set number
+
+" Reselect visual block after indent
+vnoremap < <gv
+vnoremap > >gv
+
+" Easier to type, and I never use the default behavior.
+noremap H ^
+noremap L $
+vnoremap L g_
