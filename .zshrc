@@ -1,11 +1,19 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
+export DYLD_LIBRARY_PATH=$HOME/Code/instantclient_11_2
+export SQLPATH=$HOME/Code/instantclient_11_2
+export TNS_ADMIN=$HOME/Code/instantclient_11_2
+export ORACLE_HOME=$HOME/Code/instantclient_11_2
+export NLS_LANG="AMERICAN_AMERICA.UTF8"
+export PATH=$PATH:$DYLD_LIBRARY_PATH
+export INSTANT_CLIENT_DIRECTORY=$HOME/Code/instantclient_11_2
+export PKG_CONFIG_PATH="/opt/X11/lib/pkgconfig"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="agnoster"
+ZSH_THEME="amuse"
 DEFAULT_USER="jkrueger"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
