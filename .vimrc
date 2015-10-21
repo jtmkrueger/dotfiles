@@ -18,6 +18,7 @@ Plugin 'briancollins/vim-jst'
 
 " colorschemes
 Plugin 'w0ng/vim-hybrid'
+Plugin 'altercation/vim-colors-solarized'
 
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
@@ -43,10 +44,10 @@ syntax on
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
-set background=light
+set background=dark
 " let g:hybrid_use_iTerm_colors = 1
-let g:hybrid_use_Xresources = 1
-colorscheme hybrid
+" let g:hybrid_use_Xresources = 1
+colorscheme solarized
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256

@@ -32,6 +32,7 @@ Plugin 'bling/vim-airline'
 Plugin 'schickling/vim-bufonly'
 Plugin 'Yggdroot/indentLine'
 Plugin 'osyo-manga/vim-brightest'
+Plugin 'kien/ctrlp.vim'
 
 Plugin 'mattn/emmet-vim'
 Plugin 'jszakmeister/vim-togglecursor'
@@ -205,3 +206,12 @@ let g:user_emmet_leader_key = '<c-e>'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline_powerline_fonts = 1
+
+" ctrlp use silver searcher
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
