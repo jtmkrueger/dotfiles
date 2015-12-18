@@ -1004,13 +1004,13 @@
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>1409 437 459 270 0 0 2560 1418 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>1058 944 796 474 0 0 2560 1418 </string>
+	<string>1063 1153 606 456 0 0 2560 1418 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>968 786 620 392 0 0 2560 1440 </string>
+	<string>650 516 620 392 0 0 1920 1080 </string>
 	<key>NSWindow Frame SUUpdateAlertFrame</key>
 	<string>990 769 575 392 0 0 2560 1418 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 0 2560 1440 0 0 2560 1418 </string>
+	<string>0 0 1920 1080 0 0 1920 1058 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>343 26 1613 1392 0 0 2560 1418 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -1587,7 +1587,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>FantasqueSansMono-Regular 15</string>
+			<string>FantasqueSansMono-Regular 16</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -1706,7 +1706,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-06-17T18:04:22Z</date>
+	<date>2015-10-23T17:40:12Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -1738,7 +1738,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>2.9.20150523-nightly</string>
+	<string>2.9.20151020-nightly</string>
 	<key>kPreferenceKeyWindowStyle</key>
 	<integer>0</integer>
 </dict>
