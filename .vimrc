@@ -2,9 +2,8 @@ set nocompatible
 
 " START vundle ----------------------------
 filetype off
-set rtp+=~/.vim/bundle/vundle
-let path='~/.vim/bundle'
-call vundle#begin(path)
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 Plugin 'gmarik/vundle'
 
 " syntaxes
@@ -23,7 +22,11 @@ Plugin 'altercation/vim-colors-solarized'
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
 Plugin 'mileszs/ack.vim'
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
+Plugin 'neomake/neomake'
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
 Plugin 'szw/vim-tags'
 Plugin 'bling/vim-airline'
 Plugin 'schickling/vim-bufonly'
@@ -41,17 +44,20 @@ filetype plugin indent on
 " END vundle ------------------------
 
 syntax on
+let g:python3_host_prog = '/opt/pkg/bin/python'
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
 set background=dark
 " let g:hybrid_use_iTerm_colors = 1
 " let g:hybrid_use_Xresources = 1
-colorscheme solarized
+let g:hybrid_custom_term_colors = 1
+let g:hybrid_reduced_contrast = 1
+colorscheme hybrid
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
-set term=xterm-256color
+"set term=xterm-256color
 " set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 set laststatus=2 " turn on statusline
@@ -157,6 +163,9 @@ noremap <TAB> % " easer to hit
 " catch very long wrapped lines with diminactive
 let g:diminactive_max_cols = 1000
 
+" togglecursor
+let g:togglecursor_default = 'blinking_block'
+
 " syntastic
 " let g:syntastic_always_populate_loc_list=1
 " let g:syntastic_enable_signs=1
@@ -168,6 +177,18 @@ let g:syntastic_eruby_checkers = ['mri']
 let g:syntastic_scss_checkers = ['sassc']
 let g:syntastic_ruby_exec = "/usr/local/var/rbenv/versions/2.0.0-p481/bin/ruby"
 let g:syntastic_javascript_checkers = ['jshint']
+
+" deoplete
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_refresh_always = 1
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" easytags
+let g:easytags_cmd = 'exctags'
+set tags=./tags;
+let g:easytags_dynamic_files = 1
+let g:easytags_async = 1
 
 " emmet expansions
 " imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
@@ -183,6 +204,12 @@ let g:airline_powerline_fonts = 1
 " let g:airline#extensions#whitespace#enabled = 0
 " let g:airline_section_warning=""
 " let g:airline#extensions#syntastic#enabled = 0
+
+" neomake
+autocmd! BufWritePost,BufEnter * Neomake
+" let g:neomake_verbose=3 " enable for debugging
+let g:neomake_javascript_enabled_makers = ['jshint']
+let g:neomake_ruby_enabled_makers = ['rubocop']
 
 " set tmux window name automatically
 augroup Tmux "{{{2
