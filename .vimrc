@@ -84,7 +84,7 @@ set smartindent
 set textwidth=0 " disable auto line breaking on paste
 " set formatoptions+=l " don't break lines till after insert mode
 set number " line numbers
-set relativenumber " show relative line number in gutter
+" set relativenumber " show relative line number in gutter
 set showtabline=2 " always show tabs
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
@@ -210,6 +210,7 @@ autocmd! BufWritePost,BufEnter * Neomake
 " let g:neomake_verbose=3 " enable for debugging
 let g:neomake_javascript_enabled_makers = ['jshint']
 let g:neomake_ruby_enabled_makers = ['rubocop']
+let g:neomake_json_enabled_makers = ['jsonlint']
 
 " set tmux window name automatically
 augroup Tmux "{{{2

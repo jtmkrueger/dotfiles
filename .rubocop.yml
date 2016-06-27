@@ -5,7 +5,9 @@ AllCops:
     - config/compass.rb
     - public/web-assets/**/*
     - public/test-assets/**/*
-  RunRailsCops: true
+
+Rails:
+  Enabled: true
 
 Lint/LiteralInInterpolation:
   Enabled: false
@@ -107,7 +109,13 @@ Style/RegexpLiteral:
 Style/SignalException:
   Enabled: false
 
-Style/SpaceAfterControlKeyword:
+Style/SpaceAroundKeyword:
+  Enabled: false
+
+Style/SpaceInsideBlockBraces:
+  Enabled: false
+
+Style/SpaceInsideHashLiteralBraces:
   Enabled: false
 
 Style/StringLiterals:
@@ -119,7 +127,7 @@ Style/StringLiteralsInInterpolation:
 Style/SymbolProc:
   Enabled: false
 
-Style/TrailingComma:
+Style/TrailingCommaInArguments:
   Enabled: false
 
 Style/WhileUntilModifier:
@@ -130,10 +138,6 @@ Style/WordArray:
 
 # Not valid for Rails 3.
 Rails/ActionFilter:
-  Enabled: false
-
-# Not valid for mongoid
-Rails/DefaultScope:
   Enabled: false
 
 Rails/Delegate:
