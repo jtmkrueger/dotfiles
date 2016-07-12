@@ -29,10 +29,13 @@ Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'szw/vim-tags'
 Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'schickling/vim-bufonly'
-
+Plugin 'airblade/vim-gitgutter'
 Plugin 'mattn/emmet-vim'
 Plugin 'jszakmeister/vim-togglecursor'
+
+" all that tpope!
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-vinegar'
 Plugin 'tpope/vim-rails.git'
