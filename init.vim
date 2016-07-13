@@ -22,7 +22,6 @@ Plugin 'altercation/vim-colors-solarized'
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
 Plugin 'mileszs/ack.vim'
-" Plugin 'scrooloose/syntastic'
 Plugin 'neomake/neomake'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'xolox/vim-misc'
@@ -168,18 +167,6 @@ let g:diminactive_max_cols = 1000
 
 " togglecursor
 let g:togglecursor_default = 'blinking_block'
-
-" syntastic
-" let g:syntastic_always_populate_loc_list=1
-" let g:syntastic_enable_signs=1
-" let g:syntastic_auto_loc_list=1
-let g:syntastic_check_on_open=0
-" let g:syntastic_quiet_messages = {'level': 'warnings'}
-let g:syntastic_ruby_checkers = ['mri'] " ... we'll see
-let g:syntastic_eruby_checkers = ['mri']
-let g:syntastic_scss_checkers = ['sassc']
-let g:syntastic_ruby_exec = "/usr/local/var/rbenv/versions/2.0.0-p481/bin/ruby"
-let g:syntastic_javascript_checkers = ['jshint']
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
