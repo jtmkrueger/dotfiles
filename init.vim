@@ -2,7 +2,7 @@ set nocompatible
 
 " START vundle ----------------------------
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.nvim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/vundle'
 
@@ -23,10 +23,11 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'jtmkrueger/vim-c-cr'
 Plugin 'mileszs/ack.vim'
 Plugin 'neomake/neomake'
+" Plugin 'Shougo/vimproc.vim'
 Plugin 'Shougo/deoplete.nvim'
+" Plugin 'osyo-manga/vim-monster'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
-Plugin 'szw/vim-tags'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'schickling/vim-bufonly'
@@ -66,8 +67,8 @@ set laststatus=2 " turn on statusline
 set noerrorbells " no errorbells!
 set vb t_vb= " seriously, no errorbells!!
 
-set expandtab " use spaces instead of tab characters
 set tabstop=2 softtabstop=2 shiftwidth=2
+set expandtab " use spaces instead of tab characters
 set smarttab " start tabbed in
 set backspace=start,eol,indent " always allow backspaces
 set wildmenu " trick out command mode
@@ -86,7 +87,6 @@ set smartindent
 set textwidth=0 " disable auto line breaking on paste
 " set formatoptions+=l " don't break lines till after insert mode
 set number " line numbers
-" set relativenumber " show relative line number in gutter
 set showtabline=2 " always show tabs
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
@@ -95,11 +95,13 @@ set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
+set list
+set listchars=tab:⬝➜
 
 " " Resize splits when the window is resized
 au VimResized * :wincmd =
 
-" Store temporary files in a central spot
+" Store swap files in a central spot
 set backup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -169,31 +171,26 @@ let g:diminactive_max_cols = 1000
 let g:togglecursor_default = 'blinking_block'
 
 " deoplete
+" let g:deoplete#sources = ['buffer', 'tag']
+let g:deoplete#tag#cache_limit_size = 50000000
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 let g:deoplete#enable_refresh_always = 1
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " easytags
-let g:easytags_cmd = 'exctags'
+" let g:easytags_cmd = 'exctags'
 set tags=./tags;
 let g:easytags_dynamic_files = 1
 let g:easytags_async = 1
 
 " emmet expansions
-" imap <expr> <C-e> emmet#expandAbbrIntelligent("\<C-e>")
 let g:user_emmet_leader_key = '<c-e>'
-
-" delimate
-" let g:delimitMate_expand_cr = 1
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline_powerline_fonts = 1
-" let g:airline#extensions#whitespace#enabled = 0
-" let g:airline_section_warning=""
-" let g:airline#extensions#syntastic#enabled = 0
 
 " neomake
 autocmd! BufWritePost,BufEnter * Neomake
