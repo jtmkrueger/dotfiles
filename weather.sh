@@ -15,6 +15,7 @@
 # 1. Install jq with your package manager of choice (homebrew, apt-get, etc.)
 # 2. Sign up for a free account with OpenWeatherMap to grab your API key
 # 3. Add your OpenWeatherMap API key where it says API_KEY
+# 4. Stick this script somewhere in the path. I'm symlinking it into /usr/local/bin
 
 # OPENWEATHERMAP API KEY (place yours here)
 API_KEY="eff3743d9b86e2b81e19b7d709125383"
