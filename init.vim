@@ -24,7 +24,8 @@ Plugin 'jtmkrueger/vim-c-cr'
 Plugin 'mileszs/ack.vim'
 Plugin 'neomake/neomake'
 " Plugin 'Shougo/vimproc.vim'
-Plugin 'Shougo/deoplete.nvim'
+" Plugin 'Shougo/deoplete.nvim'
+Plugin 'Valloric/YouCompleteMe'
 " Plugin 'osyo-manga/vim-monster'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
@@ -172,11 +173,11 @@ let g:togglecursor_default = 'blinking_block'
 
 " deoplete
 " let g:deoplete#sources = ['buffer', 'tag']
-let g:deoplete#tag#cache_limit_size = 50000000
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#enable_refresh_always = 1
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" let g:deoplete#tag#cache_limit_size = 50000000
+" let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_smart_case = 1
+" let g:deoplete#enable_refresh_always = 1
+" inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " easytags
 " let g:easytags_cmd = 'exctags'
