@@ -8,7 +8,8 @@ Plugin 'gmarik/vundle'
 
 " syntaxes
 Plugin 'kchmck/vim-coffee-script.git'
-Plugin 'pangloss/vim-javascript'
+" Plugin 'pangloss/vim-javascript'
+Plugin 'jelera/vim-javascript-syntax'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'vim-ruby/vim-ruby.git'
 Plugin 'mustache/vim-mustache-handlebars'
@@ -27,6 +28,8 @@ Plugin 'neomake/neomake'
 " Plugin 'Shougo/deoplete.nvim'
 Plugin 'Valloric/YouCompleteMe'
 " Plugin 'osyo-manga/vim-monster'
+Plugin 'flowtype/vim-flow'
+Plugin 'luochen1990/rainbow'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'bling/vim-airline'
@@ -179,6 +182,11 @@ let g:togglecursor_default = 'blinking_block'
 " let g:deoplete#enable_refresh_always = 1
 " inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
+"youcompleteme
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+
 " easytags
 " let g:easytags_cmd = 'exctags'
 set tags=./tags;
@@ -192,6 +200,12 @@ let g:user_emmet_leader_key = '<c-e>'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline_powerline_fonts = 1
+
+" rainbow parens
+let g:rainbow_active = 1
+
+" vim-flow and vim-syntax
+" let g:javascript_plugin_flow = 1
 
 " neomake
 autocmd! BufWritePost,BufEnter * Neomake

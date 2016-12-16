@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# moonphase
+# =======
+#
+# By John Krueger
+#
+# This script sends a request to retrieve the current moon phase, and returns an
+# appropriate emoji. Nice for the tmux status bar.
+#
+# You're going to need to install jq with your package manager
+
+set -e
+
+moon_icon() {
+  case $1 in
+    "New Moon") echo 🌚
+      ;;
+    "Waxing Cresent") echo 🌒
+      ;;
+    "First Quarter") echo 🌓
+      ;;
+    "Waxing Gibbous") echo 🌔
+      ;;
+    "Full Moon") echo 🌝
+      ;;
+    "Waning Gibbous") echo 🌖
+      ;;
+    "Last Quarter") echo 🌗
+      ;;
+    "Waning Cresent") echo 🌘
+      ;;
+    *) echo "$1"
+  esac
+}
+
+DATE=`date +%s`
+API=$(curl --silent http://farmsense-prod.apigee.net/v1/moonphases/?d="$DATE")
+
+MOON=$(echo "$API" | jq --raw-output .[0].Moon[0])
+PHASE=$(echo "$API" | jq --raw-output .[0].Phase)
+ICON=$(moon_icon "$PHASE")
+
+printf "%s" "$MOON $ICON "

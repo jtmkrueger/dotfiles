@@ -39,6 +39,8 @@ weather_icon() {
       ;;
     801) echo ⛅️
       ;;
+    803) echo ☁️
+      ;;
     804) echo ☁️
       ;;
     *) echo "$1"

@@ -2,15 +2,15 @@
   "libs": [
     "browser",
     "jquery",
-    "d3"
   ],
   "loadEagerly": [
   ],
   "plugins": {
     "requirejs": {
       "baseURL": "./",
-      "paths": {},
-      "node": {}
-    }
+      "paths": {}
+    },
+    "angular",
+    "node": {}
   }
 }
