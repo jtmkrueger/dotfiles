@@ -38,6 +38,7 @@ Plugin 'schickling/vim-bufonly'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'mattn/emmet-vim'
 Plugin 'jszakmeister/vim-togglecursor'
+Plugin 'blueyed/vim-diminactive'
 
 " all that tpope!
 Plugin 'tpope/vim-repeat'
@@ -46,6 +47,7 @@ Plugin 'tpope/vim-rails.git'
 Plugin 'tpope/vim-surround.git'
 Plugin 'tpope/vim-fugitive.git'
 Plugin 'tpope/vim-commentary.git'
+Plugin 'tpope/vim-endwise'
 call vundle#end()
 filetype plugin indent on
 " END vundle ------------------------
@@ -213,6 +215,9 @@ autocmd! BufWritePost,BufEnter * Neomake
 let g:neomake_javascript_enabled_makers = ['jshint']
 let g:neomake_ruby_enabled_makers = ['rubocop']
 let g:neomake_json_enabled_makers = ['jsonlint']
+
+" set this so diminactive looks the same as tmux changing
+:hi ColorColumn ctermbg=236 guibg=#232c31
 
 " set tmux window name automatically
 augroup Tmux "{{{2

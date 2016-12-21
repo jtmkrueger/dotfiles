@@ -16,7 +16,7 @@ moon_icon() {
   case $1 in
     "New Moon") echo 🌚
       ;;
-    "Waxing Cresent") echo 🌒
+    "Waxing Crescent") echo 🌒
       ;;
     "First Quarter") echo 🌓
       ;;
@@ -26,9 +26,9 @@ moon_icon() {
       ;;
     "Waning Gibbous") echo 🌖
       ;;
-    "Last Quarter") echo 🌗
+    "3rd Quarter") echo 🌗
       ;;
-    "Waning Cresent") echo 🌘
+    "Waning Crescent") echo 🌘
       ;;
     *) echo "$1"
   esac
