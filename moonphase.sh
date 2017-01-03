@@ -14,7 +14,7 @@ set -e
 
 moon_icon() {
   case $1 in
-    "New Moon") echo 🌚
+    "Dark Moon") echo 🌚
       ;;
     "Waxing Crescent") echo 🌒
       ;;

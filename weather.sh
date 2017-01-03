@@ -31,6 +31,8 @@ weather_icon() {
   case $1 in
     531) echo ☔️
       ;;
+    600) echo ❄️
+      ;;
     601) echo ❄️
       ;;
     701) echo 🔥

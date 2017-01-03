@@ -2,7 +2,7 @@ set nocompatible
 
 " START vundle ----------------------------
 filetype off
-set rtp+=~/.nvim/bundle/Vundle.vim
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/vundle'
 
@@ -24,10 +24,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'jtmkrueger/vim-c-cr'
 Plugin 'mileszs/ack.vim'
 Plugin 'neomake/neomake'
-" Plugin 'Shougo/vimproc.vim'
-" Plugin 'Shougo/deoplete.nvim'
 Plugin 'Valloric/YouCompleteMe'
-" Plugin 'osyo-manga/vim-monster'
 Plugin 'flowtype/vim-flow'
 Plugin 'luochen1990/rainbow'
 Plugin 'xolox/vim-misc'
@@ -39,6 +36,8 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'mattn/emmet-vim'
 Plugin 'jszakmeister/vim-togglecursor'
 Plugin 'blueyed/vim-diminactive'
+" Plugin 'Yggdroot/indentLine'
+Plugin 'Raimondi/delimitMate'
 
 " all that tpope!
 Plugin 'tpope/vim-repeat'
@@ -112,6 +111,9 @@ set backup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
+" additional filetype detection
+autocmd BufRead,BufNewFile *.axlsx set filetype=ruby
+
 " map leader to space
 let mapleader = "\<Space>"
 
@@ -176,14 +178,6 @@ let g:diminactive_max_cols = 1000
 " togglecursor
 let g:togglecursor_default = 'blinking_block'
 
-" deoplete
-" let g:deoplete#sources = ['buffer', 'tag']
-" let g:deoplete#tag#cache_limit_size = 50000000
-" let g:deoplete#enable_at_startup = 1
-" let g:deoplete#enable_smart_case = 1
-" let g:deoplete#enable_refresh_always = 1
-" inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-
 "youcompleteme
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
@@ -218,6 +212,13 @@ let g:neomake_json_enabled_makers = ['jsonlint']
 
 " set this so diminactive looks the same as tmux changing
 :hi ColorColumn ctermbg=236 guibg=#232c31
+
+" " indentLine
+" let g:indentLine_faster = 1
+" let g:indentLine_color_term = 237
+" let g:indentLine_concealcursor = 0
+" let g:indentLine_conceallevel = 1
+" let g:indentLine_char = ''
 
 " set tmux window name automatically
 augroup Tmux "{{{2
