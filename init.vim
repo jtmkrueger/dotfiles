@@ -15,6 +15,7 @@ Plugin 'vim-ruby/vim-ruby.git'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'othree/javascript-libraries-syntax.vim'
 Plugin 'briancollins/vim-jst'
+Plugin 'tmux-plugins/vim-tmux'
 
 " colorschemes
 Plugin 'w0ng/vim-hybrid'
@@ -29,6 +30,7 @@ Plugin 'flowtype/vim-flow'
 Plugin 'luochen1990/rainbow'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
+Plugin 'majutsushi/tagbar'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'schickling/vim-bufonly'
@@ -38,6 +40,7 @@ Plugin 'jszakmeister/vim-togglecursor'
 Plugin 'blueyed/vim-diminactive'
 " Plugin 'Yggdroot/indentLine'
 Plugin 'Raimondi/delimitMate'
+Plugin 'itchyny/vim-cursorword'
 
 " all that tpope!
 Plugin 'tpope/vim-repeat'
@@ -188,6 +191,9 @@ let g:ycm_seed_identifiers_with_syntax = 1
 set tags=./tags;
 let g:easytags_dynamic_files = 1
 let g:easytags_async = 1
+
+" tagbar
+nmap <C-t> :TagbarToggle<CR>
 
 " emmet expansions
 let g:user_emmet_leader_key = '<c-e>'
