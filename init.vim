@@ -229,6 +229,7 @@ let g:neomake_json_enabled_makers = ['jsonlint']
 " set tmux window name automatically
 augroup Tmux "{{{2
   au!
-  autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
+  " autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
+  autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim"')
   autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
 augroup END
