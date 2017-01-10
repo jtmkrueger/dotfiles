@@ -94,7 +94,8 @@ set cmdheight=1
 set smartindent
 set textwidth=0 " disable auto line breaking on paste
 " set formatoptions+=l " don't break lines till after insert mode
-set number " line numbers
+" set number " line numbers
+" highlight SignColumn ctermbg=black
 set showtabline=2 " always show tabs
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
@@ -197,6 +198,9 @@ nmap <C-t> :TagbarToggle<CR>
 
 " emmet expansions
 let g:user_emmet_leader_key = '<c-e>'
+
+" gitgutter
+let g:gitgutter_sign_column_always = 1
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
