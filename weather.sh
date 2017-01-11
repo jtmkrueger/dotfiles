@@ -45,6 +45,8 @@ weather_icon() {
       ;;
     801) echo ⛅️
       ;;
+    802) echo ⛅️
+      ;;
     803) echo ☁️
       ;;
     804) echo ☁️
