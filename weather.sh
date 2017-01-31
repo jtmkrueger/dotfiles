@@ -37,7 +37,7 @@ weather_icon() {
       ;;
     602) echo ❄️
       ;;
-    701) echo 🔥
+    711) echo 🔥
       ;;
     701) echo 🌁
       ;;
