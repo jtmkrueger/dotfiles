@@ -24,7 +24,7 @@ Plugin 'altercation/vim-colors-solarized'
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
 Plugin 'mileszs/ack.vim'
-Plugin 'neomake/neomake'
+Plugin 'w0rp/ale'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'flowtype/vim-flow'
 Plugin 'luochen1990/rainbow'
@@ -212,13 +212,6 @@ let g:rainbow_active = 1
 
 " vim-flow and vim-syntax
 " let g:javascript_plugin_flow = 1
-
-" neomake
-autocmd! BufWritePost,BufEnter * Neomake
-" let g:neomake_verbose=3 " enable for debugging
-let g:neomake_javascript_enabled_makers = ['jshint']
-let g:neomake_ruby_enabled_makers = ['rubocop']
-let g:neomake_json_enabled_makers = ['jsonlint']
 
 " set this so diminactive looks the same as tmux changing
 :hi ColorColumn ctermbg=236 guibg=#232c31
