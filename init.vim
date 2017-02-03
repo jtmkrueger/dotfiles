@@ -208,7 +208,7 @@ let g:gitgutter_sign_column_always = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#ale#error_symbol = '✘: '
-let g:airline#extensions#ale#warning_symbol = '⚠ :'
+let g:airline#extensions#ale#warning_symbol = '⚠ : '
 let g:airline_powerline_fonts = 1
 
 " neomake
@@ -219,11 +219,10 @@ let g:airline_powerline_fonts = 1
 " let g:neomake_json_enabled_makers = ['jsonlint']"
 
 " ale
-let g:ale_statusline_format = ['✘ %d', '⚠ %d', '⬥ ok']
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
-highlight ALEErrorSign ctermfg=52
-highlight ALEWarningSign ctermfg=100
+highlight ALEErrorSign ctermfg=160
+highlight ALEWarningSign ctermfg=172
 
 " rainbow parens
 let g:rainbow_active = 1
