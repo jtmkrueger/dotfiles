@@ -24,12 +24,9 @@ Plugin 'altercation/vim-colors-solarized'
 " tools
 Plugin 'jtmkrueger/vim-c-cr'
 Plugin 'mileszs/ack.vim'
-" Plugin 'neomake/neomake'
-" Plugin 'dojoteef/neomake-autolint'
 Plugin 'w0rp/ale'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'flowtype/vim-flow'
-Plugin 'luochen1990/rainbow'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
@@ -40,7 +37,6 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'mattn/emmet-vim'
 Plugin 'jszakmeister/vim-togglecursor'
 Plugin 'blueyed/vim-diminactive'
-" Plugin 'Yggdroot/indentLine'
 Plugin 'Raimondi/delimitMate'
 Plugin 'itchyny/vim-cursorword'
 
@@ -211,34 +207,14 @@ let g:airline#extensions#ale#error_symbol = '✘: '
 let g:airline#extensions#ale#warning_symbol = '⚠ : '
 let g:airline_powerline_fonts = 1
 
-" neomake
-" autocmd! BufWritePost,BufEnter * Neomake
-" let g:neomake_verbose=3 " enable for debugging
-" let g:neomake_javascript_enabled_makers = ['jshint']
-" let g:neomake_ruby_enabled_makers = ['rubocop']
-" let g:neomake_json_enabled_makers = ['jsonlint']"
-
 " ale
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 highlight ALEErrorSign ctermfg=160
 highlight ALEWarningSign ctermfg=220
 
-" rainbow parens
-let g:rainbow_active = 1
-
-" vim-flow and vim-syntax
-" let g:javascript_plugin_flow = 1
-
 " set this so diminactive looks the same as tmux changing
 :hi ColorColumn ctermbg=236 guibg=#232c31
-
-" " indentLine
-" let g:indentLine_faster = 1
-" let g:indentLine_color_term = 237
-" let g:indentLine_concealcursor = 0
-" let g:indentLine_conceallevel = 1
-" let g:indentLine_char = ''
 
 " set tmux window name automatically
 augroup Tmux "{{{2
