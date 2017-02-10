@@ -1,58 +1,51 @@
-set nocompatible
-
-" START vundle ----------------------------
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/vundle'
+" START plug ----------------------------
+call plug#begin('~/.vim/plugged')
 
 " syntaxes
-Plugin 'kchmck/vim-coffee-script.git'
-" Plugin 'pangloss/vim-javascript'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'vim-ruby/vim-ruby.git'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'othree/javascript-libraries-syntax.vim'
-Plugin 'briancollins/vim-jst'
-Plugin 'tmux-plugins/vim-tmux'
+Plug 'kchmck/vim-coffee-script'
+" Plug 'pangloss/vim-javascript'
+Plug 'jelera/vim-javascript-syntax'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'vim-ruby/vim-ruby'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'briancollins/vim-jst'
+Plug 'tmux-plugins/vim-tmux'
 
 " colorschemes
-Plugin 'w0ng/vim-hybrid'
-Plugin 'altercation/vim-colors-solarized'
+Plug 'w0ng/vim-hybrid'
+Plug 'altercation/vim-colors-solarized'
 
 " tools
-Plugin 'jtmkrueger/vim-c-cr'
-Plugin 'mileszs/ack.vim'
-Plugin 'w0rp/ale'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'flowtype/vim-flow'
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-easytags'
-Plugin 'majutsushi/tagbar'
-Plugin 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'schickling/vim-bufonly'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'mattn/emmet-vim'
-Plugin 'jszakmeister/vim-togglecursor'
-Plugin 'blueyed/vim-diminactive'
-Plugin 'Raimondi/delimitMate'
-Plugin 'itchyny/vim-cursorword'
+Plug 'jtmkrueger/vim-c-cr'
+Plug 'mileszs/ack.vim'
+Plug 'w0rp/ale'
+Plug 'Valloric/YouCompleteMe'
+Plug 'flowtype/vim-flow'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-easytags'
+Plug 'majutsushi/tagbar'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'schickling/vim-bufonly'
+Plug 'airblade/vim-gitgutter'
+Plug 'mattn/emmet-vim'
+Plug 'jszakmeister/vim-togglecursor'
+Plug 'blueyed/vim-diminactive'
+Plug 'Raimondi/delimitMate'
+Plug 'itchyny/vim-cursorword'
 
 " all that tpope!
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-vinegar'
-Plugin 'tpope/vim-rails.git'
-Plugin 'tpope/vim-surround.git'
-Plugin 'tpope/vim-fugitive.git'
-Plugin 'tpope/vim-commentary.git'
-Plugin 'tpope/vim-endwise'
-call vundle#end()
-filetype plugin indent on
-" END vundle ------------------------
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-endwise'
+call plug#end()
+" END plug ------------------------
 
-syntax on
 let g:python3_host_prog = '/opt/pkg/bin/python'
 set ttyfast
 set lazyredraw
