@@ -222,7 +222,7 @@ let g:airline_powerline_fonts = 1
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 highlight ALEErrorSign ctermfg=160
-highlight ALEWarningSign ctermfg=172
+highlight ALEWarningSign ctermfg=220
 
 " rainbow parens
 let g:rainbow_active = 1
