@@ -16,6 +16,8 @@ moon_icon() {
   case $1 in
     "Dark Moon") echo 🌚
       ;;
+    "New Moon") echo 🌚
+      ;;
     "Waxing Crescent") echo 🌒
       ;;
     "First Quarter") echo 🌓

@@ -205,6 +205,9 @@ let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 highlight ALEErrorSign ctermfg=160
 highlight ALEWarningSign ctermfg=220
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
 
 " set this so diminactive looks the same as tmux changing
 :hi ColorColumn ctermbg=236 guibg=#232c31
