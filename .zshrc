@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/jkrueger/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 # export DYLD_LIBRARY_PATH="/opt/pkg/lib:$DYLD_LIBRARY_PATH"
 
 # Set name of the theme to load.
@@ -96,17 +96,17 @@ export JRUBY_OPTS="--dev"
 # source ~/.iterm2_shell_integration.`basename $SHELL`
 
 # Load zsh-syntax-highlighting.
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Load zsh-autosuggestions.
-source ~/.zsh/zsh-autosuggestions/autosuggestions.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Enable autosuggestions automatically.
-export AUTOSUGGESTION_HIGHLIGHT_COLOR='fg=14'
-zle-line-init() {
-    zle autosuggest-start
-}
-zle -N zle-line-init
+export AUTOSUGGESTION_HIGHLIGHT_STYLE='fg=14'
+# zle-line-init() {
+#     zle autosuggest-start
+# }
+# zle -N zle-line-init
 bindkey '^f' vi-forward-word
 
 archey -c
@@ -120,7 +120,7 @@ eval "$(rbenv init -)"
 # for the postgres app
 export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
 
-export NVM_DIR="/Users/jkrueger/.nvm"
+export NVM_DIR="~/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
