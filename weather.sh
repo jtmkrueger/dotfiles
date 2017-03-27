@@ -29,6 +29,10 @@ set -e
 # Weather data reference: http://openweathermap.org/weather-conditions
 weather_icon() {
   case $1 in
+    500) echo ☔️
+      ;;
+    521) echo ☔️
+      ;;
     531) echo ☔️
       ;;
     600) echo ❄️
@@ -42,6 +46,8 @@ weather_icon() {
     711) echo 🔥
       ;;
     721) echo 🌁
+      ;;
+    741) echo 🌁
       ;;
     800) echo ☀️
       ;;
@@ -69,4 +75,4 @@ TEMP="$(echo "$WEATHER" | jq .main.temp | cut -d . -f 1)°F"
 WIND_SPEED="$(echo "$WEATHER" | jq .wind.speed | awk '{print int($1+0.5)}')mh"
 ICON=$(weather_icon "$CATEGORY")
 
-printf "%s" "$CITY:$ICON $TEMP, $WIND_SPEED"
+printf "%s" "$CITY: $ICON  $TEMP, $WIND_SPEED"
