@@ -1,0 +1,10 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+    }
+  },
+  "rules": {
+    "semi": 2
+  }
+}

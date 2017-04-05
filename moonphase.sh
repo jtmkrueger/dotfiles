@@ -20,7 +20,7 @@ moon_icon() {
       ;;
     "Waxing Crescent") echo 🌒
       ;;
-    "First Quarter") echo 🌓
+    "1st Quarter") echo 🌓
       ;;
     "Waxing Gibbous") echo 🌔
       ;;

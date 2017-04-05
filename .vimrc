@@ -34,6 +34,7 @@ Plug 'jszakmeister/vim-togglecursor'
 Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
 Plug 'itchyny/vim-cursorword'
+Plug 'Yggdroot/indentLine'
 
 " all that tpope!
 Plug 'tpope/vim-repeat'
