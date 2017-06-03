@@ -86,14 +86,14 @@ set cmdheight=1
 set smartindent
 set textwidth=0 " disable auto line breaking on paste
 " set formatoptions+=l " don't break lines till after insert mode
-" set number " line numbers
+set relativenumber " line numbers
 " highlight SignColumn ctermbg=black
 set showtabline=2 " always show tabs
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
 set cursorcolumn " highlight the cursors current col
-set clipboard=unnamed " copy to system register
+set clipboard=unnamedplus " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 set list

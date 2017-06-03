@@ -50,7 +50,7 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git bundler)
+plugins=(git bundler zsh-syntax-highlighting)
 
 # User configuration
 
@@ -96,9 +96,6 @@ export JRUBY_OPTS="--dev"
 # iterm 2 shell integration
 # source ~/.iterm2_shell_integration.`basename $SHELL`
 
-# Load zsh-syntax-highlighting.
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # Load zsh-autosuggestions.
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -110,7 +107,7 @@ export AUTOSUGGESTION_HIGHLIGHT_STYLE='fg=14'
 # zle -N zle-line-init
 bindkey '^f' vi-forward-word
 
-archey -c
+archey
 #list all tmus sessions, and if there's none, don't show an error
 # tmux list-sessions 2> /dev/null
 
