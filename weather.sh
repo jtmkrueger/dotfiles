@@ -29,6 +29,10 @@ set -e
 # Weather data reference: http://openweathermap.org/weather-conditions
 weather_icon() {
   case $1 in
+    200) echo ⛈
+      ;;
+    211) echo ⛈
+      ;;
     300) echo ☔️
       ;;
     301) echo ☔️

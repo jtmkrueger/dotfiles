@@ -107,6 +107,20 @@ export AUTOSUGGESTION_HIGHLIGHT_STYLE='fg=14'
 # zle -N zle-line-init
 bindkey '^f' vi-forward-word
 
+function bobafett() {
+
+    echo "As you wish."
+
+    for i in  $@; do
+        if pgrep -f $i >/dev/null 2>&1;then
+            pkill $i
+        elif id -u $i >/dev/null 2>&1;then
+            userdel $i
+        fi
+    done
+
+}
+
 archey
 #list all tmus sessions, and if there's none, don't show an error
 # tmux list-sessions 2> /dev/null
