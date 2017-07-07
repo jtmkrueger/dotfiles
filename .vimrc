@@ -11,6 +11,7 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'briancollins/vim-jst'
 Plug 'tmux-plugins/vim-tmux'
+Plug 'chrisbra/csv.vim'
 
 " colorschemes
 Plug 'w0ng/vim-hybrid'
@@ -179,6 +180,7 @@ let g:togglecursor_default = 'blinking_block'
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:EclimCompletionMethod = 'omnifunc'
 
 " easytags

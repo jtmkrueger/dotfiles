@@ -50,12 +50,13 @@ DISABLE_AUTO_TITLE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git bundler zsh-syntax-highlighting)
+plugins=(git bundler zsh-completions zsh-autosuggestions zsh-syntax-highlighting)
 
 # User configuration
 
 export PATH="/usr/local/bin:/opt/pkg/sbin:/opt/pkg/bin:/usr/bin:/.local/bin:/bin:/usr/sbin:/sbin:/Applications/Postgres.app/Contents/Versions/9.4/bin:/.local/bin:$PATH"
-# export PATH=~/.local/bin:$PATH
+# whatever :\ screw you aws
+export PATH=~/.local/bin:$PATH
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -86,6 +87,10 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias eclim="/Applications/Eclipse.app/Contents/Eclipse/eclimd"
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+alias ls='ls -hGF --color=auto'
+export LSCOLORS="Exfxcxdxbxegedabagacad"
 
 # export PATH="$HOME/.rbenv/bin:$PATH"
 # eval "$(rbenv init -)"
@@ -96,10 +101,6 @@ export JRUBY_OPTS="--dev"
 # iterm 2 shell integration
 # source ~/.iterm2_shell_integration.`basename $SHELL`
 
-# Load zsh-autosuggestions.
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# Enable autosuggestions automatically.
 export AUTOSUGGESTION_HIGHLIGHT_STYLE='fg=14'
 # zle-line-init() {
 #     zle autosuggest-start
