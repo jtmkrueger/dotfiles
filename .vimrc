@@ -210,12 +210,14 @@ let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 highlight ALEErrorSign ctermfg=160
 highlight ALEWarningSign ctermfg=220
+highlight ALEWarning ctermbg=236
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
 
-" set this so diminactive looks the same as tmux changing
-:hi ColorColumn ctermbg=236 guibg=#232c31
+" a little suggestion...
+:hi ColorColumn ctermbg=234
+:set colorcolumn=80
 
 " set tmux window name automatically
 augroup Tmux "{{{2
