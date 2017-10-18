@@ -17,8 +17,9 @@ alias eclim="/Applications/Eclipse.app/Contents/Eclipse/eclimd"
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 alias ls='ls -ahGF --color=auto'
+alias openvpn='sudo openvpn --config ~/Downloads/client_auto_login.ovpn'
 
-export AUTOSUGGESTION_HIGHLIGHT_STYLE='fg=14'
+export AUTOSUGGESTION_HIGHLIGHT_STYLE='fg=9'
 bindkey '^f' vi-forward-word
 
 # https://github.com/jtmkrueger/bobafett
@@ -41,3 +42,7 @@ archey
 #rbenv path & init
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

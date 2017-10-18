@@ -12,6 +12,8 @@ Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'briancollins/vim-jst'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'chrisbra/csv.vim'
+Plug 'elixir-editors/vim-elixir'
+Plug 'slashmili/alchemist.vim'
 
 " colorschemes
 Plug 'w0ng/vim-hybrid'
@@ -53,11 +55,12 @@ let g:python3_host_prog = '/opt/pkg/bin/python'
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
+syntax enable
 set background=dark
 " let g:hybrid_use_iTerm_colors = 1
 " let g:hybrid_use_Xresources = 1
 let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 1
+" let g:hybrid_reduced_contrast = 1
 colorscheme hybrid
 set encoding=utf-8
 set fileencoding=utf-8
@@ -88,6 +91,7 @@ set cmdheight=1
 set smartindent
 set textwidth=0 " disable auto line breaking on paste
 " set formatoptions+=l " don't break lines till after insert mode
+set number " line numbers
 set relativenumber " line numbers
 " highlight SignColumn ctermbg=black
 set showtabline=2 " always show tabs
@@ -196,7 +200,7 @@ nmap <C-t> :TagbarToggle<CR>
 let g:user_emmet_leader_key = '<c-e>'
 
 " gitgutter
-let g:gitgutter_sign_column_always = 1
+set signcolumn=yes
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
