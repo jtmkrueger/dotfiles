@@ -38,7 +38,8 @@ Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
 Plug 'itchyny/vim-cursorword'
 Plug 'Yggdroot/indentLine'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 " all that tpope!
 Plug 'tpope/vim-repeat'
@@ -142,6 +143,7 @@ imap <C-t> <%= %><Left><Left><Left>
 " easy search with the silver searcher
 let g:ackprg = 'ag --nogroup --column'
 nnoremap <c-a> :Ack!<Space>
+nnoremap <c-f> :FZF<Enter>
 
 " up/down on wrapped lines
 nnoremap j gj
@@ -203,6 +205,7 @@ let g:user_emmet_leader_key = '<c-e>'
 set signcolumn=yes
 
 " airline
+call airline#parts#define_minwidth('ffenc', 50000)
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#ale#error_symbol = '✘: '
