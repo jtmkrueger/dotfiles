@@ -1,0 +1,15 @@
+{
+    "plugins": {
+        "es_modules": {},
+        "node": {},
+        "webpack": {},
+        "complete_strings": {}
+    },
+    "libs": [
+        "ecma5",
+        "ecma6",
+        "browser",
+        "react"
+    ],
+    "ecmaVersion": 6
+}
