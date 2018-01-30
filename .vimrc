@@ -5,6 +5,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'kchmck/vim-coffee-script'
 " Plug 'pangloss/vim-javascript'
 Plug 'jelera/vim-javascript-syntax'
+Plug 'mxw/vim-jsx'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'vim-ruby/vim-ruby'
 Plug 'mustache/vim-mustache-handlebars'
@@ -38,7 +39,6 @@ Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
 Plug 'itchyny/vim-cursorword'
 Plug 'Yggdroot/indentLine'
-" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 " all that tpope!
@@ -143,7 +143,13 @@ imap <C-t> <%= %><Left><Left><Left>
 " easy search with the silver searcher
 let g:ackprg = 'ag --nogroup --column'
 nnoremap <c-a> :Ack!<Space>
+
+" FZF
 nnoremap <c-f> :FZF<Enter>
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
 " up/down on wrapped lines
 nnoremap j gj
