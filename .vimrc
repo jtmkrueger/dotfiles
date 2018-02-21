@@ -3,7 +3,7 @@ call plug#begin('~/.vim/plugged')
 
 " syntaxes
 Plug 'kchmck/vim-coffee-script'
-" Plug 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'mxw/vim-jsx'
 Plug 'cakebaker/scss-syntax.vim'
@@ -25,7 +25,6 @@ Plug 'jtmkrueger/vim-c-cr'
 Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
 Plug 'Valloric/YouCompleteMe'
-Plug 'flowtype/vim-flow'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
 Plug 'majutsushi/tagbar'
@@ -39,6 +38,7 @@ Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
 Plug 'itchyny/vim-cursorword'
 Plug 'Yggdroot/indentLine'
+Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 " all that tpope!
@@ -105,6 +105,7 @@ set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 set list
 set listchars=tab:⬝➜
+set conceallevel=0
 
 " " Resize splits when the window is resized
 au VimResized * :wincmd =
@@ -190,6 +191,7 @@ let g:togglecursor_default = 'blinking_block'
 
 "youcompleteme
 let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_python_binary_path = '/usr/bin/python3'
@@ -198,8 +200,11 @@ let g:EclimCompletionMethod = 'omnifunc'
 " easytags
 " let g:easytags_cmd = 'exctags'
 set tags=./tags;
-let g:easytags_dynamic_files = 1
+let g:easytags_dynamic_files = 2
 let g:easytags_async = 1
+
+" vim-json
+let g:vim_json_syntax_conceal = 0
 
 " tagbar
 nmap <C-t> :TagbarToggle<CR>
@@ -216,7 +221,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#ale#error_symbol = '✘: '
 let g:airline#extensions#ale#warning_symbol = '⚠ : '
-let g:airline_powerline_fonts = 1
+" let g:airline_powerline_fonts = 1
 
 " ale
 let g:ale_sign_error = '✘'

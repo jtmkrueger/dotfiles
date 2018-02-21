@@ -29,9 +29,9 @@ set -e
 # Weather data reference: http://openweathermap.org/weather-conditions
 weather_icon() {
   case $1 in
-    200) echo ⛈
+    200) echo ☔️
       ;;
-    211) echo ⛈
+    211) echo ☔️
       ;;
     300) echo ☔️
       ;;
@@ -51,19 +51,19 @@ weather_icon() {
       ;;
     602) echo ❄️
       ;;
-    701) echo 🌁
+    701) echo ≋
       ;;
-    711) echo 🔥
+    711) echo ≋
       ;;
-    721) echo 🌁
+    721) echo ≋
       ;;
-    741) echo 🌁
+    741) echo ≋
       ;;
     800) echo ☀️
       ;;
-    801) echo ⛅️
+    801) echo ☁️
       ;;
-    802) echo ⛅️
+    802) echo ☁️
       ;;
     803) echo ☁️
       ;;

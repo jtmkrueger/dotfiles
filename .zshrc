@@ -17,7 +17,7 @@ alias eclim="/Applications/Eclipse.app/Contents/Eclipse/eclimd"
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 alias ls='ls -ahGF --color=auto'
-alias openvpn='sudo openvpn --config ~/Downloads/client_auto_login.ovpn'
+alias openvpn='sudo openvpn --config ~/.ssh/client_auto_login.ovpn'
 
 export AUTOSUGGESTION_HIGHLIGHT_STYLE='fg=9'
 bindkey '^f' vi-forward-word
@@ -43,8 +43,10 @@ archey
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
-export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="/home/john/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# # TODO: fuck this shit
+nvm use --delete-prefix v8.6.0 --silent
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

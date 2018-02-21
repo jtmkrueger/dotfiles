@@ -14,9 +14,9 @@ set -e
 
 moon_icon() {
   case $1 in
-    "Dark Moon") echo 🌚
+    "Dark Moon") echo 🌑
       ;;
-    "New Moon") echo 🌚
+    "New Moon") echo 🌑
       ;;
     "Waxing Crescent") echo 🌒
       ;;
@@ -24,7 +24,7 @@ moon_icon() {
       ;;
     "Waxing Gibbous") echo 🌔
       ;;
-    "Full Moon") echo 🌝
+    "Full Moon") echo 🌕
       ;;
     "Waning Gibbous") echo 🌖
       ;;
