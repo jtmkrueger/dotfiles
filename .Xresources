@@ -32,8 +32,9 @@
 ! *font: xft:Monospace:pixelsize=13
 ! URxvt*font: xft:Monospace:pixelsize=11
 ! URxvt.font: xft:terminus:size=9
-URxvt.font: xft:Ubuntu Mono derivative Powerline:size=8:antialias=true
-URxvt.boldFont: xft:Ubuntu Mono derivative Powerline:bold:size=8:antialias=true
+URxvt.cursorBlink: 1
+URxvt.font: xft:Ubuntu Mono derivative Powerline:size=11:antialias=true
+URxvt.boldFont: xft:Ubuntu Mono derivative Powerline:bold:size=11:antialias=true
 URxvt.scrollBar: false
 URxvt.letterSpace: 1
 

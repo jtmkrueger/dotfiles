@@ -18,8 +18,10 @@ alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 alias ls='ls -ahGF --color=auto'
 alias openvpn='sudo openvpn --config ~/.ssh/client_auto_login.ovpn'
+alias python='python3' # LOL
+alias pip='pip3' # LOLol
 
-export AUTOSUGGESTION_HIGHLIGHT_STYLE='fg=9'
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=white'
 bindkey '^f' vi-forward-word
 
 # https://github.com/jtmkrueger/bobafett

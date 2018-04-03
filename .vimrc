@@ -34,7 +34,7 @@ Plug 'schickling/vim-bufonly'
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/emmet-vim'
 Plug 'jszakmeister/vim-togglecursor'
-Plug 'blueyed/vim-diminactive'
+" Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
 Plug 'itchyny/vim-cursorword'
 Plug 'Yggdroot/indentLine'
@@ -57,11 +57,10 @@ set ttyfast
 set lazyredraw
 set shell=/bin/bash
 syntax enable
-set background=dark
-" let g:hybrid_use_iTerm_colors = 1
-" let g:hybrid_use_Xresources = 1
+let g:hybrid_use_Xresources = 1
 let g:hybrid_custom_term_colors = 1
 " let g:hybrid_reduced_contrast = 1
+set background=dark
 colorscheme hybrid
 set encoding=utf-8
 set fileencoding=utf-8
@@ -187,6 +186,7 @@ noremap <TAB> % " easer to hit
 let g:diminactive_max_cols = 1000
 
 " togglecursor
+let g:togglecursor_force = 'xterm'
 let g:togglecursor_default = 'blinking_block'
 
 "youcompleteme
@@ -215,7 +215,15 @@ let g:user_emmet_leader_key = '<c-e>'
 " gitgutter
 set signcolumn=yes
 
+" indentline
+" let g:indentLine_setColors = 0
+let g:indentLine_color_term = 'black'
+let g:indentLine_char = '│'
+let g:indentLine_concealcursor=0
+
 " airline
+" let g:airline_theme='solarized'
+" let g:airline_solarized_bg='dark'
 call airline#parts#define_minwidth('ffenc', 50000)
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
@@ -233,8 +241,12 @@ let g:ale_linters = {
 \   'javascript': ['eslint'],
 \}
 
+" :hi CursorColumn cterm=NONE ctermbg=338
+" :hi CursorLine cterm=NONE ctermbg=338
+
 " a little suggestion...
 :hi ColorColumn ctermbg=234
+" let &colorcolumn=join(range(81,999),",")
 :set colorcolumn=80
 
 " set tmux window name automatically
