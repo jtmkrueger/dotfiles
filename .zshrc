@@ -39,7 +39,7 @@ function bobafett() {
 
 }
 
-archey
+screenfetch
 
 #rbenv path & init
 export PATH="$HOME/.rbenv/bin:$PATH"
@@ -50,5 +50,8 @@ export NVM_DIR="/home/john/.nvm"
 # # TODO: fuck this shit
 nvm use --delete-prefix v8.6.0 --silent
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# elixir version management
+test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -229,7 +229,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#ale#error_symbol = '✘: '
 let g:airline#extensions#ale#warning_symbol = '⚠ : '
-" let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 1
 
 " ale
 let g:ale_sign_error = '✘'
