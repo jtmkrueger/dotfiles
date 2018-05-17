@@ -20,11 +20,20 @@ Plug 'slashmili/alchemist.vim'
 Plug 'w0ng/vim-hybrid'
 Plug 'altercation/vim-colors-solarized'
 
+" autocompletion
+" Plug 'Valloric/YouCompleteMe'
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
 " tools
 Plug 'jtmkrueger/vim-c-cr'
 Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
-Plug 'Valloric/YouCompleteMe'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
 Plug 'majutsushi/tagbar'
@@ -52,7 +61,6 @@ Plug 'tpope/vim-endwise'
 call plug#end()
 " END plug ------------------------
 
-let g:python3_host_prog = '/opt/pkg/bin/python'
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
@@ -190,12 +198,25 @@ let g:togglecursor_force = 'xterm'
 let g:togglecursor_default = 'blinking_block'
 
 "youcompleteme
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_python_binary_path = '/usr/bin/python3'
-let g:EclimCompletionMethod = 'omnifunc'
+" let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" let g:ycm_seed_identifiers_with_syntax = 1
+" let g:ycm_python_binary_path = '/usr/bin/python3'
+" let g:EclimCompletionMethod = 'omnifunc'
+
+" deoplete
+let g:deoplete#enable_at_startup = 1
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+let g:python3_host_prog = '/usr/bin/python3'
+" gem install solargraph
+let g:LanguageClient_serverCommands = {
+    \ 'ruby': ['solargraph'],
+    \ }
+call deoplete#custom#option('sources', {
+  \ '_': ['buffer'],
+  \ 'ruby': ['buffer', 'tag', 'LanguageClient'],
+  \})
 
 " easytags
 " let g:easytags_cmd = 'exctags'

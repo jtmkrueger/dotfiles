@@ -5,42 +5,26 @@
 #
 # By John Krueger
 #
-# This script sends a request to retrieve the current moon phase, and returns an
+# This script calculates current moon phase, and returns an
 # appropriate emoji. Nice for the tmux status bar.
-#
-# You're going to need to install jq with your package manager
 
 set -e
 
-moon_icon() {
-  case $1 in
-    "Dark Moon") echo 🌑
-      ;;
-    "New Moon") echo 🌑
-      ;;
-    "Waxing Crescent") echo 🌒
-      ;;
-    "1st Quarter") echo 🌓
-      ;;
-    "Waxing Gibbous") echo 🌔
-      ;;
-    "Full Moon") echo 🌕
-      ;;
-    "Waning Gibbous") echo 🌖
-      ;;
-    "3rd Quarter") echo 🌗
-      ;;
-    "Waning Crescent") echo 🌘
-      ;;
-    *) echo "$1"
-  esac
-}
+lp=2551443
+now=$(date -u +"%s")
+newmoon=592500
+phase=$((($now - $newmoon) % $lp))
+phase_number=$((((phase / 86400) + 1)*100000))
 
-DATE=`date +%s`
-API=$(curl --silent http://farmsense-prod.apigee.net/v1/moonphases/?d="$DATE")
-
-MOON=$(echo "$API" | jq --raw-output .[0].Moon[0])
-PHASE=$(echo "$API" | jq --raw-output .[0].Phase)
-ICON=$(moon_icon "$PHASE")
-
-printf "%s" "$MOON $ICON "
+if   [ $phase_number -lt 184566 ];  then phase_icon="🌚" name="new"
+elif [ $phase_number -lt 553699 ];  then phase_icon="🌒"  name="waxing crescent"
+elif [ $phase_number -lt 922831 ];  then phase_icon="🌓"  name="first quarter"
+elif [ $phase_number -lt 1291963 ];  then phase_icon="🌔"  name="first quarter"
+elif [ $phase_number -lt 1661096 ]; then phase_icon="🌝"  name="full"
+elif [ $phase_number -lt 2030228 ]; then phase_icon="🌖" name="waning gibbous" 
+elif [ $phase_number -lt 2399361 ]; then phase_icon="🌗"  name="last quarter"
+elif [ $phase_number -lt 2768493 ]; then phase_icon="🌘"  name="waning crescent"
+else
+  phase_icon="🌚"  name="new"
+fi
+echo $phase_icon $name
