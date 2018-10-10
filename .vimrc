@@ -18,24 +18,18 @@ Plug 'slashmili/alchemist.vim'
 
 " colorschemes
 Plug 'w0ng/vim-hybrid'
+Plug 'arcticicestudio/nord-vim'
 Plug 'altercation/vim-colors-solarized'
 
 " autocompletion
-" Plug 'Valloric/YouCompleteMe'
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+Plug 'Valloric/YouCompleteMe'
 
 " tools
 Plug 'jtmkrueger/vim-c-cr'
 Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
 Plug 'xolox/vim-misc'
-Plug 'xolox/vim-easytags'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -65,11 +59,14 @@ set ttyfast
 set lazyredraw
 set shell=/bin/bash
 syntax enable
-let g:hybrid_use_Xresources = 1
-let g:hybrid_custom_term_colors = 1
+" let g:hybrid_use_Xresources = 1
+" let g:hybrid_custom_term_colors = 1
 " let g:hybrid_reduced_contrast = 1
-set background=dark
-colorscheme hybrid
+" set background=dark
+" let g:nord_italic = 1
+" let g:nord_underline = 1
+" let g:nord_italic_comments = 1
+colorscheme nord
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -107,7 +104,7 @@ set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
 set cursorcolumn " highlight the cursors current col
-set clipboard=unnamedplus " copy to system register
+set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 set list
@@ -198,31 +195,16 @@ let g:togglecursor_force = 'xterm'
 let g:togglecursor_default = 'blinking_block'
 
 "youcompleteme
-" let g:ycm_collect_identifiers_from_tags_files = 1
-" let g:ycm_collect_identifiers_from_tags_files = 1
-" let g:ycm_collect_identifiers_from_comments_and_strings = 1
-" let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_seed_identifiers_with_syntax = 1
 " let g:ycm_python_binary_path = '/usr/bin/python3'
 " let g:EclimCompletionMethod = 'omnifunc'
 
-" deoplete
-let g:deoplete#enable_at_startup = 1
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-let g:python3_host_prog = '/usr/bin/python3'
-" gem install solargraph
-let g:LanguageClient_serverCommands = {
-    \ 'ruby': ['solargraph'],
-    \ }
-call deoplete#custom#option('sources', {
-  \ '_': ['buffer'],
-  \ 'ruby': ['buffer', 'tag', 'LanguageClient'],
-  \})
 
-" easytags
-" let g:easytags_cmd = 'exctags'
+" gutentags
 set tags=./tags;
-let g:easytags_dynamic_files = 2
-let g:easytags_async = 1
 
 " vim-json
 let g:vim_json_syntax_conceal = 0
@@ -266,9 +248,9 @@ let g:ale_linters = {
 " :hi CursorLine cterm=NONE ctermbg=338
 
 " a little suggestion...
-:hi ColorColumn ctermbg=234
+" :hi ColorColumn ctermbg=234
 " let &colorcolumn=join(range(81,999),",")
-:set colorcolumn=80
+" :set colorcolumn=80
 
 " set tmux window name automatically
 augroup Tmux "{{{2
