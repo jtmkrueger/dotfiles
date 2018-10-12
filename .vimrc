@@ -37,7 +37,7 @@ Plug 'schickling/vim-bufonly'
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/emmet-vim'
 Plug 'jszakmeister/vim-togglecursor'
-" Plug 'blueyed/vim-diminactive'
+Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
 Plug 'itchyny/vim-cursorword'
 Plug 'Yggdroot/indentLine'
@@ -60,13 +60,14 @@ set lazyredraw
 set shell=/bin/bash
 syntax enable
 " let g:hybrid_use_Xresources = 1
-" let g:hybrid_custom_term_colors = 1
+let g:hybrid_custom_term_colors = 1
 " let g:hybrid_reduced_contrast = 1
-" set background=dark
+set background=dark
 " let g:nord_italic = 1
 " let g:nord_underline = 1
 " let g:nord_italic_comments = 1
-colorscheme nord
+" let g:nord_cursor_line_number_background = 1
+colorscheme hybrid
 set encoding=utf-8
 set fileencoding=utf-8
 set t_Co=256
@@ -110,6 +111,9 @@ set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 set list
 set listchars=tab:⬝➜
 set conceallevel=0
+
+" italic comments
+highlight Comment term=italic cterm=italic gui=italic
 
 " " Resize splits when the window is resized
 au VimResized * :wincmd =

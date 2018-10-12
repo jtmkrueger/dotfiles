@@ -13,7 +13,7 @@ export PATH=~/.local/bin:$PATH
 
 source $ZSH/oh-my-zsh.sh
 
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=black'
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 bindkey '^f' vi-forward-word
 
 # https://github.com/jtmkrueger/bobafett
