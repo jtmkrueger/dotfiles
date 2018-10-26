@@ -29,7 +29,8 @@ function bobafett() {
 }
 
 # TODO: is https://github.com/KittyKatt/screenFetch/issues/573 fixed?
-# screenfetch
+# until then use my fork
+screenfetch-dev
 
 #rbenv path & init
 export PATH="$HOME/.rbenv/bin:$PATH"
@@ -41,17 +42,6 @@ fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# export NVM_DIR="/home/john/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# # TODO: fuck this shit
-# nvm use --delete-prefix v8.6.0 --silent
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# elixir version management
-# test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
