@@ -5,7 +5,7 @@ ZSH_THEME="avit"
 
 DISABLE_AUTO_TITLE="true"
 
-plugins=(git bundler zsh-completions zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
+plugins=(git bundler zsh-system-clipboard zsh-completions zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
 
 export PATH="/usr/local/bin:/usr/bin:/.local/bin:/bin:/usr/sbin:/sbin::/.local/bin:$PATH"
 # whatever :\ screw you aws
