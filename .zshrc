@@ -15,6 +15,7 @@ source $ZSH/oh-my-zsh.sh
 
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 
+# START VI mode
 bindkey -v
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
@@ -41,6 +42,8 @@ function zle-line-finish
 zle -N zle-line-init
 zle -N zle-line-finish
 zle -N zle-keymap-select
+export KEYTIMEOUT=1
+# END VI mode
 
 # https://github.com/jtmkrueger/bobafett
 function bobafett() {
