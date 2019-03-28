@@ -1,7 +1,7 @@
 " START plug ----------------------------
 call plug#begin('~/.vim/plugged')
 
-" syntaxes
+" " syntaxes
 Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
 Plug 'jelera/vim-javascript-syntax'
@@ -16,15 +16,15 @@ Plug 'chrisbra/csv.vim'
 Plug 'elixir-editors/vim-elixir'
 Plug 'slashmili/alchemist.vim'
 
-" colorschemes
+" " colorschemes
 Plug 'w0ng/vim-hybrid'
 Plug 'arcticicestudio/nord-vim'
 Plug 'altercation/vim-colors-solarized'
 
-" autocompletion
+" " autocompletion
 Plug 'Valloric/YouCompleteMe'
 
-" tools
+" " tools
 Plug 'jtmkrueger/vim-c-cr'
 Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
@@ -39,7 +39,7 @@ Plug 'mattn/emmet-vim'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
-Plug 'itchyny/vim-cursorword'
+" Plug 'itchyny/vim-cursorword'
 Plug 'Yggdroot/indentLine'
 Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -52,9 +52,13 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
+
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " END plug ------------------------
 
+set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
+set guioptions-=e
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
@@ -68,7 +72,7 @@ set background=dark
 " let g:nord_italic_comments = 1
 " let g:nord_cursor_line_number_background = 1
 colorscheme hybrid
-set encoding=utf-8
+set encoding=UTF-8
 set fileencoding=utf-8
 set t_Co=256
 "set term=xterm-256color
@@ -104,13 +108,14 @@ set showtabline=2 " always show tabs
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
-set cursorcolumn " highlight the cursors current col
+" set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 set list
 set listchars=tab:⬝➜
 set conceallevel=0
+set completeopt=menu,menuone,preview,noselect,noinsert
 
 " italic comments
 highlight Comment term=italic cterm=italic gui=italic
@@ -199,8 +204,7 @@ let g:togglecursor_force = 'xterm'
 let g:togglecursor_default = 'blinking_block'
 
 "youcompleteme
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 " let g:ycm_python_binary_path = '/usr/bin/python3'
@@ -208,13 +212,13 @@ let g:ycm_seed_identifiers_with_syntax = 1
 
 
 " gutentags
-set tags=./tags;
+" set tags=./tags;
 
 " vim-json
 let g:vim_json_syntax_conceal = 0
 
 " tagbar
-nmap <C-t> :TagbarToggle<CR>
+" nmap <C-t> :TagbarToggle<CR>
 
 " emmet expansions
 let g:user_emmet_leader_key = '<c-e>'
@@ -223,38 +227,33 @@ let g:user_emmet_leader_key = '<c-e>'
 set signcolumn=yes
 
 " indentline
-" let g:indentLine_setColors = 0
 let g:indentLine_color_term = 'black'
 let g:indentLine_char = '│'
 let g:indentLine_concealcursor=0
 
 " airline
-" let g:airline_theme='solarized'
-" let g:airline_solarized_bg='dark'
 call airline#parts#define_minwidth('ffenc', 50000)
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#ale#error_symbol = '✘: '
-let g:airline#extensions#ale#warning_symbol = '⚠ : '
+let g:airline#extensions#ale#warning_symbol = ' : '
 let g:airline_powerline_fonts = 1
+" let g:airline_section_z = '%l/%L'
 
 " ale
+" Available language servers: 
+"   ruby (solargraph)
+"   bash (bash language server)
 let g:ale_sign_error = '✘'
-let g:ale_sign_warning = '⚠'
+let g:ale_sign_warning = ''
+let g:ale_completion_enabled = 1
 highlight ALEErrorSign ctermfg=160
 highlight ALEWarningSign ctermfg=220
 highlight ALEWarning ctermbg=236
 let g:ale_linters = {
-\   'javascript': ['eslint'],
+\   'javascript': ['eslint']
 \}
-
-" :hi CursorColumn cterm=NONE ctermbg=338
-" :hi CursorLine cterm=NONE ctermbg=338
-
-" a little suggestion...
-" :hi ColorColumn ctermbg=234
-" let &colorcolumn=join(range(81,999),",")
-" :set colorcolumn=80
+nmap <C-g> :ALEGoToDefinitionInTab<CR>
 
 " set tmux window name automatically
 augroup Tmux "{{{2

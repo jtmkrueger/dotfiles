@@ -5,7 +5,7 @@ set guioptions-=T
 "hide the scrollbars
 set guioptions=aAce
 
-set guifont=Fantasque\ Sans\ Mono\ Regular:h14
+set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h14
 
 set shell=bash
 
