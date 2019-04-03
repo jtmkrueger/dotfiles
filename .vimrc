@@ -22,24 +22,25 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'altercation/vim-colors-solarized'
 
 " " autocompletion
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 
 " " tools
 Plug 'jtmkrueger/vim-c-cr'
 Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
-Plug 'xolox/vim-misc'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'majutsushi/tagbar'
+Plug 'jsfaint/gen_tags.vim'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'schickling/vim-bufonly'
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/emmet-vim'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
-" Plug 'itchyny/vim-cursorword'
+" Plug 'itchyny/vim-cursorword' " too slow on mac :(
 Plug 'Yggdroot/indentLine'
 Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -102,7 +103,7 @@ set smartindent
 set textwidth=0 " disable auto line breaking on paste
 " set formatoptions+=l " don't break lines till after insert mode
 set number " line numbers
-set relativenumber " line numbers
+" set relativenumber " line numbers
 " highlight SignColumn ctermbg=black
 set showtabline=2 " always show tabs
 set scrolloff=5 " 5 line buffer below cursor when scrolling
@@ -118,7 +119,7 @@ set conceallevel=0
 set completeopt=menu,menuone,preview,noselect,noinsert
 
 " italic comments
-highlight Comment term=italic cterm=italic gui=italic
+" highlight Comment term=italic cterm=italic gui=italic
 
 " " Resize splits when the window is resized
 au VimResized * :wincmd =
@@ -205,20 +206,36 @@ let g:togglecursor_default = 'blinking_block'
 
 "youcompleteme
 " let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_seed_identifiers_with_syntax = 1
+" let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" let g:ycm_seed_identifiers_with_syntax = 1
 " let g:ycm_python_binary_path = '/usr/bin/python3'
 " let g:EclimCompletionMethod = 'omnifunc'
 
+let g:loaded_gentags#gtags = 1
 
-" gutentags
-" set tags=./tags;
+" deoplete
+let g:deoplete#enable_at_startup = 1
+inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" :
+\ <SID>check_back_space() ? "\<TAB>" :
+\ deoplete#mappings#manual_complete()
+function! s:check_back_space() abort "{{{
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+
+call deoplete#custom#option('sources', {
+\ '_': ['buffer', 'tag'],
+\})
+
+function g:Multiple_cursors_before()
+  call deoplete#custom#buffer_option('auto_complete', v:false)
+endfunction
+function g:Multiple_cursors_after()
+  call deoplete#custom#buffer_option('auto_complete', v:true)
+endfunction
 
 " vim-json
 let g:vim_json_syntax_conceal = 0
-
-" tagbar
-" nmap <C-t> :TagbarToggle<CR>
 
 " emmet expansions
 let g:user_emmet_leader_key = '<c-e>'

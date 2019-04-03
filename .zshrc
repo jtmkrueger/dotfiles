@@ -26,6 +26,7 @@ export PATH=~/.local/bin:$PATH
 export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
 
 alias mvim=/Applications/MacVim.app/Contents/bin/mvim
+alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
 
 source $ZSH/oh-my-zsh.sh
 
