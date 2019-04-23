@@ -26,6 +26,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'takkii/Bignyanco'
 
 " " tools
 Plug 'jtmkrueger/vim-c-cr'
@@ -224,7 +225,7 @@ function! s:check_back_space() abort "{{{
 endfunction"}}}
 
 call deoplete#custom#option('sources', {
-\ '_': ['buffer', 'tag'],
+\ '_': ['around', 'buffer', 'dictionary', 'file', 'member', 'tag'],
 \})
 
 function g:Multiple_cursors_before()

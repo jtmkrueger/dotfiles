@@ -16,7 +16,7 @@ POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\ufc96 "
 
 DISABLE_AUTO_TITLE="true"
 
-plugins=(git bundler zsh-system-clipboard zsh-completions zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
+plugins=(git bundler zsh-system-clipboard zsh-completions zsh-autosuggestions zsh-syntax-highlighting history-substring-search kubetail)
 
 export PATH="/usr/local/bin:/usr/bin:/.local/bin:/bin:/usr/sbin:/sbin::/.local/bin:$PATH"
 # whatever :\ screw you aws
@@ -31,6 +31,10 @@ alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
 source $ZSH/oh-my-zsh.sh
 
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+export GOPATH=$HOME/go
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
 
 # START VI mode
 bindkey -v
@@ -72,6 +76,15 @@ function bobafett() {
       userdel $i
     fi
   done
+}
+
+# shows the auth thing and puts the auth you want in the paste buffer
+# pass the auth you want in paste to it
+# dependency: https://github.com/pcarrier/gauth
+# EX: authie AWS
+function authie() {
+  gauth
+  gauth | grep $1 | awk '{$1=$2=$4=""; print $0}' | pbcopy
 }
 
 #rbenv path & init
