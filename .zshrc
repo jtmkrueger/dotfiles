@@ -81,8 +81,8 @@ function bobafett() {
 # shows the auth thing and puts the auth you want in the paste buffer
 # pass the auth you want in paste to it
 # dependency: https://github.com/pcarrier/gauth
-# EX: authie AWS
-function authie() {
+# EX: mfa AWS
+function mfa() {
   gauth
   gauth | grep $1 | awk '{$1=$2=$4=""; print $0}' | pbcopy
 }
