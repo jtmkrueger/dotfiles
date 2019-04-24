@@ -84,7 +84,7 @@ function bobafett() {
 # EX: mfa AWS
 function mfa() {
   gauth
-  gauth | grep $1 | awk '{$1=$2=$4=""; print $0}' | pbcopy
+  gauth | grep $1 | awk '{$1=$2=$4=""; print $0}' | sed 's/ //g' | pbcopy
 }
 
 #rbenv path & init
