@@ -31,7 +31,8 @@ alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
 source $ZSH/oh-my-zsh.sh
 
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-export GOPATH=$HOME/go
+export GOPATH=$HOME/.go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
@@ -85,6 +86,7 @@ function bobafett() {
 function mfa() {
   gauth
   gauth | grep $1 | awk '{$1=$2=$4=""; print $0}' | sed 's/ //g' | pbcopy
+  echo "copied $1 OTP to clipboard"
 }
 
 #rbenv path & init

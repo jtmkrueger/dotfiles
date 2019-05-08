@@ -130,6 +130,13 @@ set backup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
+" you can undo even when you close a buffer/VIM
+try
+    set undodir=~/.vim_runtime/temp_dirs/undodir
+    set undofile
+catch
+endtry
+
 " additional filetype detection
 autocmd BufRead,BufNewFile *.axlsx set filetype=ruby
 
