@@ -19,21 +19,15 @@ Plug 'slashmili/alchemist.vim'
 " " colorschemes
 Plug 'w0ng/vim-hybrid'
 Plug 'arcticicestudio/nord-vim'
-Plug 'altercation/vim-colors-solarized'
 
 " " autocompletion
 " Plug 'Valloric/YouCompleteMe'
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'takkii/Bignyanco'
 
 " " tools
 Plug 'jtmkrueger/vim-c-cr'
 Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
 Plug 'jsfaint/gen_tags.vim'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
@@ -59,6 +53,10 @@ Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " END plug ------------------------
 
+" omni completion
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
+
 set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
 set ttyfast
@@ -66,14 +64,14 @@ set lazyredraw
 set shell=/bin/bash
 syntax enable
 " let g:hybrid_use_Xresources = 1
-let g:hybrid_custom_term_colors = 1
+" let g:hybrid_custom_term_colors = 1
 " let g:hybrid_reduced_contrast = 1
 set background=dark
 " let g:nord_italic = 1
 " let g:nord_underline = 1
 " let g:nord_italic_comments = 1
 " let g:nord_cursor_line_number_background = 1
-colorscheme hybrid
+colorscheme nord
 set encoding=UTF-8
 set fileencoding=utf-8
 set t_Co=256
@@ -118,6 +116,11 @@ set list
 set listchars=tab:⬝➜
 set conceallevel=0
 set completeopt=menu,menuone,preview,noselect,noinsert
+
+" Normally, Vim messes with iskeyword when you open a shell file. This can
+" leak out, polluting other file types even after a 'set ft=' change. This
+" variable prevents the iskeyword change so it can't hurt anyone.
+let g:sh_noisk=1
 
 " italic comments
 " highlight Comment term=italic cterm=italic gui=italic
@@ -212,35 +215,7 @@ let g:diminactive_max_cols = 1000
 let g:togglecursor_force = 'xterm'
 let g:togglecursor_default = 'blinking_block'
 
-"youcompleteme
-" let g:ycm_collect_identifiers_from_tags_files = 1
-" let g:ycm_collect_identifiers_from_comments_and_strings = 1
-" let g:ycm_seed_identifiers_with_syntax = 1
-" let g:ycm_python_binary_path = '/usr/bin/python3'
-" let g:EclimCompletionMethod = 'omnifunc'
-
 let g:loaded_gentags#gtags = 1
-
-" deoplete
-let g:deoplete#enable_at_startup = 1
-inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" :
-\ <SID>check_back_space() ? "\<TAB>" :
-\ deoplete#mappings#manual_complete()
-function! s:check_back_space() abort "{{{
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
-
-call deoplete#custom#option('sources', {
-\ '_': ['around', 'buffer', 'dictionary', 'file', 'member', 'tag'],
-\})
-
-function g:Multiple_cursors_before()
-  call deoplete#custom#buffer_option('auto_complete', v:false)
-endfunction
-function g:Multiple_cursors_after()
-  call deoplete#custom#buffer_option('auto_complete', v:true)
-endfunction
 
 " vim-json
 let g:vim_json_syntax_conceal = 0
