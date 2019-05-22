@@ -21,9 +21,11 @@ plugins=(git bundler zsh-system-clipboard zsh-completions zsh-autosuggestions zs
 export PATH="/usr/local/bin:/usr/bin:/.local/bin:/bin:/usr/sbin:/sbin::/.local/bin:$PATH"
 # whatever :\ screw you aws
 export PATH=~/.local/bin:$PATH
-
-# VS code
-export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
+# go stuff
+export GOPATH=$HOME/.go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+# rust stuff
+export PATH=$PATH:$HOME/.cargo/env
 
 alias mvim=/Applications/MacVim.app/Contents/bin/mvim
 alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
@@ -31,8 +33,7 @@ alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
 source $ZSH/oh-my-zsh.sh
 
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-export GOPATH=$HOME/.go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
