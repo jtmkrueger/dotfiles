@@ -88,8 +88,8 @@ set magic "for regular epressions turn magic on
 set laststatus=2 " turn on statusline
 set statusline=%<%f\ %h%m%r\|\ %{fugitive#head()}%=%-14.(%l,%c%V%)\ %{&filetype}\ 
 if version >= 700
-  au InsertEnter * hi StatusLine term=reverse guifg=#001000 guibg=#80ff80
-  au InsertLeave * hi StatusLine term=reverse guifg=#001000 guibg=#00d000
+  au InsertEnter * hi StatusLine term=reverse guifg=#001000 guibg=#00d000
+  au InsertLeave * hi StatusLine term=reverse guifg=#00d000 guibg=#005000
 endif
 
 set noerrorbells " no errorbells!
@@ -120,14 +120,9 @@ set number " line numbers
 
 " this is all for the tabline
 set showtabline=2 " always show tabs
-hi TabLineFill guibg=#001000 guifg=#001000
-hi TabLine guifg=#00d000 guibg=#002100
-hi TabLineSel guifg=#001000 guibg=#80ff80
-hi Title guifg=#002100
 
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
-hi CursorLineNr guifg=#40a040
 set cursorline " highlight line cursor is on
 set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
@@ -248,7 +243,9 @@ let g:user_emmet_leader_key = '<c-e>'
 set signcolumn=yes
 
 " indentline
-let g:indentLine_color_term = 'black'
+let g:indentLine_setColors=1
+let g:indentLine_color_gui='#003000'
+let g:indentLine_bgcolor_gui = '#001000'
 let g:indentLine_char = '│'
 let g:indentLine_concealcursor=0
 
@@ -269,9 +266,9 @@ let g:indentLine_concealcursor=0
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = ''
 let g:ale_completion_enabled = 1
-highlight ALEErrorSign ctermfg=160
-highlight ALEWarningSign ctermfg=220
-highlight ALEWarning ctermbg=236
+highlight ALEErrorSign ctermfg=red
+highlight ALEWarningSign ctermfg=red
+highlight ALEWarning guibg=#003000
 let g:ale_linters = {
 \   'javascript': ['eslint']
 \}

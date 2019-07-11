@@ -199,24 +199,24 @@ colors:
   # Normal colors
   normal:
     black:   '0x001000'
-    red:     '0x00d000'
+    red:     '0x90ff90'
     green:   '0x00d000'
-    yellow:  '0x00d000'
-    blue:    '0x00d000'
-    magenta: '0x00d000'
-    cyan:    '0x00d000'
+    yellow:  '0x00ff00'
+    blue:    '0x009000'
+    magenta: '0x40d040'
+    cyan:    '0x60ff60'
     white:   '0x40a040'
 
   # Bright colors
   bright:
-    black:   '0x008000'
-    red:     '0x00d000'
+    black:   '0x003000'
+    red:     '0x20a020'
     green:   '0x80ff80'
-    yellow:  '0x00d000'
-    blue:    '0x00d000'
-    magenta: '0x00d000'
-    cyan:    '0x00d000'
-    white:   '0x00d000'
+    yellow:  '0x002100'
+    blue:    '0x006000'
+    magenta: '0x30ff30'
+    cyan:    '0x00c000'
+    white:   '0x20ff00'
 
   # Dim colors
   #
