@@ -3,7 +3,7 @@
 # weather
 # =======
 #
-# By Jezen Thomas <jezen@jezenthomas.com> Modified by John Krueger
+# By Jezen Thomas <jezen@jezenthomas.com> Modified heavily by John Krueger
 #
 # This script sends a couple of requests over the network to retrieve
 # approximate location data, and the current weather for that location. This is
@@ -13,6 +13,7 @@
 # There are three things you will need to do before using this script.
 #
 # 1. Install jq with your package manager of choice (homebrew, apt-get, etc.)
+# 2. Install whereami for mac (https://github.com/robmathers/WhereAmI)
 # 2. Sign up for a free account with OpenWeatherMap to grab your API key
 # 3. Add your OpenWeatherMap API key where it says API_KEY
 # 4. Stick this script somewhere in the path. I'm symlinking it into /usr/local/bin
@@ -73,13 +74,13 @@ weather_icon() {
   esac
 }
 
-LOCATION=$(curl --silent http://ip-api.com/csv)
-CITY=$(echo "$LOCATION" | cut -d , -f 6)
-LAT=$(echo "$LOCATION" | cut -d , -f 8)
-LON=$(echo "$LOCATION" | cut -d , -f 9)
+LOCATION=$(whereami)
+LON=$(echo $LOCATION | awk '{print $4 }')
+LAT=$(echo $LOCATION | awk '{print $2 }')
 
 WEATHER=$(curl --silent http://api.openweathermap.org/data/2.5/weather\?lat="$LAT"\&lon="$LON"\&APPID="$API_KEY"\&units=imperial)
 
+CITY=$(echo "$WEATHER" | jq .name | tr -d '"')
 CATEGORY=$(echo "$WEATHER" | jq .weather[0].id)
 TEMP="$(echo "$WEATHER" | jq .main.temp | cut -d . -f 1)°F"
 WIND_SPEED="$(echo "$WEATHER" | jq .wind.speed | awk '{print int($1+0.5)}')mh"

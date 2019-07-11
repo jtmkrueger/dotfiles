@@ -17,6 +17,7 @@ window:
   #
   # Specified in number of columns/lines, not pixels.
   # If both are `0`, this setting is ignored.
+  # FIXME: this is a hack to make windowed fill the screen
   dimensions:
     columns: 0
     lines: 0
@@ -52,7 +53,8 @@ window:
   decorations: buttonless
 
   # When true, alacritty starts maximized.
-  start_maximized: true
+  # options: Windowed, Maximized, Fullscreen, SimpleFullscreen
+  startup_mode: SimpleFullscreen
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.
@@ -82,7 +84,7 @@ scrolling:
 # Some applications, like Emacs, rely on knowing about the width of a tab.
 # To prevent unexpected behavior in these applications, it's also required to
 # change the `it` value in terminfo when altering this setting.
-tabspaces: 8
+tabspaces: 2
 
 # Font configuration (changes require restart)
 font:
@@ -154,10 +156,10 @@ font:
   use_thin_strokes: true
 
 # Display the time it takes to redraw each frame.
-render_timer: false
+debug.render_timer: false
 
 # Keep the log file after quitting Alacritty.
-persistent_logging: false
+debug.persistent_logging: false
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
@@ -166,8 +168,8 @@ draw_bold_text_with_bright_colors: true
 colors:
   # Default colors
   primary:
-    background: '0x1c1f20'
-    foreground: '0xc4c7c6'
+    background: '0x001000'
+    foreground: '0x00d000'
 
     # Bright and dim foreground colors
     #
@@ -196,25 +198,25 @@ colors:
 
   # Normal colors
   normal:
-    black:   '0x27292c'
-    red:     '0xa54141'
-    green:   '0x8c943f'
-    yellow:  '0xde925e'
-    blue:    '0x5f809d'
-    magenta: '0x85668e'
-    cyan:    '0x5e8c86'
-    white:   '0x707780'
+    black:   '0x001000'
+    red:     '0x00d000'
+    green:   '0x00d000'
+    yellow:  '0x00d000'
+    blue:    '0x00d000'
+    magenta: '0x00d000'
+    cyan:    '0x00d000'
+    white:   '0x40a040'
 
   # Bright colors
   bright:
-    black:   '0x373b40'
-    red:     '0xcc6565'
-    green:   '0xb5bc67'
-    yellow:  '0xf0c673'
-    blue:    '0x81a2bd'
-    magenta: '0xb294ba'
-    cyan:    '0x8abeb6'
-    white:   '0xc5c8c6'
+    black:   '0x008000'
+    red:     '0x00d000'
+    green:   '0x80ff80'
+    yellow:  '0x00d000'
+    blue:    '0x00d000'
+    magenta: '0x00d000'
+    cyan:    '0x00d000'
+    white:   '0x00d000'
 
   # Dim colors
   #

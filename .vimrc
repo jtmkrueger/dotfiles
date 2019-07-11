@@ -19,6 +19,7 @@ Plug 'slashmili/alchemist.vim'
 " " colorschemes
 Plug 'w0ng/vim-hybrid'
 Plug 'arcticicestudio/nord-vim'
+Plug 'dracula/vim'
 
 " " autocompletion
 " Plug 'Valloric/YouCompleteMe'
@@ -28,12 +29,12 @@ Plug 'jtmkrueger/vim-c-cr'
 Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
 Plug 'jsfaint/gen_tags.vim'
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'bling/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/emmet-vim'
 Plug 'jszakmeister/vim-togglecursor'
-Plug 'blueyed/vim-diminactive'
+" Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
 " Plug 'itchyny/vim-cursorword' " too slow on mac :(
 Plug 'Yggdroot/indentLine'
@@ -62,26 +63,35 @@ set guioptions-=e
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
-syntax enable
+" syntax enable
 " let g:hybrid_use_Xresources = 1
-let g:hybrid_custom_term_colors = 1
+" let g:hybrid_custom_term_colors = 1
 " let g:hybrid_reduced_contrast = 1
-set background=dark
+" set background=dark
 " let g:nord_italic = 1
 " let g:nord_underline = 1
 " let g:nord_italic_comments = 1
 " let g:nord_cursor_line_number_background = 1
-" set termguicolors
+set termguicolors
 " let g:nord_comment_brightness = 20
 " let g:nord_cursor_line_number_background = 1
-colorscheme hybrid
+" let g:dracula_italic = 0
+colorscheme phosphor
 set encoding=UTF-8
 set fileencoding=utf-8
 set t_Co=256
 "set term=xterm-256color
 " set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
+
+" this is all statusline stuff
 set laststatus=2 " turn on statusline
+set statusline=%<%f\ %h%m%r\|\ %{fugitive#head()}%=%-14.(%l,%c%V%)\ %{&filetype}\ 
+if version >= 700
+  au InsertEnter * hi StatusLine term=reverse guifg=#001000 guibg=#80ff80
+  au InsertLeave * hi StatusLine term=reverse guifg=#001000 guibg=#00d000
+endif
+
 set noerrorbells " no errorbells!
 set vb t_vb= " seriously, no errorbells!!
 
@@ -107,11 +117,19 @@ set textwidth=0 " disable auto line breaking on paste
 set number " line numbers
 " set relativenumber " line numbers
 " highlight SignColumn ctermbg=black
+
+" this is all for the tabline
 set showtabline=2 " always show tabs
+hi TabLineFill guibg=#001000 guifg=#001000
+hi TabLine guifg=#00d000 guibg=#002100
+hi TabLineSel guifg=#001000 guibg=#80ff80
+hi Title guifg=#002100
+
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
+hi CursorLineNr guifg=#40a040
 set cursorline " highlight line cursor is on
-" set cursorcolumn " highlight the cursors current col
+set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
@@ -235,12 +253,13 @@ let g:indentLine_char = '│'
 let g:indentLine_concealcursor=0
 
 " airline
-call airline#parts#define_minwidth('ffenc', 50000)
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline#extensions#ale#error_symbol = '✘: '
-let g:airline#extensions#ale#warning_symbol = ' : '
-let g:airline_powerline_fonts = 1
+" call airline#parts#define_minwidth('ffenc', 50000)
+" let g:airline_theme='base16_default'
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#show_buffers = 0
+" let g:airline#extensions#ale#error_symbol = '✘: '
+" let g:airline#extensions#ale#warning_symbol = ' : '
+" let g:airline_powerline_fonts = 1
 " let g:airline_section_z = '%l/%L'
 
 " ale
