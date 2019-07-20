@@ -212,7 +212,7 @@ colors:
     black:   '0x003000'
     red:     '0x20a020'
     green:   '0x80ff80'
-    yellow:  '0x002100'
+    yellow:  '0x001900'
     blue:    '0x006000'
     magenta: '0x30ff30'
     cyan:    '0x00c000'
@@ -272,7 +272,7 @@ visual_bell:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 1.0
+background_opacity: 0.9
 
 # Mouse bindings
 #

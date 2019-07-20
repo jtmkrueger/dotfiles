@@ -32,7 +32,7 @@ alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
 
 source $ZSH/oh-my-zsh.sh
 
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
 
 export VISUAL=vim
