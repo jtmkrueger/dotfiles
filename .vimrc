@@ -27,8 +27,8 @@ Plug 'dracula/vim'
 " " tools
 Plug 'jtmkrueger/vim-c-cr'
 Plug 'mileszs/ack.vim'
-Plug 'w0rp/ale'
-Plug 'jsfaint/gen_tags.vim'
+" Plug 'w0rp/ale'
+" Plug 'jsfaint/gen_tags.vim'
 " Plug 'bling/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
@@ -263,16 +263,16 @@ let g:indentLine_concealcursor=0
 " Available language servers: 
 "   ruby (solargraph)
 "   bash (bash language server)
-let g:ale_sign_error = '✘'
-let g:ale_sign_warning = ''
-let g:ale_completion_enabled = 1
-highlight ALEErrorSign ctermfg=red
-highlight ALEWarningSign ctermfg=red
-highlight ALEWarning guibg=#003000
-let g:ale_linters = {
-\   'javascript': ['eslint']
-\}
-nmap <C-g> :ALEGoToDefinitionInTab<CR>
+" let g:ale_sign_error = '✘'
+" let g:ale_sign_warning = ''
+" let g:ale_completion_enabled = 1
+" highlight ALEErrorSign ctermfg=red
+" highlight ALEWarningSign ctermfg=red
+" highlight ALEWarning guibg=#003000
+" let g:ale_linters = {
+" \   'javascript': ['eslint']
+" \}
+" nmap <C-g> :ALEGoToDefinitionInTab<CR>
 
 " set tmux window name automatically
 augroup Tmux "{{{2
