@@ -30,4 +30,4 @@ else
   CHARGEICON=;
 fi
 
-printf "%s" "$CHARGEICON$POWERBAR $TIME"
+printf "%s" "$CHARGEICON$POWERBAR $TIME";

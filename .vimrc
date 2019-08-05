@@ -85,8 +85,21 @@ set t_Co=256
 set magic "for regular epressions turn magic on
 
 " this is all statusline stuff
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return printf(
+    \   ' %d ✘ %d',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
 set laststatus=2 " turn on statusline
-set statusline=%<%f\ %h%m%r\|\ %{fugitive#head()}%=%-14.(%l,%c%V%)\ %{&filetype}\ 
+set statusline=%<%f\ %h%m%r\|\ %{fugitive#head()}%=%-14.(%l,%c%V%)\ %{&filetype}\ \|\ %{LinterStatus()}\ 
 if version >= 700
   au InsertEnter * hi StatusLine term=reverse guifg=#001000 guibg=#00d000
   au InsertLeave * hi StatusLine term=reverse guifg=#00d000 guibg=#005000
