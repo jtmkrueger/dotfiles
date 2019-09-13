@@ -27,7 +27,7 @@ Plug 'Valloric/YouCompleteMe'
 " " tools
 Plug 'jtmkrueger/vim-c-cr'
 Plug 'mileszs/ack.vim'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'jsfaint/gen_tags.vim'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -36,7 +36,7 @@ Plug 'mattn/emmet-vim'
 Plug 'jszakmeister/vim-togglecursor'
 " Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
-Plug 'itchyny/vim-cursorword' " too slow on mac :(
+" Plug 'itchyny/vim-cursorword' " too slow on mac :(
 Plug 'Yggdroot/indentLine'
 Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -137,7 +137,7 @@ set showtabline=2 " always show tabs
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
-set cursorcolumn " highlight the cursors current col
+" set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
