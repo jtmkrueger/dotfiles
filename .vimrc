@@ -22,21 +22,21 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'dracula/vim'
 
 " " autocompletion
-" Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe'
 
 " " tools
 Plug 'jtmkrueger/vim-c-cr'
 Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
 Plug 'jsfaint/gen_tags.vim'
-" Plug 'bling/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/emmet-vim'
 Plug 'jszakmeister/vim-togglecursor'
 " Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
-" Plug 'itchyny/vim-cursorword' " too slow on mac :(
+Plug 'itchyny/vim-cursorword' " too slow on mac :(
 Plug 'Yggdroot/indentLine'
 Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -67,7 +67,7 @@ set shell=/bin/bash
 " let g:hybrid_use_Xresources = 1
 " let g:hybrid_custom_term_colors = 1
 " let g:hybrid_reduced_contrast = 1
-" set background=dark
+set background=dark
 " let g:nord_italic = 1
 " let g:nord_underline = 1
 " let g:nord_italic_comments = 1
@@ -76,7 +76,7 @@ set termguicolors
 " let g:nord_comment_brightness = 20
 " let g:nord_cursor_line_number_background = 1
 " let g:dracula_italic = 0
-colorscheme phosphor
+colorscheme hybrid
 set encoding=UTF-8
 set fileencoding=utf-8
 set t_Co=256
@@ -84,26 +84,26 @@ set t_Co=256
 " set autoread " auto read when a file is changed from the outside
 set magic "for regular epressions turn magic on
 
-" this is all statusline stuff
-function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
+" " this is all statusline stuff
+" function! LinterStatus() abort
+"     let l:counts = ale#statusline#Count(bufnr(''))
 
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
+"     let l:all_errors = l:counts.error + l:counts.style_error
+"     let l:all_non_errors = l:counts.total - l:all_errors
 
-    return printf(
-    \   ' %d ✘ %d',
-    \   all_non_errors,
-    \   all_errors
-    \)
-endfunction
+"     return printf(
+"     \   ' %d ✘ %d',
+"     \   all_non_errors,
+"     \   all_errors
+"     \)
+" endfunction
 
-set laststatus=2 " turn on statusline
-set statusline=%<%f\ %h%m%r\|\ %{fugitive#head()}%=%-14.(%l,%c%V%)\ %{&filetype}\ \|\ %{LinterStatus()}\ 
-if version >= 700
-  au InsertEnter * hi StatusLine term=reverse guifg=#001000 guibg=#00d000
-  au InsertLeave * hi StatusLine term=reverse guifg=#00d000 guibg=#005000
-endif
+" set laststatus=2 " turn on statusline
+" set statusline=%<%f\ %h%m%r\|\ %{fugitive#head()}%=%-14.(%l,%c%V%)\ %{&filetype}\ \|\ %{LinterStatus()}\ 
+" if version >= 700
+"   au InsertEnter * hi StatusLine term=reverse guifg=#001000 guibg=#00d000
+"   au InsertLeave * hi StatusLine term=reverse guifg=#00d000 guibg=#005000
+" endif
 
 set noerrorbells " no errorbells!
 set vb t_vb= " seriously, no errorbells!!
@@ -206,6 +206,15 @@ let g:fzf_action = {
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
 
+" YouCompleteMe
+let g:ycm_language_server = [
+  \   {
+  \     'name': 'ruby',
+  \     'cmdline': [ expand( '$HOME/.rbenv/shims/solargraph' ), 'stdio' ],
+  \     'filetypes': [ 'ruby' ],
+  \   }
+  \ ]
+
 " up/down on wrapped lines
 nnoremap j gj
 nnoremap k gk
@@ -257,20 +266,20 @@ set signcolumn=yes
 
 " indentline
 let g:indentLine_setColors=1
-let g:indentLine_color_gui='#003000'
-let g:indentLine_bgcolor_gui = '#001000'
+" let g:indentLine_color_gui='#003000'
+" let g:indentLine_bgcolor_gui = '#001000'
 let g:indentLine_char = '│'
 let g:indentLine_concealcursor=0
 
 " airline
 " call airline#parts#define_minwidth('ffenc', 50000)
 " let g:airline_theme='base16_default'
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#show_buffers = 0
-" let g:airline#extensions#ale#error_symbol = '✘: '
-" let g:airline#extensions#ale#warning_symbol = ' : '
-" let g:airline_powerline_fonts = 1
-" let g:airline_section_z = '%l/%L'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#ale#error_symbol = '✘: '
+let g:airline#extensions#ale#warning_symbol = ' : '
+let g:airline_powerline_fonts = 1
+let g:airline_section_z = '%l/%L'
 
 " ale
 " Available language servers: 
