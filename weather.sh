@@ -30,45 +30,47 @@ set -e
 # Weather data reference: http://openweathermap.org/weather-conditions
 weather_icon() {
   case $1 in
-    200) echo ☔️
+    200) echo ﭼ
       ;;
-    211) echo ☔️
+    211) echo ﭼ
       ;;
-    300) echo ☔️
+    300) echo 
       ;;
-    301) echo ☔️
+    301) echo 
       ;;
-    500) echo ☔️
+    500) echo 
       ;;
-    501) echo ☔️
+    501) echo 
       ;;
-    521) echo ☔️
+    511) echo ﭽ
       ;;
-    531) echo ☔️
+    521) echo 
       ;;
-    600) echo ❄️
+    531) echo 
       ;;
-    601) echo ❄️
+    600) echo 
       ;;
-    602) echo ❄️
+    601) echo 
       ;;
-    701) echo ≋
+    602) echo 
       ;;
-    711) echo ≋
+    701) echo 
       ;;
-    721) echo ≋
+    711) echo 
       ;;
-    741) echo ≋
+    721) echo 
       ;;
-    800) echo ☀️
+    741) echo 
       ;;
-    801) echo ☁️
+    800) echo 
       ;;
-    802) echo ☁️
+    801) echo 
       ;;
-    803) echo ☁️
+    802) echo 
       ;;
-    804) echo ☁️
+    803) echo 
+      ;;
+    804) echo 
       ;;
     *) echo "$1"
   esac

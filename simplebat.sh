@@ -14,20 +14,24 @@ CHARGING=$(pmset -g batt | grep present | awk '{ print $4 }' )
 
 # this is wacky, but forces the string to be a number
 PERCENTLESS=$((${POWER%??}))
-if [ "$PERCENTLESS" -ge 1 -a "$PERCENTLESS" -le 12 ]; then POWERBAR=▁;
-elif [ "$PERCENTLESS" -ge 13 -a "$PERCENTLESS" -le 24 ]; then POWERBAR=▂;
-elif [ "$PERCENTLESS" -ge 25 -a "$PERCENTLESS" -le 36 ]; then POWERBAR=▃;
-elif [ "$PERCENTLESS" -ge 37 -a "$PERCENTLESS" -le 48 ]; then POWERBAR=▄;
-elif [ "$PERCENTLESS" -ge 49 -a "$PERCENTLESS" -le 60 ]; then POWERBAR=▅;
-elif [ "$PERCENTLESS" -ge 61 -a "$PERCENTLESS" -le 72 ]; then POWERBAR=▆;
-elif [ "$PERCENTLESS" -ge 73 -a "$PERCENTLESS" -le 84 ]; then POWERBAR=▇;
-elif [ "$PERCENTLESS" -ge 85 -a "$PERCENTLESS" -le 100 ]; then POWERBAR=█; fi
 
 # are we charging?
 if [[ $CHARGING != 'discharging;' ]]; then
-  CHARGEICON=⚡;
+  if [ "$PERCENTLESS" -ge 1 -a "$PERCENTLESS" -le 14 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 15 -a "$PERCENTLESS" -le 29 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 30 -a "$PERCENTLESS" -le 44 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 45 -a "$PERCENTLESS" -le 59 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 60 -a "$PERCENTLESS" -le 74 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 75 -a "$PERCENTLESS" -le 89 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 90 -a "$PERCENTLESS" -le 100 ]; then POWERBAR=; fi
 else
-  CHARGEICON=;
+  if [ "$PERCENTLESS" -ge 1 -a "$PERCENTLESS" -le 14 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 15 -a "$PERCENTLESS" -le 29 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 30 -a "$PERCENTLESS" -le 44 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 45 -a "$PERCENTLESS" -le 59 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 60 -a "$PERCENTLESS" -le 74 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 75 -a "$PERCENTLESS" -le 89 ]; then POWERBAR=;
+  elif [ "$PERCENTLESS" -ge 90 -a "$PERCENTLESS" -le 100 ]; then POWERBAR=; fi
 fi
 
-printf "%s" "$CHARGEICON$POWERBAR $TIME";
+printf "%s" "$POWERBAR $PERCENTLESS% ($TIME)";

@@ -195,26 +195,6 @@ set splitright splitbelow
 " I want my custom commands!
 imap <C-t> <%= %><Left><Left><Left>
 
-" easy search with the silver searcher
-let g:ackprg = 'ag --nogroup --column'
-nnoremap <c-a> :Ack!<Space>
-
-" FZF
-nnoremap <c-f> :FZF<Enter>
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-" YouCompleteMe
-let g:ycm_language_server = [
-  \   {
-  \     'name': 'ruby',
-  \     'cmdline': [ expand( '$HOME/.rbenv/shims/solargraph' ), 'stdio' ],
-  \     'filetypes': [ 'ruby' ],
-  \   }
-  \ ]
-
 " up/down on wrapped lines
 nnoremap j gj
 nnoremap k gk
@@ -246,6 +226,27 @@ vnoremap L g_
 
 noremap <TAB> % " easer to hit
 
+" easy search with the silver searcher
+let g:ackprg = 'ag --nogroup --column'
+nnoremap <c-a> :Ack!<Space>
+
+" FZF
+nnoremap <c-f> :FZF<Enter>
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" YouCompleteMe
+let g:ycm_language_server = [
+  \   {
+  \     'name': 'ruby',
+  \     'cmdline': [ expand( '$HOME/.rbenv/shims/solargraph' ), 'stdio' ],
+  \     'filetypes': [ 'ruby' ],
+  \   }
+  \ ]
+let g:ycm_collect_identifiers_from_tags_files = 1
+
 " catch very long wrapped lines with diminactive
 let g:diminactive_max_cols = 1000
 
@@ -266,14 +267,10 @@ set signcolumn=yes
 
 " indentline
 let g:indentLine_setColors=1
-" let g:indentLine_color_gui='#003000'
-" let g:indentLine_bgcolor_gui = '#001000'
 let g:indentLine_char = '│'
 let g:indentLine_concealcursor=0
 
 " airline
-" call airline#parts#define_minwidth('ffenc', 50000)
-" let g:airline_theme='base16_default'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#ale#error_symbol = '✘: '
@@ -284,13 +281,11 @@ let g:airline_section_z = '%l/%L'
 " ale
 " Available language servers: 
 "   ruby (solargraph)
-"   bash (bash language server)
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = ''
-let g:ale_completion_enabled = 1
+let g:ale_completion_enabled = 0
 highlight ALEErrorSign ctermfg=red
 highlight ALEWarningSign ctermfg=red
-highlight ALEWarning guibg=#003000
 let g:ale_linters = {
 \   'javascript': ['eslint']
 \}
