@@ -22,7 +22,8 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'dracula/vim'
 
 " " autocompletion
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " " tools
 Plug 'jtmkrueger/vim-c-cr'
@@ -158,9 +159,12 @@ let g:sh_noisk=1
 au VimResized * :wincmd =
 
 " Store swap files in a central spot
-set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+" set backup
+" set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+" set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set nobackup
+set nowritebackup
+set shortmess+=c
 
 " you can undo even when you close a buffer/VIM
 try
@@ -238,14 +242,29 @@ let g:fzf_action = {
   \ 'ctrl-v': 'vsplit' }
 
 " YouCompleteMe
-let g:ycm_language_server = [
-  \   {
-  \     'name': 'ruby',
-  \     'cmdline': [ expand( '$HOME/.rbenv/shims/solargraph' ), 'stdio' ],
-  \     'filetypes': [ 'ruby' ],
-  \   }
-  \ ]
-let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_language_server = [
+"   \   {
+"   \     'name': 'ruby',
+"   \     'cmdline': [ expand( '$HOME/.rbenv/shims/solargraph' ), 'stdio' ],
+"   \     'filetypes': [ 'ruby' ],
+"   \   }
+"   \ ]
+" let g:ycm_collect_identifiers_from_tags_files = 1
+
+" COC
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+let g:coc_global_extensions = ['coc-solargraph']
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
 " catch very long wrapped lines with diminactive
 let g:diminactive_max_cols = 1000
