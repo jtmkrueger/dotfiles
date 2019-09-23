@@ -16,7 +16,7 @@ POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\ufc96 "
 
 DISABLE_AUTO_TITLE="true"
 
-plugins=(git bundler zsh-system-clipboard zsh-completions zsh-autosuggestions zsh-syntax-highlighting history-substring-search kubetail)
+plugins=(git bundler zsh-system-clipboard zsh-completions zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
 
 export PATH="/usr/local/bin:/usr/bin:/.local/bin:/bin:/usr/sbin:/sbin::/.local/bin:$PATH"
 # whatever :\ screw you aws
@@ -26,9 +26,11 @@ export GOPATH=$HOME/.go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 # rust stuff
 export PATH=$PATH:$HOME/.cargo/env
+export PATH="/usr/local/opt/openssl/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include"
 
 alias mvim=/Applications/MacVim.app/Contents/bin/mvim
-alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
 
 source $ZSH/oh-my-zsh.sh
 

@@ -70,14 +70,11 @@ set shell=/bin/bash
 " let g:hybrid_reduced_contrast = 1
 set background=dark
 " let g:nord_italic = 1
-" let g:nord_underline = 1
-" let g:nord_italic_comments = 1
-" let g:nord_cursor_line_number_background = 1
+let g:nord_underline = 1
 set termguicolors
-" let g:nord_comment_brightness = 20
-" let g:nord_cursor_line_number_background = 1
+let g:nord_cursor_line_number_background = 1
 " let g:dracula_italic = 0
-colorscheme hybrid
+colorscheme nord
 set encoding=UTF-8
 set fileencoding=utf-8
 set t_Co=256
