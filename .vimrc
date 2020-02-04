@@ -15,6 +15,7 @@ Plug 'tmux-plugins/vim-tmux'
 Plug 'chrisbra/csv.vim'
 Plug 'elixir-editors/vim-elixir'
 Plug 'slashmili/alchemist.vim'
+Plug 'slim-template/vim-slim'
 
 " " colorschemes
 Plug 'w0ng/vim-hybrid'
@@ -23,7 +24,7 @@ Plug 'dracula/vim'
 
 " " autocompletion
 " Plug 'Valloric/YouCompleteMe'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " " tools
 Plug 'jtmkrueger/vim-c-cr'
@@ -70,11 +71,11 @@ set shell=/bin/bash
 " let g:hybrid_reduced_contrast = 1
 set background=dark
 " let g:nord_italic = 1
-let g:nord_underline = 1
+" let g:nord_underline = 1
 set termguicolors
-let g:nord_cursor_line_number_background = 1
+" let g:nord_cursor_line_number_background = 1
 " let g:dracula_italic = 0
-colorscheme nord
+colorscheme hybrid
 set encoding=UTF-8
 set fileencoding=utf-8
 set t_Co=256
@@ -242,26 +243,11 @@ let g:fzf_action = {
 " let g:ycm_language_server = [
 "   \   {
 "   \     'name': 'ruby',
-"   \     'cmdline': [ expand( '$HOME/.rbenv/shims/solargraph' ), 'stdio' ],
+"   \     'cmdline': [ expand( '$HOME/.gem/ruby/2.6.4/bin/solargraph' ), 'stdio' ],
 "   \     'filetypes': [ 'ruby' ],
 "   \   }
 "   \ ]
 " let g:ycm_collect_identifiers_from_tags_files = 1
-
-" COC
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-let g:coc_global_extensions = ['coc-solargraph']
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
 
 " catch very long wrapped lines with diminactive
 let g:diminactive_max_cols = 1000
@@ -303,8 +289,10 @@ let g:ale_completion_enabled = 0
 highlight ALEErrorSign ctermfg=red
 highlight ALEWarningSign ctermfg=red
 let g:ale_linters = {
-\   'javascript': ['eslint']
+\   'javascript': ['eslint'],
+\   'ruby': ['rubocop']
 \}
+let g:ale_lint_on_text_changed = 0
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
 
 " set tmux window name automatically

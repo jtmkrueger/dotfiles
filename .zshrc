@@ -4,15 +4,28 @@ export PYTHON_CONFIGURE_OPTS="--enable-framework"
 
 # install: git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 ZSH_THEME="powerlevel9k/powerlevel9k"
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(time dir dir_writable vcs root_indicator background_jobs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
-POWERLEVEL9K_RBENV_ALWAYS=true
-POWERLEVEL9K_RBENV_PROMPT_ALWAYS_SHOW=true
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status dir dir_writable)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(os_icon vcs chruby)
 POWERLEVEL9K_MODE='nerdfont-complete'
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_RPROMPT_ON_NEWLINE=false
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\ufc96 "
+POWERLEVEL9K_SHOW_CHANGESET=true
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+# POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\ufc96 "
+POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR=''
+POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=''
+POWERLEVEL9K_TIME_BACKGROUND='grey15'
+POWERLEVEL9K_OS_ICON_BACKGROUND='grey15'
+POWERLEVEL9K_CHRUBY_BACKGROUND='grey15'
+POWERLEVEL9K_STATUS_ERROR_BACKGROUND='grey15'
+POWERLEVEL9K_STATUS_OK_BACKGROUND='grey15'
+POWERLEVEL9K_DIR_HOME_BACKGROUND='grey23'
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND='grey23'
+POWERLEVEL9K_VCS_CLEAN_FOREGROUND='blue'
+POWERLEVEL9K_VCS_CLEAN_BACKGROUND='grey19'
+POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='yellow'
+POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='grey19'
+POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='red'
+POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='grey19'
 
 DISABLE_AUTO_TITLE="true"
 
@@ -47,8 +60,8 @@ bindkey -M vicmd 'j' history-substring-search-down
 bindkey -M vicmd 'H' beginning-of-line
 bindkey -M vicmd 'L' end-of-line
 function zle-keymap-select zle-line-init {
-    RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
-    RPS2=$RPS1
+    # RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+    # RPS2=$RPS1
     zle reset-prompt
     case $KEYMAP in
         vicmd)      echo -ne '\e[1 q';;  # block cursor
@@ -92,9 +105,17 @@ function mfa() {
   echo "copied $1 OTP to clipboard"
 }
 
-#rbenv path & init
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+# because I do this like 5 times a day
+function zup() {
+  echo "bundling and yarning"
+  bundle
+  yarn install --check-files
+}
+
+# chruby
+# https://medium.com/@heidar/switching-from-rbenv-to-postmodern-s-ruby-install-and-chruby-f0daa24b36e6
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"

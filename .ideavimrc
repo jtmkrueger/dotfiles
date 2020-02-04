@@ -1,6 +1,13 @@
 set visualbell
 set noerrorbells
 set number
+set surround
+set commentary
+set clipboard=unnamed
+set incsearch
+set ignorecase
+set smartcase
+set wildmenu
 
 " Reselect visual block after indent
 vnoremap < <gv
@@ -10,3 +17,6 @@ vnoremap > >gv
 noremap H ^
 noremap L $
 vnoremap L g_
+
+" this doesn't actually work yet :(
+map <C-t> <F12>
