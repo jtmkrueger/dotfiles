@@ -23,7 +23,7 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'dracula/vim'
 
 " " autocompletion
-" Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe'
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " " tools
@@ -143,7 +143,7 @@ set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
 set list
 set listchars=tab:⬝➜
 set conceallevel=0
-set completeopt=menu,menuone,preview,noselect,noinsert
+set completeopt=menu,menuone,noselect,noinsert
 
 " Normally, Vim messes with iskeyword when you open a shell file. This can
 " leak out, polluting other file types even after a 'set ft=' change. This
@@ -240,14 +240,15 @@ let g:fzf_action = {
   \ 'ctrl-v': 'vsplit' }
 
 " YouCompleteMe
-" let g:ycm_language_server = [
-"   \   {
-"   \     'name': 'ruby',
-"   \     'cmdline': [ expand( '$HOME/.gem/ruby/2.6.4/bin/solargraph' ), 'stdio' ],
-"   \     'filetypes': [ 'ruby' ],
-"   \   }
-"   \ ]
-" let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_language_server = [
+  \   {
+  \     'name': 'ruby',
+  \     'cmdline': [ expand( '$HOME/.gem/ruby/2.6.5/bin/solargraph' ), 'stdio' ],
+  \     'filetypes': [ 'ruby' ],
+  \   }
+  \ ]
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_add_preview_to_completeopt = 0
 
 " catch very long wrapped lines with diminactive
 let g:diminactive_max_cols = 1000
