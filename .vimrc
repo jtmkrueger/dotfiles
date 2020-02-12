@@ -19,34 +19,24 @@ Plug 'slim-template/vim-slim'
 
 " " colorschemes
 Plug 'w0ng/vim-hybrid'
-Plug 'arcticicestudio/nord-vim'
 Plug 'dracula/vim'
 
-" " autocompletion
-Plug 'Valloric/YouCompleteMe'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 " " tools
-Plug 'jtmkrueger/vim-c-cr'
+Plug 'ycm-core/YouCompleteMe'
 Plug 'mileszs/ack.vim'
 Plug 'dense-analysis/ale'
 Plug 'jsfaint/gen_tags.vim'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
-Plug 'mattn/emmet-vim'
 Plug 'jszakmeister/vim-togglecursor'
-" Plug 'blueyed/vim-diminactive'
 Plug 'Raimondi/delimitMate'
-" Plug 'itchyny/vim-cursorword' " too slow on mac :(
-Plug 'Yggdroot/indentLine'
 Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 " all that tpope!
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-rails'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
@@ -56,53 +46,22 @@ Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " END plug ------------------------
 
-" omni completion
 filetype plugin on
-set omnifunc=syntaxcomplete#Complete
+" omni completion
+" set omnifunc=syntaxcomplete#Complete
 
 set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
 set ttyfast
 set lazyredraw
 set shell=/bin/bash
-" syntax enable
-" let g:hybrid_use_Xresources = 1
-" let g:hybrid_custom_term_colors = 1
-" let g:hybrid_reduced_contrast = 1
 set background=dark
-" let g:nord_italic = 1
-" let g:nord_underline = 1
 set termguicolors
-" let g:nord_cursor_line_number_background = 1
-" let g:dracula_italic = 0
 colorscheme hybrid
 set encoding=UTF-8
 set fileencoding=utf-8
-set t_Co=256
-"set term=xterm-256color
-" set autoread " auto read when a file is changed from the outside
+" set t_Co=256
 set magic "for regular epressions turn magic on
-
-" " this is all statusline stuff
-" function! LinterStatus() abort
-"     let l:counts = ale#statusline#Count(bufnr(''))
-
-"     let l:all_errors = l:counts.error + l:counts.style_error
-"     let l:all_non_errors = l:counts.total - l:all_errors
-
-"     return printf(
-"     \   ' %d ✘ %d',
-"     \   all_non_errors,
-"     \   all_errors
-"     \)
-" endfunction
-
-" set laststatus=2 " turn on statusline
-" set statusline=%<%f\ %h%m%r\|\ %{fugitive#head()}%=%-14.(%l,%c%V%)\ %{&filetype}\ \|\ %{LinterStatus()}\ 
-" if version >= 700
-"   au InsertEnter * hi StatusLine term=reverse guifg=#001000 guibg=#00d000
-"   au InsertLeave * hi StatusLine term=reverse guifg=#00d000 guibg=#005000
-" endif
 
 set noerrorbells " no errorbells!
 set vb t_vb= " seriously, no errorbells!!
@@ -125,10 +84,7 @@ set autoread " automatically reads file in
 set cmdheight=1
 set smartindent
 set textwidth=0 " disable auto line breaking on paste
-" set formatoptions+=l " don't break lines till after insert mode
 set number " line numbers
-" set relativenumber " line numbers
-" highlight SignColumn ctermbg=black
 
 " this is all for the tabline
 set showtabline=2 " always show tabs
@@ -145,13 +101,13 @@ set listchars=tab:⬝➜
 set conceallevel=0
 set completeopt=menu,menuone,noselect,noinsert
 
+" HOLY SHIT the new engine just kills ruby files. This drastically improves performance!
+set regexpengine=1
+
 " Normally, Vim messes with iskeyword when you open a shell file. This can
 " leak out, polluting other file types even after a 'set ft=' change. This
 " variable prevents the iskeyword change so it can't hurt anyone.
 let g:sh_noisk=1
-
-" italic comments
-" highlight Comment term=italic cterm=italic gui=italic
 
 " " Resize splits when the window is resized
 au VimResized * :wincmd =
@@ -239,20 +195,6 @@ let g:fzf_action = {
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
 
-" YouCompleteMe
-let g:ycm_language_server = [
-  \   {
-  \     'name': 'ruby',
-  \     'cmdline': [ expand( '$HOME/.gem/ruby/2.6.5/bin/solargraph' ), 'stdio' ],
-  \     'filetypes': [ 'ruby' ],
-  \   }
-  \ ]
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_add_preview_to_completeopt = 0
-
-" catch very long wrapped lines with diminactive
-let g:diminactive_max_cols = 1000
-
 " togglecursor
 let g:togglecursor_force = 'xterm'
 let g:togglecursor_default = 'blinking_block'
@@ -269,9 +211,9 @@ let g:user_emmet_leader_key = '<c-e>'
 set signcolumn=yes
 
 " indentline
-let g:indentLine_setColors=1
-let g:indentLine_char = '│'
-let g:indentLine_concealcursor=0
+" let g:indentLine_setColors=1
+" let g:indentLine_char = '│'
+" let g:indentLine_concealcursor=0
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
@@ -281,12 +223,22 @@ let g:airline#extensions#ale#warning_symbol = ' : '
 let g:airline_powerline_fonts = 1
 let g:airline_section_z = '%l/%L'
 
+" YouCompleteMe
+let g:ycm_language_server = [
+  \   {
+  \     'name': 'ruby',
+  \     'cmdline': [ expand( '$HOME/.gem/ruby/2.6.5/bin/solargraph' ), 'stdio' ],
+  \     'filetypes': [ 'ruby' ],
+  \   }
+  \ ]
+let g:ycm_collect_identifiers_from_tags_files = 1
+
 " ale
 " Available language servers: 
 "   ruby (solargraph)
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = ''
-let g:ale_completion_enabled = 0
+" let g:ale_completion_enabled = 1
 highlight ALEErrorSign ctermfg=red
 highlight ALEWarningSign ctermfg=red
 let g:ale_linters = {
