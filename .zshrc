@@ -112,9 +112,10 @@ function mfa() {
 
 # because I do this like 5 times a day
 function zup() {
-  echo "bundling and yarning"
+  echo "bundling, yarning, and migrating"
   bundle
   yarn install --check-files
+  rake db:migrate
 }
 
 # chruby

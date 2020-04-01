@@ -19,7 +19,7 @@ Plug 'slim-template/vim-slim'
 
 " " colorschemes
 Plug 'w0ng/vim-hybrid'
-Plug 'dracula/vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 " " tools
 Plug 'ycm-core/YouCompleteMe'
@@ -57,7 +57,11 @@ set lazyredraw
 set shell=/bin/bash
 set background=dark
 set termguicolors
-colorscheme hybrid
+"
+" Dracula theme
+let g:dracula_italic = 0
+
+colorscheme dracula
 set encoding=UTF-8
 set fileencoding=utf-8
 " set t_Co=256
@@ -200,6 +204,8 @@ let g:togglecursor_force = 'xterm'
 let g:togglecursor_default = 'blinking_block'
 
 let g:loaded_gentags#gtags = 1
+let g:gen_tags#blacklist = ['logs']
+let g:gen_tags#use_cache_dir = 1
 
 " vim-json
 let g:vim_json_syntax_conceal = 0

@@ -4,3 +4,4 @@ solargraph.rb
 .generators
 .idea/
 .rakeTasks
+.postgres-data/
