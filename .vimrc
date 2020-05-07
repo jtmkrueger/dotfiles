@@ -22,10 +22,10 @@ Plug 'w0ng/vim-hybrid'
 Plug 'dracula/vim', { 'as': 'dracula' }
 
 " " tools
-Plug 'ycm-core/YouCompleteMe'
+" Plug 'ycm-core/YouCompleteMe'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mileszs/ack.vim'
 Plug 'dense-analysis/ale'
-Plug 'jsfaint/gen_tags.vim'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
@@ -47,8 +47,8 @@ call plug#end()
 " END plug ------------------------
 
 filetype plugin on
-" omni completion
-" set omnifunc=syntaxcomplete#Complete
+
+packadd! dracula_pro
 
 set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
@@ -61,7 +61,7 @@ set termguicolors
 " Dracula theme
 let g:dracula_italic = 0
 
-colorscheme dracula
+colorscheme dracula_pro
 set encoding=UTF-8
 set fileencoding=utf-8
 " set t_Co=256
@@ -203,10 +203,6 @@ let g:fzf_action = {
 let g:togglecursor_force = 'xterm'
 let g:togglecursor_default = 'blinking_block'
 
-let g:loaded_gentags#gtags = 1
-let g:gen_tags#blacklist = ['logs']
-let g:gen_tags#use_cache_dir = 1
-
 " vim-json
 let g:vim_json_syntax_conceal = 0
 
@@ -230,14 +226,44 @@ let g:airline_powerline_fonts = 1
 let g:airline_section_z = '%l/%L'
 
 " YouCompleteMe
-let g:ycm_language_server = [
-  \   {
-  \     'name': 'ruby',
-  \     'cmdline': [ expand( '$HOME/.gem/ruby/2.6.5/bin/solargraph' ), 'stdio' ],
-  \     'filetypes': [ 'ruby' ],
-  \   }
-  \ ]
-let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_language_server = [
+"   \   {
+"   \     'name': 'ruby',
+"   \     'cmdline': [ expand( '$HOME/.gem/ruby/2.7.1/bin/solargraph' ), 'stdio' ],
+"   \     'filetypes': [ 'ruby', 'slim' ],
+"   \   }
+"   \ ]
+" nnoremap <leader>jd :YcmCompleter GoTo<CR>
+
+" COC
+" Use tab for trigger completion with characters ahead and navigate.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 " ale
 " Available language servers: 

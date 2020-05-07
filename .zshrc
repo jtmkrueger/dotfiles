@@ -110,13 +110,18 @@ function mfa() {
   echo "copied $1 OTP to clipboard"
 }
 
-# because I do this like 5 times a day
-function zup() {
-  echo "bundling, yarning, and migrating"
-  bundle
-  yarn install --check-files
-  rake db:migrate
+function zconsole() {
+  docker-compose exec app rails c
 }
+
+function zlogs() {
+  docker-compose exec app tail -f log/development.log
+}
+
+function zshell() {
+  docker-compose exec app /bin/bash
+}
+
 
 # chruby
 # https://medium.com/@heidar/switching-from-rbenv-to-postmodern-s-ruby-install-and-chruby-f0daa24b36e6
@@ -135,3 +140,4 @@ export NVM_DIR="$HOME/.nvm"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
