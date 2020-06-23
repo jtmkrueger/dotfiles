@@ -1,9 +1,10 @@
+export ZSH_DISABLE_COMPFIX="true"
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 export PYTHON_CONFIGURE_OPTS="--enable-framework"
 
 # install: git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status dir dir_writable vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
 POWERLEVEL9K_MODE='nerdfont-complete'
@@ -81,6 +82,12 @@ zle -N zle-line-finish
 zle -N zle-keymap-select
 export KEYTIMEOUT=1
 # END VI mode
+
+# catch solargraph up.
+function solarup() {
+  bundle
+  solargraph bundle
+}
 
 # https://github.com/jtmkrueger/bobafett
 function bobafett() {

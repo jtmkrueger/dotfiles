@@ -20,9 +20,9 @@ Plug 'slim-template/vim-slim'
 " " colorschemes
 Plug 'w0ng/vim-hybrid'
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'jtmkrueger/Dark.vim'
 
 " " tools
-" Plug 'ycm-core/YouCompleteMe'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mileszs/ack.vim'
 Plug 'dense-analysis/ale'
@@ -33,6 +33,8 @@ Plug 'jszakmeister/vim-togglecursor'
 Plug 'Raimondi/delimitMate'
 Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'itchyny/vim-cursorword'
+Plug 'Yggdroot/indentLine'
 
 " all that tpope!
 Plug 'tpope/vim-repeat'
@@ -47,6 +49,7 @@ call plug#end()
 " END plug ------------------------
 
 filetype plugin on
+syntax on
 
 packadd! dracula_pro
 
@@ -59,9 +62,12 @@ set background=dark
 set termguicolors
 "
 " Dracula theme
-let g:dracula_italic = 0
+let g:dracula_italic = 1
 
 colorscheme dracula_pro
+highlight Comment cterm=italic
+set t_ZH=[3m
+set t_ZR=[23m
 set encoding=UTF-8
 set fileencoding=utf-8
 " set t_Co=256
@@ -213,9 +219,9 @@ let g:user_emmet_leader_key = '<c-e>'
 set signcolumn=yes
 
 " indentline
-" let g:indentLine_setColors=1
-" let g:indentLine_char = '│'
-" let g:indentLine_concealcursor=0
+let g:indentLine_setColors=1
+let g:indentLine_char = '│'
+let g:indentLine_concealcursor=0
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
@@ -225,18 +231,9 @@ let g:airline#extensions#ale#warning_symbol = ' : '
 let g:airline_powerline_fonts = 1
 let g:airline_section_z = '%l/%L'
 
-" YouCompleteMe
-" let g:ycm_language_server = [
-"   \   {
-"   \     'name': 'ruby',
-"   \     'cmdline': [ expand( '$HOME/.gem/ruby/2.7.1/bin/solargraph' ), 'stdio' ],
-"   \     'filetypes': [ 'ruby', 'slim' ],
-"   \   }
-"   \ ]
-" nnoremap <leader>jd :YcmCompleter GoTo<CR>
-
 " COC
 " Use tab for trigger completion with characters ahead and navigate.
+" :CocInstall coc-solargraph ***to get ruby going
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
