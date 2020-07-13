@@ -19,8 +19,6 @@ Plug 'slim-template/vim-slim'
 
 " " colorschemes
 Plug 'w0ng/vim-hybrid'
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'jtmkrueger/Dark.vim'
 
 " " tools
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -51,20 +49,21 @@ call plug#end()
 filetype plugin on
 syntax on
 
-packadd! dracula_pro
+" packadd! dracula_pro
 
 set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
 set ttyfast
-set lazyredraw
+" set lazyredraw
 set shell=/bin/bash
 set background=dark
-set termguicolors
+" set termguicolors
 "
 " Dracula theme
-let g:dracula_italic = 1
+" let g:dracula_italic = 1
 
-colorscheme dracula_pro
+let g:hybrid_custom_term_colors = 1
+colorscheme hybrid
 highlight Comment cterm=italic
 set t_ZH=[3m
 set t_ZR=[23m
@@ -225,11 +224,17 @@ let g:indentLine_concealcursor=0
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#bufferline#enabled = 0
+let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#show_tab_count = 0
 let g:airline#extensions#ale#error_symbol = '✘: '
 let g:airline#extensions#ale#warning_symbol = ' : '
 let g:airline_powerline_fonts = 1
-let g:airline_section_z = '%l/%L'
+let g:airline_section_z = '%l/%L:%c'
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+
 
 " COC
 " Use tab for trigger completion with characters ahead and navigate.
@@ -272,7 +277,7 @@ highlight ALEErrorSign ctermfg=red
 highlight ALEWarningSign ctermfg=red
 let g:ale_linters = {
 \   'javascript': ['eslint'],
-\   'ruby': ['rubocop']
+\   'ruby': ['rubocop', 'reek']
 \}
 let g:ale_lint_on_text_changed = 0
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
