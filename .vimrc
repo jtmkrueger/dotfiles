@@ -234,7 +234,10 @@ let g:airline_powerline_fonts = 1
 let g:airline_section_z = '%l/%L:%c'
 let g:airline_left_sep=''
 let g:airline_right_sep=''
-
+let g:airline#extensions#default#layout = [
+    \ [ 'a', 'b', 'c' ],
+    \ [ 'z', 'error', 'warning' ]
+    \ ]
 
 " COC
 " Use tab for trigger completion with characters ahead and navigate.
@@ -268,7 +271,7 @@ function! s:show_documentation()
 endfunction
 
 " ale
-" Available language servers: 
+" Available language servers:
 "   ruby (solargraph)
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = ''
@@ -277,9 +280,9 @@ highlight ALEErrorSign ctermfg=red
 highlight ALEWarningSign ctermfg=red
 let g:ale_linters = {
 \   'javascript': ['eslint'],
-\   'ruby': ['rubocop', 'reek']
+\   'ruby': ['rubocop', 'reek', 'rails_best_practices']
 \}
-let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_text_changed = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
 
 " set tmux window name automatically

@@ -83,13 +83,17 @@ zle -N zle-keymap-select
 export KEYTIMEOUT=1
 # END VI mode
 
-# catch solargraph up.
-function solarup() {
+# catch completion and linting gems up.
+function rubyup() {
   bundle
   gem install solargraph
   gem update solargraph
   gem install reek
   gem update reek
+  gem install rails_best_practices
+  gem update rails_best_practices
+  gem install rubocop
+  gem update rubocop
   solargraph bundle
 }
 
