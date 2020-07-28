@@ -94,6 +94,8 @@ function rubyup() {
   gem update rails_best_practices
   gem install rubocop
   gem update rubocop
+  gem install brakeman
+  gem update brakeman
   solargraph bundle
 }
 

@@ -122,9 +122,9 @@ let g:sh_noisk=1
 au VimResized * :wincmd =
 
 " Store swap files in a central spot
-" set backup
-" set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-" set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set nobackup
 set nowritebackup
 set shortmess+=c
@@ -275,12 +275,13 @@ endfunction
 "   ruby (solargraph)
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = ''
-" let g:ale_completion_enabled = 1
+let g:ale_completion_enabled = 0
 highlight ALEErrorSign ctermfg=red
 highlight ALEWarningSign ctermfg=red
+let g:ale_ruby_rubocop_executable = '/Users/jk/.gem/ruby/2.7.1/bin/rubocop'
 let g:ale_linters = {
 \   'javascript': ['eslint'],
-\   'ruby': ['rubocop', 'reek', 'rails_best_practices']
+\   'ruby': ['rubocop', 'reek', 'rails_best_practices', 'brakeman']
 \}
 let g:ale_lint_on_text_changed = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
