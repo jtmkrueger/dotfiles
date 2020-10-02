@@ -19,6 +19,7 @@ Plug 'slim-template/vim-slim'
 
 " " colorschemes
 Plug 'w0ng/vim-hybrid'
+Plug 'NLKNguyen/papercolor-theme'
 
 " " tools
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -56,14 +57,9 @@ set guioptions-=e
 set ttyfast
 " set lazyredraw
 set shell=/bin/bash
-set background=dark
-" set termguicolors
-"
-" Dracula theme
-" let g:dracula_italic = 1
-
-let g:hybrid_custom_term_colors = 1
-colorscheme hybrid
+set background=light
+" let g:hybrid_custom_term_colors = 1
+colorscheme PaperColor
 highlight Comment cterm=italic
 set t_ZH=[3m
 set t_ZR=[23m
@@ -138,6 +134,7 @@ endtry
 
 " additional filetype detection
 autocmd BufRead,BufNewFile *.axlsx set filetype=ruby
+autocmd BufRead,BufNewFile *.inky set filetype=slim
 
 " map leader to space
 let mapleader = "\<Space>"
@@ -194,7 +191,7 @@ vnoremap L g_
 noremap <TAB> % " easer to hit
 
 " easy search with the silver searcher
-let g:ackprg = 'ag --nogroup --column'
+let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
 nnoremap <c-a> :Ack!<Space>
 
 " FZF
@@ -223,6 +220,7 @@ let g:indentLine_char = '│'
 let g:indentLine_concealcursor=0
 
 " airline
+let g:airline_theme='papercolor'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#bufferline#enabled = 0
 let g:airline#extensions#tabline#show_splits = 0
@@ -280,7 +278,8 @@ highlight ALEErrorSign ctermfg=red
 highlight ALEWarningSign ctermfg=red
 let g:ale_ruby_rubocop_executable = '/Users/jk/.gem/ruby/2.7.1/bin/rubocop'
 let g:ale_linters = {
-\   'javascript': ['eslint'],
+\   'javascript': ['eslint', 'prettier'],
+\   'scss': ['prettier'],
 \   'ruby': ['rubocop', 'reek', 'rails_best_practices', 'brakeman']
 \}
 let g:ale_lint_on_text_changed = 1

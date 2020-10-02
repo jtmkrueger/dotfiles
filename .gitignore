@@ -5,3 +5,4 @@ solargraph.rb
 .idea/
 .rakeTasks
 .postgres-data/
+Procfile.local
