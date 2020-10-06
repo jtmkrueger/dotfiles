@@ -48,24 +48,23 @@ call plug#end()
 " END plug ------------------------
 
 filetype plugin on
-syntax on
-
-" packadd! dracula_pro
+packadd! dracula_pro
+syntax enable
 
 set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
 set ttyfast
 " set lazyredraw
 set shell=/bin/bash
-set background=light
+set background=dark
 " let g:hybrid_custom_term_colors = 1
-colorscheme PaperColor
-highlight Comment cterm=italic
+colorscheme dracula_pro
+" highlight Comment cterm=italic
 set t_ZH=[3m
 set t_ZR=[23m
 set encoding=UTF-8
 set fileencoding=utf-8
-" set t_Co=256
+set t_Co=256
 set magic "for regular epressions turn magic on
 
 set noerrorbells " no errorbells!
@@ -220,18 +219,16 @@ let g:indentLine_char = '│'
 let g:indentLine_concealcursor=0
 
 " airline
-let g:airline_theme='papercolor'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#bufferline#enabled = 0
-let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#show_tab_count = 0
 let g:airline#extensions#ale#error_symbol = '✘: '
 let g:airline#extensions#ale#warning_symbol = ' : '
 let g:airline_powerline_fonts = 1
 let g:airline_section_z = '%l/%L:%c'
-let g:airline_left_sep=''
-let g:airline_right_sep=''
+let g:airline_left_sep=''
+let g:airline_right_sep=''
 let g:airline#extensions#default#layout = [
     \ [ 'a', 'b', 'c' ],
     \ [ 'z', 'error', 'warning' ]
@@ -284,6 +281,13 @@ let g:ale_linters = {
 \}
 let g:ale_lint_on_text_changed = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
+
+" Enable true color
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 
 " set tmux window name automatically
 augroup Tmux "{{{2
