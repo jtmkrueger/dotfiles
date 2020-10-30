@@ -48,8 +48,8 @@ call plug#end()
 " END plug ------------------------
 
 filetype plugin on
-packadd! dracula_pro
-syntax enable
+" packadd! dracula_pro
+syntax on
 
 set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
@@ -57,14 +57,14 @@ set ttyfast
 " set lazyredraw
 set shell=/bin/bash
 set background=dark
-" let g:hybrid_custom_term_colors = 1
-colorscheme dracula_pro
+let g:hybrid_custom_term_colors = 1
+colorscheme hybrid
 " highlight Comment cterm=italic
 set t_ZH=[3m
 set t_ZR=[23m
 set encoding=UTF-8
 set fileencoding=utf-8
-set t_Co=256
+" set t_Co=256
 set magic "for regular epressions turn magic on
 
 set noerrorbells " no errorbells!
@@ -283,11 +283,11 @@ let g:ale_lint_on_text_changed = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
 
 " Enable true color
-if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
+" if exists('+termguicolors')
+"   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+"   set termguicolors
+" endif
 
 " set tmux window name automatically
 augroup Tmux "{{{2
