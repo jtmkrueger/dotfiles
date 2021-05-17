@@ -57,7 +57,6 @@ export EDITOR="$VISUAL"
 export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
 source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-export BUNDLE_GEMS__CONTRIBSYS__COM=16d102a1:f6c73fa2
 
 # START VI mode
 bindkey -v
