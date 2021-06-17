@@ -45,6 +45,9 @@ export LDFLAGS="-L/usr/local/opt/openssl/lib"
 export CPPFLAGS="-I/usr/local/opt/openssl/include"
 
 alias mvim=/Applications/MacVim.app/Contents/bin/mvim
+# brew install lsd
+alias ls=lsd
+alias cat=bat
 
 source $ZSH/oh-my-zsh.sh
 
@@ -55,8 +58,6 @@ export VISUAL=vim
 export EDITOR="$VISUAL"
 
 export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
-source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
 # START VI mode
 bindkey -v
@@ -163,3 +164,9 @@ export NVM_DIR="$HOME/.nvm"
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jkrueger/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
