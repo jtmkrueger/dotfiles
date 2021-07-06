@@ -22,7 +22,8 @@ Plug 'w0ng/vim-hybrid'
 Plug 'NLKNguyen/papercolor-theme'
 
 " " tools
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'codota/tabnine-vim'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mileszs/ack.vim'
 Plug 'dense-analysis/ale'
 Plug 'bling/vim-airline'
