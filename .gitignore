@@ -6,3 +6,4 @@ solargraph.rb
 .rakeTasks
 .postgres-data/
 Procfile.local
+**/.DS_Store

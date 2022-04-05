@@ -1,3 +1,7 @@
+# Fig pre block. Keep at the top of this file.
+export PATH="${PATH}:${HOME}/.local/bin"
+eval "$(fig init zsh pre)"
+
 export ZSH_DISABLE_COMPFIX="true"
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
@@ -41,8 +45,9 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 # rust stuff
 export PATH=$PATH:$HOME/.cargo/env
 export PATH="/usr/local/opt/openssl/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/openssl/lib"
-export CPPFLAGS="-I/usr/local/opt/openssl/include"
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
 
 alias mvim=/Applications/MacVim.app/Contents/bin/mvim
 # brew install lsd
@@ -145,6 +150,11 @@ function zshell() {
   docker-compose exec app /bin/bash
 }
 
+# kbash <name of pod>
+kbash() {
+  kubectl exec --stdin --tty $1 -- /bin/bash
+}
+
 
 # chruby
 # https://medium.com/@heidar/switching-from-rbenv-to-postmodern-s-ruby-install-and-chruby-f0daa24b36e6
@@ -170,3 +180,7 @@ if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Us
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# Fig post block. Keep at the bottom of this file.
+eval "$(fig init zsh post)"
+

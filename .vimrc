@@ -16,14 +16,18 @@ Plug 'chrisbra/csv.vim'
 Plug 'elixir-editors/vim-elixir'
 Plug 'slashmili/alchemist.vim'
 Plug 'slim-template/vim-slim'
+Plug 'fatih/vim-go'
+Plug 'leafgarland/typescript-vim'
 
 " " colorschemes
 Plug 'w0ng/vim-hybrid'
 Plug 'NLKNguyen/papercolor-theme'
 
 " " tools
-Plug 'codota/tabnine-vim'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-notes'
+" Plug 'tabnine/YouCompleteMe'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mileszs/ack.vim'
 Plug 'dense-analysis/ale'
 Plug 'bling/vim-airline'
@@ -49,7 +53,7 @@ call plug#end()
 " END plug ------------------------
 
 filetype plugin on
-" packadd! dracula_pro
+packadd! dracula_pro
 syntax on
 
 set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
@@ -59,7 +63,8 @@ set ttyfast
 set shell=/bin/bash
 set background=dark
 let g:hybrid_custom_term_colors = 1
-colorscheme hybrid
+let g:dracula_colorterm = 0
+colorscheme dracula_pro
 " highlight Comment cterm=italic
 set t_ZH=[3m
 set t_ZR=[23m
@@ -73,6 +78,8 @@ set vb t_vb= " seriously, no errorbells!!
 
 set tabstop=2 softtabstop=2 shiftwidth=2
 set expandtab " use spaces instead of tab characters
+autocmd FileType go setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
+autocmd FileType mod setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
 set smarttab " start tabbed in
 set backspace=start,eol,indent " always allow backspaces
 set wildmenu " trick out command mode
@@ -98,6 +105,9 @@ set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
 " set cursorcolumn " highlight the cursors current col
+" better for dracula
+highlight CursorLine ctermbg=234
+" highlight CursorColumn ctermbg=233
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
@@ -190,7 +200,7 @@ vnoremap L g_
 
 noremap <TAB> % " easer to hit
 
-" easy search with the silver searcher
+" easy search with ripgrep
 let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
 nnoremap <c-a> :Ack!<Space>
 
