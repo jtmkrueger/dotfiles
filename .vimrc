@@ -20,8 +20,8 @@ Plug 'fatih/vim-go'
 Plug 'leafgarland/typescript-vim'
 
 " " colorschemes
-Plug 'w0ng/vim-hybrid'
-Plug 'NLKNguyen/papercolor-theme'
+Plug 'altercation/vim-colors-solarized'
+Plug 'jtmkrueger/grb256'
 
 " " tools
 Plug 'xolox/vim-misc'
@@ -30,8 +30,6 @@ Plug 'xolox/vim-notes'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mileszs/ack.vim'
 Plug 'dense-analysis/ale'
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'Raimondi/delimitMate'
@@ -53,7 +51,6 @@ call plug#end()
 " END plug ------------------------
 
 filetype plugin on
-packadd! dracula_pro
 syntax on
 
 set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
@@ -62,10 +59,13 @@ set ttyfast
 " set lazyredraw
 set shell=/bin/bash
 set background=dark
-let g:hybrid_custom_term_colors = 1
-let g:dracula_colorterm = 0
-colorscheme dracula_pro
-" highlight Comment cterm=italic
+
+colorscheme grb256
+
+highlight Comment cterm=italic
+highlight TabLineFill ctermfg=16 ctermbg=16
+highlight TabLine ctermfg=236 ctermbg=232
+highlight TabLineSel ctermfg=Blue ctermbg=black
 set t_ZH=[3m
 set t_ZR=[23m
 set encoding=UTF-8
@@ -98,16 +98,20 @@ set smartindent
 set textwidth=0 " disable auto line breaking on paste
 set number " line numbers
 
+" just save when I change tabs or leave the vim
+set autowrite
+:au FocusLost * silent! wa
+
 " this is all for the tabline
 set showtabline=2 " always show tabs
 
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
-" set cursorcolumn " highlight the cursors current col
+set cursorcolumn " highlight the cursors current col
 " better for dracula
 highlight CursorLine ctermbg=234
-" highlight CursorColumn ctermbg=233
+highlight CursorColumn ctermbg=234
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
@@ -228,22 +232,6 @@ set signcolumn=yes
 let g:indentLine_setColors=1
 let g:indentLine_char = '│'
 let g:indentLine_concealcursor=0
-
-" airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#bufferline#enabled = 0
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline#extensions#tabline#show_tab_count = 0
-let g:airline#extensions#ale#error_symbol = '✘: '
-let g:airline#extensions#ale#warning_symbol = ' : '
-let g:airline_powerline_fonts = 1
-let g:airline_section_z = '%l/%L:%c'
-let g:airline_left_sep=''
-let g:airline_right_sep=''
-let g:airline#extensions#default#layout = [
-    \ [ 'a', 'b', 'c' ],
-    \ [ 'z', 'error', 'warning' ]
-    \ ]
 
 " COC
 " Use tab for trigger completion with characters ahead and navigate.
