@@ -63,9 +63,10 @@ set background=dark
 colorscheme grb256
 
 highlight Comment cterm=italic
-highlight TabLineFill ctermfg=16 ctermbg=16
-highlight TabLine ctermfg=236 ctermbg=232
-highlight TabLineSel ctermfg=Blue ctermbg=black
+
+" tab styles
+set showtabline=2 " always show tabs
+
 set t_ZH=[3m
 set t_ZR=[23m
 set encoding=UTF-8
@@ -97,21 +98,18 @@ set cmdheight=1
 set smartindent
 set textwidth=0 " disable auto line breaking on paste
 set number " line numbers
+set laststatus=0 " no status line
 
 " just save when I change tabs or leave the vim
-set autowrite
-:au FocusLost * silent! wa
-
-" this is all for the tabline
-set showtabline=2 " always show tabs
+set autowriteall
+au FocusLost * silent! update
+au TextChanged * update
+au InsertLeave * update
 
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
 set cursorcolumn " highlight the cursors current col
-" better for dracula
-highlight CursorLine ctermbg=234
-highlight CursorColumn ctermbg=234
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
@@ -282,11 +280,11 @@ let g:ale_lint_on_text_changed = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
 
 " Enable true color
-" if exists('+termguicolors')
-"   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-"   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-"   set termguicolors
-" endif
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 
 " set tmux window name automatically
 augroup Tmux "{{{2
