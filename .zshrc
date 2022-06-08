@@ -60,7 +60,7 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
-export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
+export CLOUDSDK_PYTHON="/opt/homebrew/bin/python3"
 
 # START VI mode
 bindkey -v
@@ -155,26 +155,15 @@ kbash() {
 
 
 # chruby
-# https://medium.com/@heidar/switching-from-rbenv-to-postmodern-s-ruby-install-and-chruby-f0daa24b36e6
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jkrueger/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

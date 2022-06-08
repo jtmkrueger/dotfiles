@@ -98,13 +98,15 @@ set cmdheight=1
 set smartindent
 set textwidth=0 " disable auto line breaking on paste
 set number " line numbers
-set laststatus=0 " no status line
+" set laststatus=0 " no status line
+set statusline=%t
 
 " just save when I change tabs or leave the vim
-set autowriteall
-au FocusLost * silent! update
-au TextChanged * update
-au InsertLeave * update
+" set autowriteall
+" autocmd TextChanged,TextChangedI,FocusLost,InsertLeave *
+"     \ if &buftype ==# '' || &buftype == 'acwrite' |
+"     \     update |
+"     \ endif
 
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
