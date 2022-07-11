@@ -18,6 +18,7 @@ Plug 'slashmili/alchemist.vim'
 Plug 'slim-template/vim-slim'
 Plug 'fatih/vim-go'
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 
 " " colorschemes
 Plug 'altercation/vim-colors-solarized'
@@ -50,6 +51,7 @@ Plug 'ryanoasis/vim-devicons'
 call plug#end()
 " END plug ------------------------
 
+packadd! dracula_pro
 filetype plugin on
 syntax on
 
@@ -60,7 +62,8 @@ set ttyfast
 set shell=/bin/bash
 set background=dark
 
-colorscheme grb256
+let g:dracula_colorterm = 0
+colorscheme dracula_pro
 
 highlight Comment cterm=italic
 
@@ -99,6 +102,9 @@ set smartindent
 set textwidth=0 " disable auto line breaking on paste
 set number " line numbers
 " set laststatus=0 " no status line
+hi StatusLine   ctermfg=gray      ctermbg=16  gui=none  term=none      cterm=none
+hi StatusLineNC ctermfg=darkgray  ctermbg=16  gui=none  term=none      cterm=none
+
 set statusline=%t
 
 " just save when I change tabs or leave the vim
@@ -119,6 +125,7 @@ set list
 set listchars=tab:⬝➜
 set conceallevel=0
 set completeopt=menu,menuone,noselect,noinsert
+let g:netrw_bufsettings = 'noma nomod nu nowrap ro nobl'
 
 " HOLY SHIT the new engine just kills ruby files. This drastically improves performance!
 set regexpengine=1
@@ -278,6 +285,8 @@ let g:ale_linters = {
 \   'scss': ['prettier'],
 \   'ruby': ['rubocop', 'reek', 'rails_best_practices', 'brakeman']
 \}
+let g:ale_fixers = ['prettier', 'eslint']
+let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
 
