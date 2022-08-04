@@ -27,7 +27,8 @@ Plug 'jtmkrueger/grb256'
 " " tools
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
-" Plug 'tabnine/YouCompleteMe'
+Plug 'github/copilot.vim'
+Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mileszs/ack.vim'
 Plug 'dense-analysis/ale'
@@ -105,7 +106,7 @@ set number " line numbers
 hi StatusLine   ctermfg=gray      ctermbg=16  gui=none  term=none      cterm=none
 hi StatusLineNC ctermfg=darkgray  ctermbg=16  gui=none  term=none      cterm=none
 
-set statusline=%t
+set statusline=%f
 
 " just save when I change tabs or leave the vim
 " set autowriteall
@@ -159,6 +160,9 @@ autocmd BufRead,BufNewFile *.inky set filetype=slim
 
 " map leader to space
 let mapleader = "\<Space>"
+
+" neovim needs to be like vim
+nnoremap Y Y
 
 " leader mappings
 nnoremap <leader>v :vs<space>
@@ -261,7 +265,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -285,7 +289,10 @@ let g:ale_linters = {
 \   'scss': ['prettier'],
 \   'ruby': ['rubocop', 'reek', 'rails_best_practices', 'brakeman']
 \}
-let g:ale_fixers = ['prettier', 'eslint']
+let g:ale_fixers = {
+\   'javascript': ['eslint', 'prettier'],
+\   'ruby': ['rubocop']
+\}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>

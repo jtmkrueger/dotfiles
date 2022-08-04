@@ -48,6 +48,7 @@ export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include"
 
 
 alias mvim=/Applications/MacVim.app/Contents/bin/mvim
+alias vim=nvim
 # brew install lsd
 alias ls=lsd
 alias cat=bat
@@ -167,3 +168,4 @@ if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Us
 if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
