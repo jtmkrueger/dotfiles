@@ -131,6 +131,7 @@ function termcolors() {
 # pass the auth you want as an argument in the paste buffer
 # dependency: https://github.com/pcarrier/gauth
 # EX: mfa AWS
+# TODO: set this up to work with bitwarden
 function mfa() {
   gauth
   gauth | grep $1 | awk '{$1=$2=$4=""; print $0}' | sed 's/ //g' | pbcopy
