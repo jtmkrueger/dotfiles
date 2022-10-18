@@ -1,4 +1,4 @@
 dotfiles
 ========
 
-a collection of my configurations
+A collection of my configurations since 2012.
