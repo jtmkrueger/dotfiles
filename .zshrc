@@ -33,14 +33,7 @@ DISABLE_AUTO_TITLE="true"
 
 plugins=(git bundler zsh-system-clipboard zsh-completions zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
 
-export PATH="/usr/local/bin:/usr/bin:/.local/bin:/bin:/usr/sbin:/sbin::/.local/bin:$PATH"
-# whatever :\ screw you aws
-export PATH=~/.local/bin:$PATH
-# go stuff
-export GOPATH=$HOME/.go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-# rust stuff
-export PATH=$PATH:$HOME/.cargo/env
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib"
@@ -159,19 +152,7 @@ kbash() {
   kubectl exec --stdin --tty $1 -- /bin/bash
 }
 
-
-# chruby
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-chruby ruby-3.1.2
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jkrueger/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
@@ -179,3 +160,8 @@ export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
 
 # configure homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# chruby
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+chruby u ruby-3.1.2

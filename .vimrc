@@ -28,7 +28,6 @@ Plug 'jtmkrueger/grb256'
 Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mileszs/ack.vim'
 Plug 'dense-analysis/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'jszakmeister/vim-togglecursor'
@@ -64,7 +63,7 @@ set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
 set ttyfast
 " set lazyredraw
-set shell=/bin/bash
+" set shell=/bin/bash
 set background=dark
 
 let g:dracula_colorterm = 0
@@ -219,10 +218,6 @@ vnoremap L g_
 
 noremap <TAB> % " easer to hit
 
-" easy search with ripgrep
-let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
-nnoremap <c-a> :Ack!<Space>
-
 " FZF
 " nnoremap <c-f> :FZF<Enter>
 " let g:fzf_action = {
@@ -311,7 +306,7 @@ function! LinterStatus() abort
     let l:all_non_errors = l:counts.total - l:all_errors
 
     return l:counts.total == 0 ? 'OK' : printf(
-    \   ':%dW ✘:%dE',
+    \   ':%d ✘:%d',
     \   all_non_errors,
     \   all_errors
     \)
