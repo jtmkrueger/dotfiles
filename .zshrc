@@ -171,3 +171,7 @@ if [ -f '/Users/jkrueger/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
+
+
+# configure homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"

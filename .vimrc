@@ -25,8 +25,6 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'jtmkrueger/grb256'
 
 " " tools
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-notes'
 Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -37,6 +35,10 @@ Plug 'jszakmeister/vim-togglecursor'
 Plug 'Raimondi/delimitMate'
 Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'itchyny/vim-cursorword'
 Plug 'Yggdroot/indentLine'
 
@@ -48,7 +50,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 
-Plug 'ryanoasis/vim-devicons'
+" Plug 'ryanoasis/vim-devicons'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-lualine/lualine.nvim'
 call plug#end()
 " END plug ------------------------
 
@@ -103,10 +107,10 @@ set smartindent
 set textwidth=0 " disable auto line breaking on paste
 set number " line numbers
 " set laststatus=0 " no status line
-hi StatusLine   ctermfg=gray      ctermbg=16  gui=none  term=none      cterm=none
-hi StatusLineNC ctermfg=darkgray  ctermbg=16  gui=none  term=none      cterm=none
+" hi StatusLine   ctermfg=gray      ctermbg=16  gui=none  term=none      cterm=none
+" hi StatusLineNC ctermfg=darkgray  ctermbg=16  gui=none  term=none      cterm=none
 
-set statusline=%f
+" set statusline=%f
 
 " just save when I change tabs or leave the vim
 " set autowriteall
@@ -220,11 +224,14 @@ let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
 nnoremap <c-a> :Ack!<Space>
 
 " FZF
-nnoremap <c-f> :FZF<Enter>
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit' }
+" nnoremap <c-f> :FZF<Enter>
+" let g:fzf_action = {
+"   \ 'ctrl-t': 'tab split',
+"   \ 'ctrl-s': 'split',
+"   \ 'ctrl-v': 'vsplit' }
+
+nnoremap <c-f> <cmd>Telescope find_files<cr>
+nnoremap <c-a> <cmd>Telescope live_grep<cr>
 
 " togglecursor
 let g:togglecursor_force = 'xterm'
@@ -242,7 +249,7 @@ set signcolumn=yes
 " indentline
 let g:indentLine_setColors=1
 let g:indentLine_char = '│'
-let g:indentLine_concealcursor=0
+let g:indentLine_concealcursor='nc'
 
 " COC
 " Use tab for trigger completion with characters ahead and navigate.
@@ -308,6 +315,30 @@ endif
 augroup Tmux "{{{2
   au!
   " autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
-  autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim"')
+  autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "nvim"')
   autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
 augroup END
+
+lua << END
+  require('lualine').setup{
+    options = { theme = 'dracula' },
+    sections = {
+      lualine_b = {
+        {'filename', path = 1}
+      },
+      lualine_c = {},
+      lualine_x = {'filetype'},
+    },
+    tabline = {
+      lualine_a = {
+        {'tabs', mode = 3}
+      },
+      lualine_x = {'nvim_treesitter#statusline'},
+      lualine_z = {'diagnostics', 'diff', 'branch'},
+    }
+  }
+
+  require'nvim-treesitter.configs'.setup {
+    ensure_installed = "all",
+  }
+END
