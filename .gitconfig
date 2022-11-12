@@ -1,7 +1,8 @@
 # This is Git's per-user configuration file.
+# be sure to install https://github.com/dandavison/delta
 [user]
-name = John Krueger
-email = johnk@linux.com
+  name = John Krueger
+  email = johnk@linux.com
 
 [delta]
   line-numbers = true
@@ -15,3 +16,6 @@ email = johnk@linux.com
 
 [interactive]
   diffFilter = delta --color-only
+
+[diff]
+  colorMoved = default
