@@ -102,6 +102,8 @@ function rubyup() {
   gem update solargraph-rails
   gem install reek
   gem update reek
+  gem install debride
+  gem update debride
   gem install rails_best_practices
   gem update rails_best_practices
   gem install rubocop

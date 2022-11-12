@@ -290,11 +290,11 @@ let g:ale_sign_warning = ''
 let g:ale_completion_enabled = 0
 highlight ALEErrorSign ctermfg=red
 highlight ALEWarningSign ctermfg=red
-let g:ale_ruby_rubocop_executable = '/Users/jk/.gem/ruby/2.7.1/bin/rubocop'
+" let g:ale_ruby_rubocop_executable = '/Users/jk/.gem/ruby/2.7.1/bin/rubocop'
 let g:ale_linters = {
 \   'javascript': ['eslint', 'prettier'],
 \   'scss': ['prettier'],
-\   'ruby': ['rubocop', 'reek', 'rails_best_practices', 'brakeman']
+\   'ruby': ['rubocop', 'reek', 'rails_best_practices', 'brakeman', 'debride']
 \}
 let g:ale_fixers = {
 \   'javascript': ['eslint', 'prettier'],
@@ -303,6 +303,19 @@ let g:ale_fixers = {
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
+
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   ':%dW ✘:%dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
 
 " Enable true color
 if exists('+termguicolors')
@@ -328,6 +341,7 @@ lua << END
       },
       lualine_c = {},
       lualine_x = {'filetype'},
+      lualine_y = {'LinterStatus'},
     },
     tabline = {
       lualine_a = {
