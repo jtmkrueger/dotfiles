@@ -1,6 +1,7 @@
 *.swp
 tags
 solargraph.rb
+.solargraph.yml
 .generators
 .idea/
 .rakeTasks

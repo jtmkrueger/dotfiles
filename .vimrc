@@ -253,7 +253,7 @@ let g:indentLine_concealcursor='nc'
 
 " COC
 " Use tab for trigger completion with characters ahead and navigate.
-" :CocInstall coc-solargraph ***to get ruby going
+let g:coc_global_extensions = ['coc-solargraph']
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -271,7 +271,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window.
+" Use h to show documentation in preview window.
 nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()

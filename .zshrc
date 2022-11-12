@@ -98,6 +98,8 @@ function rubyup() {
   bundle
   gem install solargraph
   gem update solargraph
+  gem install solargraph-rails
+  gem update solargraph-rails
   gem install reek
   gem update reek
   gem install rails_best_practices
