@@ -247,18 +247,8 @@ let g:indentLine_char = '│'
 let g:indentLine_concealcursor='nc'
 
 " COC
-" Use tab for trigger completion with characters ahead and navigate.
-let g:coc_global_extensions = ['coc-solargraph']
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
+inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
@@ -311,6 +301,10 @@ function! LinterStatus() abort
     \   all_errors
     \)
 endfunction
+
+" copilot
+imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
 
 " Enable true color
 if exists('+termguicolors')

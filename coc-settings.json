@@ -1,4 +1,5 @@
 {
   "solargraph.useBundler": true,
   "solargraph.shell": "zsh",
+  "suggest.noselect": true
 }
