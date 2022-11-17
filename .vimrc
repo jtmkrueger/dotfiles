@@ -34,12 +34,17 @@ Plug 'jszakmeister/vim-togglecursor'
 Plug 'Raimondi/delimitMate'
 Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'itchyny/vim-cursorword'
+Plug 'Yggdroot/indentLine'
+
+" nvim specific
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
-Plug 'itchyny/vim-cursorword'
-Plug 'Yggdroot/indentLine'
+Plug 'nvim-neorg/neorg'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-lualine/lualine.nvim'
 
 " all that tpope!
 Plug 'tpope/vim-repeat'
@@ -48,10 +53,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
-
-" Plug 'ryanoasis/vim-devicons'
-Plug 'nvim-tree/nvim-web-devicons'
-Plug 'nvim-lualine/lualine.nvim'
 call plug#end()
 " END plug ------------------------
 
@@ -343,5 +344,19 @@ lua << END
 
   require'nvim-treesitter.configs'.setup {
     ensure_installed = "all",
+  }
+
+  require('neorg').setup {
+    load = {
+      ["core.defaults"] = {},
+      ["core.norg.dirman"] = {
+        config = {
+          workspaces = {
+            work = "~/notes/work",
+            home = "~/notes/home",
+          }
+        }
+      }
+    }
   }
 END

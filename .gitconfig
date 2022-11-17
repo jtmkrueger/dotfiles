@@ -4,6 +4,9 @@
   name = John Krueger
   email = johnk@linux.com
 
+[core]
+  excludesfile = ~/.gitignore
+
 [delta]
   line-numbers = true
   navigate = true

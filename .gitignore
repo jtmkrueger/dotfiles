@@ -8,3 +8,5 @@ solargraph.rb
 .postgres-data/
 Procfile.local
 **/.DS_Store
+dev_env.rb
+test_env.rb
