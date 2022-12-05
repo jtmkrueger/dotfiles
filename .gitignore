@@ -10,3 +10,5 @@ Procfile.local
 **/.DS_Store
 dev_env.rb
 test_env.rb
+dump.rdb
+.yardoc/

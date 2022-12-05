@@ -45,6 +45,8 @@ alias vim=nvim
 # brew install lsd
 alias ls=lsd
 alias cat=bat
+# start cypress on the front end
+alias ftest="CYPRESS_TEST_USER=seinfeld@aurorasolar.com CYPRESS_TEST_PASSWORD=elaine yarn cypress:open"
 # TODO: get this actually working
 # alias onepass="security find-generic-password -w -s 'Password_Name' -a sbillington"
 # alias onelogin_aurora='eval "$(echo `onepass` | op signin --account aurorasolar.1password.com)"'
@@ -108,6 +110,7 @@ function rubyup() {
   gem install brakeman
   gem update brakeman
   solargraph bundle
+  bundle exec yard gems
 }
 
 # https://github.com/jtmkrueger/bobafett

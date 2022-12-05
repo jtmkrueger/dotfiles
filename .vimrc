@@ -19,17 +19,18 @@ Plug 'slim-template/vim-slim'
 Plug 'fatih/vim-go'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
+Plug 'jparise/vim-graphql'
 
 " " colorschemes
 Plug 'altercation/vim-colors-solarized'
 Plug 'jtmkrueger/grb256'
 
 " " tools
-Plug 'github/copilot.vim'
+" Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'Raimondi/delimitMate'
 Plug 'elzr/vim-json'
@@ -45,12 +46,13 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-neorg/neorg'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'lewis6991/gitsigns.nvim'
 
 " all that tpope!
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 call plug#end()
@@ -288,6 +290,7 @@ let g:ale_fixers = {
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 1
+let g:ale_disable_lsp = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
 
 function! LinterStatus() abort
@@ -335,7 +338,11 @@ lua << END
     },
     tabline = {
       lualine_a = {
-        {'tabs', mode = 3}
+        {
+            'tabs',
+            mode = 3,
+            max_length = vim.o.columns,
+        }
       },
       lualine_x = {'nvim_treesitter#statusline'},
       lualine_z = {'diagnostics', 'diff', 'branch'},
@@ -358,5 +365,9 @@ lua << END
         }
       }
     }
+  }
+
+  require('gitsigns').setup {
+    current_line_blame = true,
   }
 END
