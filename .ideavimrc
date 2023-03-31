@@ -3,7 +3,7 @@ set noerrorbells
 set number
 set surround
 set commentary
-set clipboard=unnamed
+set clipboard+=unnamed
 set incsearch
 set ignorecase
 set smartcase
@@ -17,6 +17,8 @@ vnoremap > >gv
 noremap H ^
 noremap L $
 vnoremap L g_
+
+map <C-h> <Nop>
 
 " this doesn't actually work yet :(
 map <C-t> <F12>

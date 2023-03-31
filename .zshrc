@@ -36,6 +36,8 @@ plugins=(git bundler zsh-system-clipboard zsh-completions zsh-autosuggestions zs
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
+export PATH=$PATH:/Users/jk/Library/Python/3.10/bin
 export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include"
 
@@ -95,10 +97,10 @@ export KEYTIMEOUT=1
 # catch completion and linting gems up.
 function rubyup() {
   bundle
-  gem install solargraph
-  gem update solargraph
-  gem install solargraph-rails
-  gem update solargraph-rails
+  # gem install solargraph
+  # gem update solargraph
+  # gem install solargraph-rails
+  # gem update solargraph-rails
   gem install reek
   gem update reek
   gem install debride
@@ -169,9 +171,9 @@ export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # chruby
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-chruby u ruby-3.1.2
+# source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+# source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+# chruby u ruby-3.1.3
 
 # environment variables if file exists
 if [ -f ~/.zsh_env_vars ]; then
@@ -201,3 +203,5 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
+
+eval "$(rbenv init - zsh)"
