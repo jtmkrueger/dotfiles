@@ -26,7 +26,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'jtmkrueger/grb256'
 
 " " tools
-" Plug 'github/copilot.vim'
+Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
@@ -40,10 +40,11 @@ Plug 'Yggdroot/indentLine'
 
 " nvim specific
 Plug 'nvim-lua/plenary.nvim'
+Plug 'MunifTanjim/nui.nvim'
+Plug 'jackMort/ChatGPT.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
-Plug 'nvim-neorg/neorg'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'lewis6991/gitsigns.nvim'
@@ -262,6 +263,9 @@ nmap <silent> gr <Plug>(coc-references)
 " Use h to show documentation in preview window.
 nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
 
+" for ChatGPT
+map <leader>c :ChatGPT<CR>
+
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -274,19 +278,21 @@ endfunction
 " Available language servers:
 "   ruby (solargraph)
 let g:ale_sign_error = '✘'
+let g:ale_echo_msg_error_str = '✘' " FIXME: not doing anything
 let g:ale_sign_warning = ''
+let g:ale_echo_msg_warning_str = '' " FIXME: not doing anything
 let g:ale_completion_enabled = 0
+let g:ale_virtualtext_prefix = ': '
 highlight ALEErrorSign ctermfg=red
 highlight ALEWarningSign ctermfg=red
-" let g:ale_ruby_rubocop_executable = '/Users/jk/.gem/ruby/2.7.1/bin/rubocop'
 let g:ale_linters = {
 \   'javascript': ['eslint', 'prettier'],
 \   'scss': ['prettier'],
-\   'ruby': ['rubocop', 'reek', 'rails_best_practices', 'brakeman', 'debride']
+\   'ruby': ['rubocop', 'standardrb', 'reek', 'rails_best_practices', 'brakeman', 'debride']
 \}
 let g:ale_fixers = {
 \   'javascript': ['eslint', 'prettier'],
-\   'ruby': ['rubocop']
+\   'ruby': ['rubocop', 'standardrb']
 \}
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 1
@@ -353,20 +359,6 @@ lua << END
     ensure_installed = "all",
   }
 
-  require('neorg').setup {
-    load = {
-      ["core.defaults"] = {},
-      ["core.norg.dirman"] = {
-        config = {
-          workspaces = {
-            work = "~/notes/work",
-            home = "~/notes/home",
-          }
-        }
-      }
-    }
-  }
-
   require('gitsigns').setup {
     current_line_blame = true,
   }
@@ -409,4 +401,12 @@ lua << END
       -- please take a look at the readme of the extension you want to configure
     }
   }
+  require("chatgpt").setup({
+    popup_input = {
+      submit = "<C-s>"
+    },
+    openai_edit_params = {
+      model = "gpt-3.5-turbo"
+    }
+  })
 END
