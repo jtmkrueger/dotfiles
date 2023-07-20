@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 export ZSH_DISABLE_COMPFIX="true"
 
 # Path to your oh-my-zsh installation.
@@ -5,30 +12,7 @@ export ZSH=~/.oh-my-zsh
 export PYTHON_CONFIGURE_OPTS="--enable-framework"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
-# install: git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 ZSH_THEME="powerlevel10k/powerlevel10k"
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status dir dir_writable vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
-POWERLEVEL9K_MODE='nerdfont-complete'
-POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_SHOW_CHANGESET=true
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-# POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\ufc96 "
-POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR=''
-POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=''
-POWERLEVEL9K_STATUS_ERROR_BACKGROUND='magenta'
-POWERLEVEL9K_STATUS_ERROR_FOREGROUND='black'
-POWERLEVEL9K_STATUS_OK_BACKGROUND='black'
-POWERLEVEL9K_DIR_HOME_BACKGROUND='green'
-POWERLEVEL9K_DIR_HOME_FOREGROUND='black'
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND='green'
-POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND='black'
-POWERLEVEL9K_VCS_CLEAN_FOREGROUND='green'
-POWERLEVEL9K_VCS_CLEAN_BACKGROUND=08
-POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='yellow'
-POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=08
-POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='red'
-POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=08
 
 DISABLE_AUTO_TITLE="true"
 
@@ -207,3 +191,6 @@ add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
 eval "$(rbenv init - zsh)"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
