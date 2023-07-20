@@ -12,3 +12,4 @@ dev_env.rb
 test_env.rb
 dump.rdb
 .yardoc/
+*.dump

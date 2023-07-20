@@ -3,6 +3,7 @@ export ZSH_DISABLE_COMPFIX="true"
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 export PYTHON_CONFIGURE_OPTS="--enable-framework"
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # install: git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -37,7 +38,8 @@ export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
-export PATH=$PATH:/Users/jk/Library/Python/3.10/bin
+# export PATH=$PATH:/Users/jk/Library/Python/3.10/bin
+export PATH="/opt/homebrew/opt/python/libexec/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include"
 

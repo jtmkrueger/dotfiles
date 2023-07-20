@@ -30,7 +30,6 @@ Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
-" Plug 'airblade/vim-gitgutter'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'Raimondi/delimitMate'
 Plug 'elzr/vim-json'
@@ -44,6 +43,7 @@ Plug 'MunifTanjim/nui.nvim'
 Plug 'jackMort/ChatGPT.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+" Plug 'dir-telescope.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
@@ -71,6 +71,8 @@ set ttyfast
 set background=dark
 
 let g:dracula_colorterm = 0
+let g:dracula_bold = 1
+let g:dracula_italic = 1
 colorscheme dracula_pro
 
 highlight Comment cterm=italic
@@ -351,7 +353,6 @@ lua << END
         }
       },
       lualine_x = {'nvim_treesitter#statusline'},
-      lualine_z = {'diagnostics', 'diff', 'branch'},
     }
   }
 
