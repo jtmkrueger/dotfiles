@@ -336,8 +336,16 @@ augroup Tmux "{{{2
 augroup END
 
 lua << END
+  local custom_dracula = require'lualine.themes.dracula'
+  custom_dracula.normal.a.gui = 'italic'
+  custom_dracula.insert.a.gui = 'italic'
+  custom_dracula.visual.a.gui = 'italic'
+  custom_dracula.replace.a.gui = 'italic'
+  custom_dracula.command.a.gui = 'italic'
+  custom_dracula.inactive.a.gui = 'italic'
+
   require('lualine').setup{
-    options = { theme = 'dracula' },
+    options = { theme = custom_dracula },
     sections = {
       lualine_b = {
         {'filename', path = 1}
