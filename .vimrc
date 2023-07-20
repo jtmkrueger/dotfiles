@@ -75,7 +75,9 @@ let g:dracula_bold = 1
 let g:dracula_italic = 1
 colorscheme dracula_pro
 
-highlight Comment cterm=italic
+set t_ZH=^[[3m
+set t_ZR=^[[23m
+highlight Comment cterm=italic gui=italic
 
 " tab styles
 set showtabline=2 " always show tabs

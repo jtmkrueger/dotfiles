@@ -1,0 +1,5 @@
+# A xterm-256color based TERMINFO that adds the escape sequences for italic.
+# run `tic xterm-256color-italic.terminfo` from this directory to add this to the TERM database
+xterm-256color-italic|xterm with 256 colors and italic,
+  sitm=\E[3m, ritm=\E[23m,
+  use=xterm-256color,
