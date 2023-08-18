@@ -15,9 +15,9 @@
 # SETUP
 # 1. Install icalbuddy with your package manager of choice (homebrew, apt-get, etc.)
 #   * icalbuddy will ask if it can look at your calendars the first time you run it.
-# 2. Add this script to your path
 # 3. Add the following line to your tmux status bar:
-#   #{caltracker}
+#   #(~/<file path>/caltracker)
+#   * you could also add the file to your path and just call it as #(caltracker)
 
 set -e
 
