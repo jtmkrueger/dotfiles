@@ -43,7 +43,7 @@ time_until_event=$((event_start_seconds - current_time))
 # If the event is happening now, print "NOW"
 # If the event is happening in less than an hour, print the number of minutes until the event
 # If the event is happening in more than an hour, print the number of hours and minutes until the event
-# If there are no events today, print nothing
+# If there are no events today, print a nice message
 if [ "$event_name" = "No Events Today" ]; then
   echo "󰧒 No More Events Today"
 elif [ "$time_until_event" -le 0 ] && [ "$event_end_seconds" -gt "$current_time" ]; then
