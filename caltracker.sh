@@ -6,11 +6,10 @@
 # By John Krueger
 #
 # This script prints the number of hours and minutes until the next calendar event.
-# It uses icalbuddy to get the next event and then parses the output using sed
-# to get the time
+# It uses icalbuddy to get the next event and then parses the output to get the time
 # unitl the event. It prints the time until the event in the format "H:MM" or "MM" if
 # the event is less than an hour away. If the event is occuring now, it prints "NOW".
-# If there are no upcoming events today, it returns nothing.
+# If there are no upcoming events today, it returns a nice little message.
 #
 # SETUP
 # 1. Install icalbuddy with your package manager of choice (homebrew, apt-get, etc.)
@@ -46,7 +45,7 @@ time_until_event=$((event_start_seconds - current_time))
 # If the event is happening in more than an hour, print the number of hours and minutes until the event
 # If there are no events today, print nothing
 if [ "$event_name" = "No Events Today" ]; then
-  echo ""
+  echo "󰧒 No More Events Today"
 elif [ "$time_until_event" -le 0 ] && [ "$event_end_seconds" -gt "$current_time" ]; then
   echo "󰧓 $event_name NOW"
 elif [ "$time_until_event" -le 3600 ]; then
