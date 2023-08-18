@@ -5,6 +5,7 @@
 #
 # By John Krueger
 #
+# OSX only!
 # This script prints the number of hours and minutes until the next calendar event.
 # It uses icalbuddy to get the next event and then parses the output to get the time
 # unitl the event. It prints the time until the event in the format "H:MM" or "MM" if
@@ -13,6 +14,7 @@
 #
 # SETUP
 # 1. Install icalbuddy with your package manager of choice (homebrew, apt-get, etc.)
+#   * icalbuddy will ask if it can look at your calendars the first time you run it.
 # 2. Add this script to your path
 # 3. Add the following line to your tmux status bar:
 #   #{caltracker}
@@ -20,7 +22,7 @@
 set -e
 
 # Get the next event name on first line and time on second line from icalbuddy
-next_event=$(icalbuddy -n -b "" -ea -li 1 -iep "title,datetime" -tf "%H:%M" eventsToday)
+next_event=$(icalbuddy -nc -n -b "" -ea -li 1 -iep "title,datetime" -tf "%H:%M" eventsToday)
 
 # Get the event name from the first line
 event_name=$(echo "$next_event" | head -n 1)
@@ -40,6 +42,14 @@ current_time=$(date +%s)
 # If the event is happening now, the time until the event is 0
 time_until_event=$((event_start_seconds - current_time))
 
+# If the event is happening now, flash the event name
+# tmux is weird and uses different syntax for flashing
+if [[ $TMUX_PANE == %* ]]; then
+  flash="\033[5m"
+else
+  flash="#[blink]"
+fi
+
 # If the event is happening now, print "NOW"
 # If the event is happening in less than an hour, print the number of minutes until the event
 # If the event is happening in more than an hour, print the number of hours and minutes until the event
@@ -47,7 +57,7 @@ time_until_event=$((event_start_seconds - current_time))
 if [ "$event_name" = "No Events Today" ]; then
   echo "󰧒 No More Events Today"
 elif [ "$time_until_event" -le 0 ] && [ "$event_end_seconds" -gt "$current_time" ]; then
-  echo "󰧓 $event_name NOW"
+  echo -e "󰧓 $event_name NOW$flash!"
 elif [ "$time_until_event" -le 3600 ]; then
   echo "󰃰 $event_name in $((time_until_event / 60))m"
 else
