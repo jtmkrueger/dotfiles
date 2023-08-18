@@ -24,6 +24,13 @@ set -e
 # Get the next event name on first line and time on second line from icalbuddy
 next_event=$(icalbuddy -nc -n -b "" -ea -li 1 -iep "title,datetime" -tf "%H:%M" eventsToday)
 
+# if next_event is empty, there are no events today
+# print a nice message and exit
+if [ -z "$next_event" ]; then
+  echo "󰧒 No More Events Today"
+  exit 0
+fi
+
 # Get the event name from the first line
 event_name=$(echo "$next_event" | head -n 1)
 
