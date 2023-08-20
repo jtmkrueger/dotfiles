@@ -20,6 +20,7 @@ Plug 'fatih/vim-go'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'jparise/vim-graphql'
+Plug 'posva/vim-vue'
 
 " " colorschemes
 Plug 'altercation/vim-colors-solarized'
@@ -40,7 +41,7 @@ Plug 'Yggdroot/indentLine'
 " nvim specific
 Plug 'nvim-lua/plenary.nvim'
 Plug 'MunifTanjim/nui.nvim'
-Plug 'jackMort/ChatGPT.nvim'
+" Plug 'jackMort/ChatGPT.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 " Plug 'dir-telescope.nvim'
@@ -61,7 +62,7 @@ call plug#end()
 
 packadd! dracula_pro
 filetype plugin on
-syntax on
+syntax enable
 
 set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
@@ -268,7 +269,7 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
 
 " for ChatGPT
-map <leader>c :ChatGPT<CR>
+" map <leader>c :ChatGPT<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -346,6 +347,7 @@ lua << END
 
   require('lualine').setup{
     options = { theme = custom_dracula },
+
     sections = {
       lualine_b = {
         {'filename', path = 1}
@@ -412,12 +414,12 @@ lua << END
       -- please take a look at the readme of the extension you want to configure
     }
   }
-  require("chatgpt").setup({
-    popup_input = {
-      submit = "<C-s>"
-    },
-    openai_edit_params = {
-      model = "gpt-3.5-turbo"
-    }
-  })
+  -- require("chatgpt").setup({
+  --   popup_input = {
+  --     submit = "<C-s>"
+  --   },
+  --   openai_edit_params = {
+  --     model = "gpt-3.5-turbo"
+  --   }
+  -- })
 END

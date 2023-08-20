@@ -157,9 +157,9 @@ export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # chruby
-# source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-# source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-# chruby u ruby-3.1.3
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+chruby u ruby-3.2.2
 
 # environment variables if file exists
 if [ -f ~/.zsh_env_vars ]; then
@@ -167,8 +167,8 @@ if [ -f ~/.zsh_env_vars ]; then
 fi
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 # place this after nvm initialization!
 autoload -U add-zsh-hook
 load-nvmrc() {
@@ -189,8 +189,6 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
-
-eval "$(rbenv init - zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
