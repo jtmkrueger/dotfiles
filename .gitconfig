@@ -22,3 +22,6 @@
 
 [diff]
   colorMoved = default
+
+[stash]
+  showPatch = true
