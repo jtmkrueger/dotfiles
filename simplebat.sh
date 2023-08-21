@@ -17,21 +17,27 @@ PERCENTLESS=$((${POWER%??}))
 
 # are we charging?
 if [[ $CHARGING != 'discharging;' ]]; then
-  if [ "$PERCENTLESS" -ge 1 -a "$PERCENTLESS" -le 14 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 15 -a "$PERCENTLESS" -le 29 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 30 -a "$PERCENTLESS" -le 44 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 45 -a "$PERCENTLESS" -le 59 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 60 -a "$PERCENTLESS" -le 74 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 75 -a "$PERCENTLESS" -le 89 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 90 -a "$PERCENTLESS" -le 100 ]; then POWERBAR=; fi
+  if [ "$PERCENTLESS" -ge 1 -a "$PERCENTLESS" -le 10 ]; then POWERBAR=󰢜;
+  elif [ "$PERCENTLESS" -ge 11 -a "$PERCENTLESS" -le 20 ]; then POWERBAR=󰂆;
+  elif [ "$PERCENTLESS" -ge 21 -a "$PERCENTLESS" -le 30 ]; then POWERBAR=󰂇;
+  elif [ "$PERCENTLESS" -ge 31 -a "$PERCENTLESS" -le 40 ]; then POWERBAR=󰂈;
+  elif [ "$PERCENTLESS" -ge 41 -a "$PERCENTLESS" -le 50 ]; then POWERBAR=󰢝;
+  elif [ "$PERCENTLESS" -ge 51 -a "$PERCENTLESS" -le 60 ]; then POWERBAR=󰂉;
+  elif [ "$PERCENTLESS" -ge 61 -a "$PERCENTLESS" -le 70 ]; then POWERBAR=󰢞;
+  elif [ "$PERCENTLESS" -ge 71 -a "$PERCENTLESS" -le 80 ]; then POWERBAR=󰂊;
+  elif [ "$PERCENTLESS" -ge 81 -a "$PERCENTLESS" -le 90 ]; then POWERBAR=󰂋;
+  elif [ "$PERCENTLESS" -ge 91 -a "$PERCENTLESS" -le 100 ]; then POWERBAR=󰂅; fi
 else
-  if [ "$PERCENTLESS" -ge 1 -a "$PERCENTLESS" -le 14 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 15 -a "$PERCENTLESS" -le 29 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 30 -a "$PERCENTLESS" -le 44 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 45 -a "$PERCENTLESS" -le 59 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 60 -a "$PERCENTLESS" -le 74 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 75 -a "$PERCENTLESS" -le 89 ]; then POWERBAR=;
-  elif [ "$PERCENTLESS" -ge 90 -a "$PERCENTLESS" -le 100 ]; then POWERBAR=; fi
+  if [ "$PERCENTLESS" -ge 1 -a "$PERCENTLESS" -le 10 ]; then POWERBAR=󰁺;
+  elif [ "$PERCENTLESS" -ge 11 -a "$PERCENTLESS" -le 20 ]; then POWERBAR=󰁻;
+  elif [ "$PERCENTLESS" -ge 21 -a "$PERCENTLESS" -le 30 ]; then POWERBAR=󰁼;
+  elif [ "$PERCENTLESS" -ge 31 -a "$PERCENTLESS" -le 40 ]; then POWERBAR=󰁽;
+  elif [ "$PERCENTLESS" -ge 41 -a "$PERCENTLESS" -le 50 ]; then POWERBAR=󰁾;
+  elif [ "$PERCENTLESS" -ge 51 -a "$PERCENTLESS" -le 60 ]; then POWERBAR=󰁿;
+  elif [ "$PERCENTLESS" -ge 61 -a "$PERCENTLESS" -le 70 ]; then POWERBAR=󰂀;
+  elif [ "$PERCENTLESS" -ge 71 -a "$PERCENTLESS" -le 80 ]; then POWERBAR=󰂁;
+  elif [ "$PERCENTLESS" -ge 81 -a "$PERCENTLESS" -le 90 ]; then POWERBAR=󰂂;
+  elif [ "$PERCENTLESS" -ge 91 -a "$PERCENTLESS" -le 100 ]; then POWERBAR=󰁹; fi
 fi
 
 printf "%s" "$POWERBAR $PERCENTLESS% ($TIME)";
