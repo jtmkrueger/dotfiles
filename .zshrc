@@ -16,23 +16,25 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 DISABLE_AUTO_TITLE="true"
 
-plugins=(git bundler zsh-system-clipboard zsh-completions zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+plugins=(git bundler zsh-system-clipboard zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
 
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH"
-export PATH="/usr/local/opt/openssl/bin:$PATH"
-export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
-export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
+export PATH="$HOME/.homebrew/opt/openssl/bin:$PATH"
+export PATH="$HOME/.homebrew/opt/openssl@1.1/bin:$PATH"
+export PATH="$HOME/.homebrew/opt/make/libexec/gnubin:$PATH"
 # export PATH=$PATH:/Users/jk/Library/Python/3.10/bin
-export PATH="/opt/homebrew/opt/python/libexec/bin:$PATH"
-export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include"
+# export PATH="/opt/homebrew/opt/python/libexec/bin:$PATH"
+# custom homebrew path
+export PATH="$HOME/.homebrew/bin:$PATH"
+# export LDFLAGS="-L$HOME/.homebrew/opt/openssl@1.1/lib"
+# export CPPFLAGS="-I$HOME/.homebrew/opt/openssl@1.1/include"
 
-
-alias mvim=/Applications/MacVim.app/Contents/bin/mvim
 alias vim=nvim
 # brew install lsd
-alias ls=lsd
-alias cat=bat
+DISABLE_LS_COLORS="true" # so lsd can colorize
+alias ls='lsd'
+alias cat='bat'
 # start cypress on the front end
 alias ftest="CYPRESS_TEST_USER=seinfeld@aurorasolar.com CYPRESS_TEST_PASSWORD=elaine yarn cypress:open"
 # TODO: get this actually working
@@ -47,8 +49,6 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
-
-export CLOUDSDK_PYTHON="/opt/homebrew/bin/python3"
 
 # START VI mode
 bindkey -v
@@ -147,19 +147,24 @@ kbash() {
   kubectl exec --stdin --tty $1 -- /bin/bash
 }
 
+# dbash <name of pod>
+dbash() {
+  docker exec -it $1 /bin/bash
+}
+
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
+export PATH="$HOME/.homebrew/opt/node@16/bin:$PATH"
 
 
 # configure homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$($HOME/.homebrew/bin/brew shellenv)"
 
 # chruby
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-chruby u ruby-3.2.2
+source $HOME/.homebrew/opt/chruby/share/chruby/chruby.sh
+source $HOME/.homebrew/opt/chruby/share/chruby/auto.sh
+chruby ruby-3.2.2
 
 # environment variables if file exists
 if [ -f ~/.zsh_env_vars ]; then
@@ -167,8 +172,8 @@ if [ -f ~/.zsh_env_vars ]; then
 fi
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_comp
 # place this after nvm initialization!
 autoload -U add-zsh-hook
 load-nvmrc() {
@@ -189,6 +194,9 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
+
+# allows easy running of docker compose
+export PATH=".git/safe/../../bin/docker-compose:.git/safe/../../bin:$PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

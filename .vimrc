@@ -21,6 +21,9 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'jparise/vim-graphql'
 Plug 'posva/vim-vue'
+Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'cappyzawa/starlark.vim'
+Plug 'carvel-dev/ytt.vim'
 
 " " colorschemes
 Plug 'altercation/vim-colors-solarized'
@@ -138,7 +141,8 @@ set list
 set listchars=tab:⬝➜
 set conceallevel=0
 set completeopt=menu,menuone,noselect,noinsert
-let g:netrw_bufsettings = 'noma nomod nu nowrap ro nobl'
+" let g:netrw_bufsettings = 'noma nomod nu nowrap ro nobl'
+" let g:netrw_banner = 1
 
 " HOLY SHIT the new engine just kills ruby files. This drastically improves performance!
 set regexpengine=1
@@ -320,6 +324,9 @@ endfunction
 " copilot
 imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
+
+" conditionally run EnableYtt if file type is yaml without attaching to paste buffer
+autocmd FileType yaml EnableYtt
 
 " Enable true color
 if exists('+termguicolors')

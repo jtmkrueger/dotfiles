@@ -2,10 +2,10 @@
 # be sure to install https://github.com/dandavison/delta
 [user]
   name = John Krueger
-  email = johnk@linux.com
+  email = john.krueger@nrel.gov
 
 [core]
-  excludesfile = ~/.gitignore
+  excludesfile = /Users/jkrueger/.config/git/ignore
 
 [delta]
   line-numbers = true
