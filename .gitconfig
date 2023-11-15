@@ -1,11 +1,12 @@
 # This is Git's per-user configuration file.
 # be sure to install https://github.com/dandavison/delta
 [user]
-  name = John Krueger
+  name = Krueger, John
   email = john.krueger@nrel.gov
 
 [core]
   excludesfile = /Users/jkrueger/.config/git/ignore
+  editor = vim
 
 [delta]
   line-numbers = true
@@ -17,6 +18,9 @@
   reflog = delta
   show = delta
 
+[push]
+  default = current
+
 [interactive]
   diffFilter = delta --color-only
 
@@ -25,3 +29,8 @@
 
 [stash]
   showPatch = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

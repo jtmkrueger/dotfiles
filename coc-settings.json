@@ -1,6 +1,4 @@
 {
-  "solargraph.useBundler": true,
-  "solargraph.shell": "zsh",
   "suggest.noselect": true,
   "coc.preferences.jumpCommand": "split",
   "diagnostic.displayByAle": true

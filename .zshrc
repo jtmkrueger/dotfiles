@@ -35,20 +35,14 @@ alias vim=nvim
 DISABLE_LS_COLORS="true" # so lsd can colorize
 alias ls='lsd'
 alias cat='bat'
-# start cypress on the front end
-alias ftest="CYPRESS_TEST_USER=seinfeld@aurorasolar.com CYPRESS_TEST_PASSWORD=elaine yarn cypress:open"
-# TODO: get this actually working
-# alias onepass="security find-generic-password -w -s 'Password_Name' -a sbillington"
-# alias onelogin_aurora='eval "$(echo `onepass` | op signin --account aurorasolar.1password.com)"'
-# eval "$(echo `onepass` | op signin --account aurorasolar.1password.com)"
 
 source $ZSH/oh-my-zsh.sh
 
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
 
-export VISUAL=vim
-export EDITOR="$VISUAL"
+export VISUAL="code -w -n"
+export EDITOR="code -w -n"
 
 # START VI mode
 bindkey -v
@@ -130,26 +124,14 @@ function mfa() {
   echo "copied $1 OTP to clipboard"
 }
 
-function zconsole() {
-  docker-compose exec app rails c
-}
-
-function zlogs() {
-  docker-compose exec app tail -f log/development.log
-}
-
-function zshell() {
-  docker-compose exec app /bin/bash
+# dbash <name of pod>
+dbash() {
+  docker exec -it $1 /bin/bash
 }
 
 # kbash <name of pod>
 kbash() {
   kubectl exec --stdin --tty $1 -- /bin/bash
-}
-
-# dbash <name of pod>
-dbash() {
-  docker exec -it $1 /bin/bash
 }
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

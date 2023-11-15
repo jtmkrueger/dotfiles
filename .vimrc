@@ -24,10 +24,12 @@ Plug 'posva/vim-vue'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'cappyzawa/starlark.vim'
 Plug 'carvel-dev/ytt.vim'
+Plug 'https://codeberg.org/esensar/nvim-dev-container.git'
 
 " " colorschemes
 Plug 'altercation/vim-colors-solarized'
 Plug 'jtmkrueger/grb256'
+Plug 'projekt0n/github-nvim-theme'
 
 " " tools
 Plug 'github/copilot.vim'
@@ -52,6 +54,7 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'neovim/nvim-lspconfig'
 
 " all that tpope!
 Plug 'tpope/vim-repeat'
@@ -63,7 +66,6 @@ Plug 'tpope/vim-endwise'
 call plug#end()
 " END plug ------------------------
 
-packadd! dracula_pro
 filetype plugin on
 syntax enable
 
@@ -73,11 +75,6 @@ set ttyfast
 " set lazyredraw
 " set shell=/bin/bash
 set background=dark
-
-let g:dracula_colorterm = 0
-let g:dracula_bold = 1
-let g:dracula_italic = 1
-colorscheme dracula_pro
 
 set t_ZH=^[[3m
 set t_ZR=^[[23m
@@ -344,17 +341,9 @@ augroup Tmux "{{{2
 augroup END
 
 lua << END
-  local custom_dracula = require'lualine.themes.dracula'
-  custom_dracula.normal.a.gui = 'italic'
-  custom_dracula.insert.a.gui = 'italic'
-  custom_dracula.visual.a.gui = 'italic'
-  custom_dracula.replace.a.gui = 'italic'
-  custom_dracula.command.a.gui = 'italic'
-  custom_dracula.inactive.a.gui = 'italic'
+  vim.cmd('colorscheme github_dark_high_contrast')
 
   require('lualine').setup{
-    options = { theme = custom_dracula },
-
     sections = {
       lualine_b = {
         {'filename', path = 1}
@@ -421,6 +410,39 @@ lua << END
       -- please take a look at the readme of the extension you want to configure
     }
   }
+  require("devcontainer").setup{
+    container_runtime = "docker",
+    compose_command = "docker-compose",
+    nvim_installation_commands_provider = function(_, version_string)
+      return {
+        { "apt-get", "update" },
+        { "apt-get", "install", "-y", "ninja-build", "gettext", "cmake", "unzip", "curl" },
+        { "sh", "-c", "cd /root && git clone --depth=1 https://github.com/neovim/neovim" },
+        { "sh", "-c", "cd /root/neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo && make install" },
+      }
+    end,
+    attach_mounts = {
+      neovim_config = {
+        -- enables mounting local config to /root/.config/nvim in container
+        enabled = true,
+        -- no options
+        options = {}
+      },
+      neovim_data = {
+        -- enables mounting local data to /root/.local/share/nvim in container
+        enabled = true,
+        -- no options
+        options = {}
+      },
+      -- Only useful if using neovim 0.8.0+
+      neovim_state = {
+        -- enables mounting local state to /root/.local/state/nvim in container
+        enabled = true,
+        -- no options
+        options = {}
+      },
+    },
+  }
   -- require("chatgpt").setup({
   --   popup_input = {
   --     submit = "<C-s>"
@@ -429,4 +451,57 @@ lua << END
   --     model = "gpt-3.5-turbo"
   --   }
   -- })
+  -- textDocument/diagnostic support until 0.10.0 is released
+
+  -- this is all code to get ruby-lsp working
+  _timers = {}
+  local function setup_diagnostics(client, buffer)
+    if require("vim.lsp.diagnostic")._enable then
+      return
+    end
+
+    local diagnostic_handler = function()
+      local params = vim.lsp.util.make_text_document_params(buffer)
+      client.request("textDocument/diagnostic", { textDocument = params }, function(err, result)
+        if err then
+          local err_msg = string.format("diagnostics error - %s", vim.inspect(err))
+          vim.lsp.log.error(err_msg)
+        end
+        local diagnostic_items = {}
+        if result then
+          diagnostic_items = result.items
+        end
+        vim.lsp.diagnostic.on_publish_diagnostics(
+          nil,
+          vim.tbl_extend("keep", params, { diagnostics = diagnostic_items }),
+          { client_id = client.id }
+        )
+      end)
+    end
+
+    diagnostic_handler() -- to request diagnostics on buffer when first attaching
+
+    vim.api.nvim_buf_attach(buffer, false, {
+      on_lines = function()
+        if _timers[buffer] then
+          vim.fn.timer_stop(_timers[buffer])
+        end
+        _timers[buffer] = vim.fn.timer_start(200, diagnostic_handler)
+      end,
+      on_detach = function()
+        if _timers[buffer] then
+          vim.fn.timer_stop(_timers[buffer])
+        end
+      end,
+    })
+  end
+
+  require("lspconfig").ruby_ls.setup({
+    cmd = { "nc", "localhost", "7201" },
+    filetypes = {"ruby"},
+    root_dir = function(fname)
+      return require'lspconfig'.util.find_git_ancestor(fname) or vim.loop.os_homedir()
+    end,
+    settings = {},
+  })
 END
