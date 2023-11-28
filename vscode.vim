@@ -10,6 +10,10 @@ let g:loaded_matchit = 1
 let mapleader = "\<Space>"
 set clipboard=unnamed " copy to system register
 set completeopt=menu,menuone,noselect,noinsert
+set incsearch " highlight search pattern as it's typed
+set ignorecase " searches are case insensitive...
+set smartcase " ... unless they contain at least one capital letter
+set scrolloff=5 " 5 line buffer below cursor when scrolling
 
 " nunmap <C-w>j
 nunmap <C-w>k
