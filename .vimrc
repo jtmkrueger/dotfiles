@@ -504,4 +504,12 @@ lua << END
     end,
     settings = {},
   })
+
+  vim.api.nvim_create_user_command('NN', function()
+    local timestamp = os.date('%Y%m%d-%H%M%S')
+    local bufferDir = vim.fn.expand('%:p:h')
+    local filename = vim.fn.input('Enter file name: ', timestamp .. '-')
+    local fullPath = bufferDir .. '/' .. filename .. '.md'
+    vim.api.nvim_command('edit ' .. fullPath)
+  end, {})
 END

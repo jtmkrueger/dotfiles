@@ -1,8 +1,8 @@
 " VSCode extension
 " START plug ----------------------------
 call plug#begin('~/.vim/plugged')
-Plug 'andymass/vim-matchup'
-Plug 'tpope/vim-surround'
+  Plug 'andymass/vim-matchup'
+  Plug 'tpope/vim-surround'
 call plug#end()
 " END plug ------------------------
 

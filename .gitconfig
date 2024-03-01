@@ -1,5 +1,6 @@
 # This is Git's per-user configuration file.
 # be sure to install https://github.com/dandavison/delta
+# delta is cool, but it doesn't really play well with a containerized environment
 [user]
   name = Krueger, John
   email = john.krueger@nrel.gov
@@ -8,21 +9,21 @@
   excludesfile = /Users/jkrueger/.config/git/ignore
   editor = vim
 
-[delta]
-  line-numbers = true
-  navigate = true
+# [delta]
+#   line-numbers = true
+#   navigate = true
 
-[pager]
-  diff = delta
-  log = delta
-  reflog = delta
-  show = delta
+# [pager]
+#   diff = delta
+#   log = delta
+#   reflog = delta
+#   show = delta
 
 [push]
   default = current
 
-[interactive]
-  diffFilter = delta --color-only
+# [interactive]
+#   diffFilter = delta --color-only
 
 [diff]
   colorMoved = default
