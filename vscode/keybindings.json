@@ -1,0 +1,192 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+  // keyboard shortcut to open file currently selected file in orthagonal split when in the filebrowser
+  {
+    "command": "workbench.action.splitEditorOrthogonal + explorer.openAndPassFocus",
+    "key": "cmd+shift+enter",
+    "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "vsnetrw.open",
+    "key": "-",
+    "when": "editorTextFocus && neovim.mode != insert"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "j",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "gj"
+  },
+  {
+    "command": "vscode-neovim.send",
+    "key": "k",
+    "when": "editorTextFocus && neovim.mode != insert",
+    "args": "gk"
+  },
+  {
+    "key": "ctrl+t",
+    "command": "rubyLsp.runTestInTerminal"
+  },
+  {
+    "key": "ctrl+a",
+    "command": "workbench.action.findInFiles"
+  },
+  {
+    "key": "ctrl+b",
+    "command": "editor.debug.action.toggleBreakpoint"
+  },
+  {
+    "key": "ctrl+d",
+    "command": "editor.action.peekDefinition"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "workbench.files.action.focusFilesExplorer",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "workbench.action.focusActiveEditorGroup",
+    "when": "!editorTextFocus"
+  },
+  {
+    "key": "ctrl+f",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "key": "ctrl+w h",
+    "command": "workbench.action.navigateLeft",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "ctrl+w h",
+    "command": "workbench.action.terminal.focusPreviousPane",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+w l",
+    "command": "workbench.action.navigateRight",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "ctrl+w l",
+    "command": "workbench.action.terminal.focusNextPane",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+w j",
+    "command": "workbench.action.navigateDown",
+  },
+  {
+    "key": "ctrl+w k",
+    "command": "workbench.action.navigateUp",
+  },
+  {
+    "key": "ctrl+w s",
+    "command": "workbench.action.focusSideBar",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+w s",
+    "command": "workbench.action.focusActiveEditorGroup",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "right",
+    "command": "workbench.action.decreaseViewWidth",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "left",
+    "command": "workbench.action.increaseViewWidth",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "up",
+    "command": "workbench.action.decreaseViewHeight",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "down",
+    "command": "workbench.action.increaseViewHeight",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "editor.action.inlineSuggest.commit",
+    "when": "inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus"
+  },
+  {
+    "key": "tab",
+    "command": "-editor.action.inlineSuggest.commit",
+    "when": "inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible"
+  },
+  {
+    "key": "tab",
+    "command": "selectNextSuggestion",
+    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+  },
+  {
+    "key": "shift+tab",
+    "command": "selectPrevSuggestion",
+    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "-selectNextSuggestion",
+    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "-selectPrevSuggestion",
+    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "-extension.vim_ctrl+j",
+    "when": "editorTextFocus && vim.active && vim.use<C-j> && !inDebugRepl"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "-editor.action.joinLines",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "cmd+j",
+    "command": "workbench.action.toggleMaximizedPanel"
+  },
+  {
+    "key": "cmd+j",
+    "command": "-workbench.action.togglePanel"
+  },
+  {
+    "key": "cmd+down",
+    "command": "-workbench.action.terminal.scrollToNextCommand",
+    "when": "terminalFocus && terminalHasBeenCreated && !accessibilityModeEnabled || terminalFocus && terminalProcessSupported && !accessibilityModeEnabled"
+  },
+  {
+    "key": "cmd+up",
+    "command": "-workbench.action.terminal.scrollToPreviousCommand",
+    "when": "terminalFocus && terminalHasBeenCreated && !accessibilityModeEnabled || terminalFocus && terminalProcessSupported && !accessibilityModeEnabled"
+  },
+  {
+    "key": "cmd+down",
+    "command": "workbench.action.terminal.scrollDown",
+    "when": "terminalFocusInAny && terminalHasBeenCreated && !terminalAltBufferActive || terminalFocusInAny && terminalProcessSupported && !terminalAltBufferActive"
+  },
+  {
+    "key": "alt+cmd+pagedown",
+    "command": "-workbench.action.terminal.scrollDown",
+    "when": "terminalFocusInAny && terminalHasBeenCreated && !terminalAltBufferActive || terminalFocusInAny && terminalProcessSupported && !terminalAltBufferActive"
+  },
+  {
+    "key": "cmd+up",
+    "command": "workbench.action.terminal.scrollUp",
+    "when": "terminalFocusInAny && terminalHasBeenCreated && !terminalAltBufferActive || terminalFocusInAny && terminalProcessSupported && !terminalAltBufferActive"
+  },
+  {
+    "key": "alt+cmd+pageup",
+    "command": "-workbench.action.terminal.scrollUp",
+    "when": "terminalFocusInAny && terminalHasBeenCreated && !terminalAltBufferActive || terminalFocusInAny && terminalProcessSupported && !terminalAltBufferActive"
+  }
+]
