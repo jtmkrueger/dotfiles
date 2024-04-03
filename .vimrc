@@ -50,7 +50,7 @@ Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
 Plug 'MunifTanjim/nui.nvim'
 " Plug 'jackMort/ChatGPT.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 " Plug 'dir-telescope.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-tree/nvim-web-devicons'

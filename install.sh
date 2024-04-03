@@ -7,7 +7,7 @@ mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/.vimrc ~/.config/nvim/init.vim
 ln -s ~/dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
 
-# installing neovim via apt
+# installing neovim & dependencies via apt
 apt update -y && apt install -y neovim
 
 # Install vim-plug
