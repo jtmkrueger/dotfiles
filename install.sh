@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # this script can be triggered to run via devcontainer up:
-# devcontainer up --dotfiles-repository https://github.com/jtmkrueger/dotfiles --remove-existing-container
+# devcontainer up --mount 'type=bind,source=$HOME/.config/github-copilot,target=/root/.config/github-copilot' --dotfiles-repository https://github.com/jtmkrueger/dotfiles --remove-existing-container
 
 set -e
 
@@ -29,5 +29,5 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Install plugins
-nvim +PlugInstall +qall
+nvim +PlugInstall +qa
 

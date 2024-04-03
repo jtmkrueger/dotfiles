@@ -297,13 +297,13 @@ highlight ALEWarningSign ctermfg=red
 let g:ale_linters = {
 \   'javascript': ['eslint', 'prettier'],
 \   'scss': ['prettier'],
-\   'ruby': ['rubocop', 'standardrb', 'reek', 'rails_best_practices', 'brakeman', 'debride']
+\   'ruby': ['standardrb', 'reek', 'rails_best_practices', 'brakeman', 'debride']
 \}
 let g:ale_fixers = {
 \   'javascript': ['eslint', 'prettier'],
-\   'ruby': ['rubocop', 'standardrb']
+\   'ruby': ['standardrb']
 \}
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 let g:ale_lint_on_text_changed = 1
 let g:ale_disable_lsp = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
