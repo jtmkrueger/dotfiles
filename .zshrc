@@ -35,6 +35,7 @@ alias vim=nvim
 DISABLE_LS_COLORS="true" # so lsd can colorize
 alias ls='lsd'
 alias cat='bat'
+alias dcvim="devcontainer up --remove-existing-container --mount 'type=bind,source=$HOME/.config/nvim,target=/root/.config/nvim' --additional-features '{\"ghcr.io/devcontainers-contrib/features/neovim:1\": {}}'"
 
 source $ZSH/oh-my-zsh.sh
 

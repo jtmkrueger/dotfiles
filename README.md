@@ -3,6 +3,11 @@ dotfiles
 
 A collection of my configurations since 2012.
 
+## Devcontainers
+
+The install.sh script is used to bootstrap a devcontainer by passing the  `--dotfiles-repository` flag.
+
+
 ## Set up iterm for operator
 
 1. Install both Regular and Italic OperatorMonoNerdFonts

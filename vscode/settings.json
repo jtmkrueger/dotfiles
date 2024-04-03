@@ -1,6 +1,6 @@
 {
     "accessibility.dimUnfocused.enabled": true,
-    "accessibility.dimUnfocused.opacity": 0.8,
+    "accessibility.dimUnfocused.opacity": 0.75,
     "apc.electron": {
       // "frame": false,
       // "setWindowButtonVisibility": false,
@@ -17,10 +17,8 @@
       "gitHub.copilot",
       "grapecity.gc-excelviewer",
       "iuriibarlukov.cursor-column-highlight",
-      "ms-azuretools.vscode-docker",
       "ms-ossdata.vscode-postgresql",
       "oderwat.indent-rainbow",
-      "phil9909.ytt-lint",
       "waderyan.gitblame",
     ],
     // "editor.formatOnSave": true,
@@ -160,4 +158,16 @@
     },
     "workbench.colorTheme": "GitHub Dark Default",
     "window.customTitleBarVisibility": "never",
+    "oracledevtools.bookmarkFileFolder": "/Users/jkrueger/Oracle/oracle.oracledevtools",
+    "oracledevtools.download.otherFolder": "/Users/jkrueger/downloads",
+    "oracledevtools.connectionConfiguration.configFilesFolder": "/Users/jkrueger/Oracle/network/admin",
+    "oracledevtools.connectionConfiguration.walletFileFolder": "/Users/jkrueger/Oracle/network/admin",
+    "[oraclesql]": {
+      "editor.suggest.showSnippets": true,
+      "editor.quickSuggestions": {
+        "comments": "on",
+        "strings": "on",
+        "other": "on"
+      }
+    },
 }

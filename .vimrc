@@ -44,13 +44,15 @@ Plug 'itchyny/vim-cursorword'
 Plug 'Yggdroot/indentLine'
 
 " nvim specific
+Plug 'zbirenbaum/copilot.lua'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
 Plug 'MunifTanjim/nui.nvim'
 " Plug 'jackMort/ChatGPT.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 " Plug 'dir-telescope.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'lewis6991/gitsigns.nvim'
@@ -188,8 +190,9 @@ nnoremap <leader>T :Tex<CR>
 " buffer navigation
 nnoremap <leader>n :bnext<CR>
 nnoremap <leader>b :bprevious<CR>
-nnoremap <leader>c :bp\|bd #<CR>
-nnoremap <leader>o :Bonly<CR>
+
+" open github copilot
+nnoremap <leader>c :CopilotChatOpen<CR>
 
 " Open new splits to the right/bottom
 set splitright splitbelow
@@ -383,31 +386,15 @@ lua << END
   table.insert(vimgrep_arguments, "!**/.git/*")
   require('telescope').setup{
     defaults = {
-      -- Default configuration for telescope goes here:
-      -- config_key = value,
-      -- ..
       wrap_results = true,
       vimgrep_arguments = vimgrep_arguments,
     },
     pickers = {
-      -- Default configuration for builtin pickers goes here:
-      -- picker_name = {
-      --   picker_config_key = value,
-      --   ...
-      -- }
-      -- Now the picker_config_key will be applied every time you call this
-      -- builtin picker
       find_files = {
-        -- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
         find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
       },
     },
     extensions = {
-      -- Your extension configuration goes here:
-      -- extension_name = {
-      --   extension_config_key = value,
-      -- }
-      -- please take a look at the readme of the extension you want to configure
     }
   }
   require("devcontainer").setup{
@@ -512,4 +499,9 @@ lua << END
     local fullPath = bufferDir .. '/' .. filename .. '.md'
     vim.api.nvim_command('edit ' .. fullPath)
   end, {})
+
+  require("CopilotChat").setup {
+    debug = true, -- Enable debugging
+    -- See Configuration section for rest
+  }
 END
