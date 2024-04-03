@@ -13,7 +13,7 @@ ln -s ~/dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
 
 echo "Install neovim dependencies"
 # installing neovim & dependencies via apt
-apt update -y && apt install -y lua5.3 python3-pip ninja-build gettext cmake unzip curl build-essential
+apt update -y && apt install -y ripgrep lua5.3 python3-pip ninja-build gettext cmake unzip curl build-essential
 
 echo "Install neovim"
 cd
