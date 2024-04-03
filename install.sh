@@ -1,9 +1,9 @@
 #!/bin/bash
-#
 
 set -e
 
 # symlink the neovim config
+mkdir -p ~/.config/nvim
 ln -s init.vim ~/.config/nvim/init.vim
 ln -s neo.vim ~/.config/nvim/neo.vim
 ln -s coc-settings.json ~/.config/nvim/coc-settings.json
