@@ -29,7 +29,7 @@ Plug 'https://codeberg.org/esensar/nvim-dev-container.git'
 " " colorschemes
 Plug 'altercation/vim-colors-solarized'
 Plug 'jtmkrueger/grb256'
-Plug 'projekt0n/github-nvim-theme'
+" Plug 'projekt0n/github-nvim-theme'
 
 " " tools
 Plug 'github/copilot.vim'
@@ -344,8 +344,6 @@ augroup Tmux "{{{2
 augroup END
 
 lua << END
-  vim.cmd('colorscheme github_dark_high_contrast')
-
   require('lualine').setup{
     sections = {
       lualine_b = {
