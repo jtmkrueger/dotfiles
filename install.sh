@@ -5,14 +5,17 @@
 
 set -e
 
+echo "Symlink dotfiles"
 # symlink the neovim config
 mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/.vimrc ~/.config/nvim/init.vim
 ln -s ~/dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
 
+echo "Install neovim dependencies"
 # installing neovim & dependencies via apt
 apt update -y && apt install -y lua5.3 python3-pip ninja-build gettext cmake unzip curl build-essential
 
+echo "Install neovim"
 cd
 git clone --depth 1 --branch stable --single-branch https://github.com/neovim/neovim.git
 cd neovim
@@ -20,9 +23,7 @@ git checkout stable
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 make install
 
-# curl -LO https://github.com/neovim/neovim/releases/download/v0.7.2/nvim-linux64.deb
-# apt install ./nvim-linux64.deb
-
+echon "Install vim-plug and plugins"
 # Install vim-plug
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
