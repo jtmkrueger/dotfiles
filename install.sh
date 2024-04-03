@@ -13,7 +13,8 @@ ln -s ~/dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
 # installing neovim & dependencies via apt
 apt update -y && apt install -y lua5.3 python3-pip ninja-build gettext cmake unzip curl build-essential
 
-git clone --depth 1 https://github.com/neovim/neovim.git
+cd
+git clone --depth 1 --branch stable --single-branch https://github.com/neovim/neovim.git
 cd neovim
 git checkout stable
 make CMAKE_BUILD_TYPE=RelWithDebInfo
