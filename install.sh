@@ -11,6 +11,9 @@ mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/.vimrc ~/.config/nvim/init.vim
 ln -s ~/dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
 
+# install some bonus ruby gems
+gem install rails_best_practices
+
 echo "Install neovim dependencies"
 # installing neovim & dependencies via apt
 apt update -y && apt install -y ripgrep lua5.3 python3-pip ninja-build gettext cmake unzip curl build-essential
