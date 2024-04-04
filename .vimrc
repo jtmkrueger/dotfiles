@@ -24,12 +24,10 @@ Plug 'posva/vim-vue'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'cappyzawa/starlark.vim'
 Plug 'carvel-dev/ytt.vim'
-Plug 'https://codeberg.org/esensar/nvim-dev-container.git'
 
 " " colorschemes
 Plug 'altercation/vim-colors-solarized'
 Plug 'jtmkrueger/grb256'
-Plug 'projekt0n/github-nvim-theme'
 Plug 'dracula/vim', { 'as': 'dracula' }
 
 " " tools
@@ -398,48 +396,6 @@ lua << END
     extensions = {
     }
   }
-  require("devcontainer").setup{
-    container_runtime = "docker",
-    compose_command = "docker-compose",
-    nvim_installation_commands_provider = function(_, version_string)
-      return {
-        { "apt-get", "update" },
-        { "apt-get", "install", "-y", "ninja-build", "gettext", "cmake", "unzip", "curl" },
-        { "sh", "-c", "cd /root && git clone --depth=1 https://github.com/neovim/neovim" },
-        { "sh", "-c", "cd /root/neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo && make install" },
-      }
-    end,
-    attach_mounts = {
-      neovim_config = {
-        -- enables mounting local config to /root/.config/nvim in container
-        enabled = true,
-        -- no options
-        options = {}
-      },
-      neovim_data = {
-        -- enables mounting local data to /root/.local/share/nvim in container
-        enabled = true,
-        -- no options
-        options = {}
-      },
-      -- Only useful if using neovim 0.8.0+
-      neovim_state = {
-        -- enables mounting local state to /root/.local/state/nvim in container
-        enabled = true,
-        -- no options
-        options = {}
-      },
-    },
-  }
-  -- require("chatgpt").setup({
-  --   popup_input = {
-  --     submit = "<C-s>"
-  --   },
-  --   openai_edit_params = {
-  --     model = "gpt-3.5-turbo"
-  --   }
-  -- })
-  -- textDocument/diagnostic support until 0.10.0 is released
 
   -- this is all code to get ruby-lsp working
   _timers = {}
