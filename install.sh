@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # this script can be triggered to run via devcontainer up:
-# devcontainer up --mount 'type=bind,source=$HOME/.config/github-copilot,target=/root/.config/github-copilot' --dotfiles-repository https://github.com/jtmkrueger/dotfiles --remove-existing-container
+# devcontainer up --mount 'type=bind,source=$HOME/.config/coc,target=/root/.config/coc' --mount 'type=bind,source=$HOME/.config/github-copilot,target=/root/.config/github-copilot' --dotfiles-repository https://github.com/jtmkrueger/dotfiles --remove-existing-container
 
 set -e
 
