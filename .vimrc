@@ -30,6 +30,7 @@ Plug 'https://codeberg.org/esensar/nvim-dev-container.git'
 Plug 'altercation/vim-colors-solarized'
 Plug 'jtmkrueger/grb256'
 Plug 'projekt0n/github-nvim-theme'
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 " " tools
 Plug 'github/copilot.vim'
@@ -77,6 +78,8 @@ set ttyfast
 " set lazyredraw
 " set shell=/bin/bash
 set background=dark
+colorscheme dracula
+highlight Normal ctermbg=NONE guibg=NONE
 
 set t_ZH=^[[3m
 set t_ZR=^[[23m
@@ -344,8 +347,6 @@ augroup Tmux "{{{2
 augroup END
 
 lua << END
-  vim.cmd('colorscheme github_dark_high_contrast')
-
   require('lualine').setup{
     sections = {
       lualine_b = {
