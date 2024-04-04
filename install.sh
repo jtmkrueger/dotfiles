@@ -9,7 +9,7 @@ echo "Symlink dotfiles"
 # symlink the neovim config
 mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/.vimrc ~/.config/nvim/init.vim
-# ln -s ~/dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
+ln -s ~/dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
 
 # install some bonus ruby gems
 gem install rails_best_practices
