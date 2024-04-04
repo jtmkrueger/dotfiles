@@ -28,7 +28,7 @@ Plug 'carvel-dev/ytt.vim'
 " " colorschemes
 Plug 'altercation/vim-colors-solarized'
 Plug 'jtmkrueger/grb256'
-Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'dracula/vim'
 
 " " tools
 Plug 'github/copilot.vim'
