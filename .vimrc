@@ -358,7 +358,7 @@ lua << END
       lualine_a = {
         {
             'tabs',
-            mode = 3,
+            mode = 2,
             max_length = vim.o.columns,
         }
       },
