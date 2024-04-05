@@ -20,8 +20,9 @@ apt update -y && apt install -y ripgrep lua5.3 python3-pip ninja-build gettext c
 
 echo "Install neovim"
 cd
-git clone --depth 1 --single-branch https://github.com/neovim/neovim.git
+git clone --depth 1 --branch stable --single-branch https://github.com/neovim/neovim.git
 cd neovim
+git checkout stable
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 make install
 

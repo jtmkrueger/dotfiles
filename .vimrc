@@ -337,12 +337,12 @@ if exists('+termguicolors')
 endif
 
 " set tmux window name automatically
-augroup Tmux "{{{2
-  au!
-  " autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
-  autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "nvim"')
-  autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
-augroup END
+" augroup Tmux "{{{2
+"   au!
+"   " autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
+"   autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "nvim"')
+"   autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
+" augroup END
 
 lua << END
   require('lualine').setup{
@@ -439,15 +439,6 @@ lua << END
       end,
     })
   end
-
-  require("lspconfig").ruby_ls.setup({
-    cmd = { "nc", "localhost", "7201" },
-    filetypes = {"ruby"},
-    root_dir = function(fname)
-      return require'lspconfig'.util.find_git_ancestor(fname) or vim.loop.os_homedir()
-    end,
-    settings = {},
-  })
 
   vim.api.nvim_create_user_command('NN', function()
     local timestamp = os.date('%Y%m%d-%H%M%S')
