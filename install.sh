@@ -22,7 +22,6 @@ echo "Install neovim"
 cd
 git clone --depth 1 --single-branch https://github.com/neovim/neovim.git
 cd neovim
-git checkout stable
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 make install
 
