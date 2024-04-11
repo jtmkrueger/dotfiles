@@ -32,7 +32,6 @@ Plug 'dracula/vim'
 
 " " tools
 Plug 'ojroques/vim-oscyank', {'branch': 'main'}
-Plug 'wincent/vim-clipper'
 Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
