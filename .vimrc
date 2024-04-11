@@ -31,6 +31,7 @@ Plug 'jtmkrueger/grb256'
 Plug 'dracula/vim'
 
 " " tools
+Plug 'wincent/vim-clipper'
 Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
