@@ -13,7 +13,7 @@
 # There are three things you will need to do before using this script.
 #
 # 1. Install jq with your package manager of choice (homebrew, apt-get, etc.)
-# 2. Install whereami for mac (https://github.com/robmathers/WhereAmI)
+# 2. grab this shortcut script: https://www.icloud.com/shortcuts/a8ce742fb5fe43caacb91bdca72a877f
 # 2. Sign up for a free account with OpenWeatherMap to grab your API key
 # 3. Add your OpenWeatherMap API key where it says API_KEY
 # 4. Stick this script somewhere in the path. I'm symlinking it into /usr/local/bin
@@ -76,9 +76,9 @@ weather_icon() {
   esac
 }
 
-LOCATION=$(whereami)
-LON=$(echo $LOCATION | awk '{print $4 }')
-LAT=$(echo $LOCATION | awk '{print $2 }')
+LOCATION=$(echo "{LAT}N {LON}E" | shortcuts run "Get Location" | tee)
+LON=$(echo $LOCATION | awk '{print $2 }' | rev | cut -c 2- | rev)
+LAT=$(echo $LOCATION | awk '{print $1 }' | rev | cut -c 2- | rev)
 
 WEATHER=$(curl --silent http://api.openweathermap.org/data/2.5/weather\?lat="$LAT"\&lon="$LON"\&APPID="$API_KEY"\&units=imperial)
 
