@@ -19,7 +19,7 @@ echo "Install neovim dependencies and less"
 apt update -y && apt install -y ripgrep lua5.3 python3-pip ninja-build gettext cmake unzip curl build-essential netcat xclip less
 
 # create a .pryrc file and turn off the pager
-echo "Pry.config.pager = less" > ~/.pryrc
+echo "Pry.config.pager = 'less'" > ~/.pryrc
 
 echo "Install neovim"
 cd
