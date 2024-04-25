@@ -11,15 +11,15 @@ mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/.vimrc ~/.config/nvim/init.vim
 ln -s ~/dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
 
-# create a .pryrc file and turn off the pager
-echo "Pry.config.pager = false" > ~/.pryrc
-
 # install some bonus ruby gems
 gem install rails_best_practices
 
-echo "Install neovim dependencies"
+echo "Install neovim dependencies and less"
 # installing neovim & dependencies via apt
-apt update -y && apt install -y ripgrep lua5.3 python3-pip ninja-build gettext cmake unzip curl build-essential netcat xclip
+apt update -y && apt install -y ripgrep lua5.3 python3-pip ninja-build gettext cmake unzip curl build-essential netcat xclip less
+
+# create a .pryrc file and turn off the pager
+echo "Pry.config.pager = less" > ~/.pryrc
 
 echo "Install neovim"
 cd
