@@ -12,7 +12,7 @@ ln -s ~/dotfiles/.vimrc ~/.config/nvim/init.vim
 ln -s ~/dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
 
 # install some bonus ruby gems
-gem install rails_best_practices
+gem install rails_best_practices reek brakeman debride
 
 echo "Install neovim dependencies and less"
 # installing neovim & dependencies via apt
