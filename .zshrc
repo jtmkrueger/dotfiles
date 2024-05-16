@@ -20,21 +20,13 @@ fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 plugins=(git bundler zsh-system-clipboard zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
 
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH"
-export PATH="$HOME/.homebrew/opt/openssl/bin:$PATH"
-export PATH="$HOME/.homebrew/opt/openssl@1.1/bin:$PATH"
-export PATH="$HOME/.homebrew/opt/make/libexec/gnubin:$PATH"
-# export PATH=$PATH:/Users/jk/Library/Python/3.10/bin
-# export PATH="/opt/homebrew/opt/python/libexec/bin:$PATH"
-# custom homebrew path
-export PATH="$HOME/.homebrew/bin:$PATH"
-# export LDFLAGS="-L$HOME/.homebrew/opt/openssl@1.1/lib"
-# export CPPFLAGS="-I$HOME/.homebrew/opt/openssl@1.1/include"
 
 alias vim=nvim
 # brew install lsd
 DISABLE_LS_COLORS="true" # so lsd can colorize
 alias ls='lsd'
 alias cat='bat'
+alias pretty_log="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'"
 alias dcvim="devcontainer up --remove-existing-container --mount 'type=bind,source=$HOME/.config/nvim,target=/root/.config/nvim' --additional-features '{\"ghcr.io/devcontainers-contrib/features/neovim:1\": {}}'"
 
 source $ZSH/oh-my-zsh.sh
@@ -138,16 +130,22 @@ kbash() {
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export PATH="$HOME/.homebrew/opt/node@16/bin:$PATH"
+# export PATH="$HOME/.homebrew/opt/node@16/bin:$PATH"
 
 
 # configure homebrew
-eval "$($HOME/.homebrew/bin/brew shellenv)"
+# eval "$($HOME/.homebrew/bin/brew shellenv)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # chruby
-source $HOME/.homebrew/opt/chruby/share/chruby/chruby.sh
-source $HOME/.homebrew/opt/chruby/share/chruby/auto.sh
+# source $HOME/.homebrew/opt/chruby/share/chruby/chruby.sh
+# source $HOME/.homebrew/opt/chruby/share/chruby/auto.sh
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 chruby ruby-3.2.2
+
+# set up pyenv
+eval "$(pyenv init -)"
 
 # environment variables if file exists
 if [ -f ~/.zsh_env_vars ]; then
@@ -179,7 +177,15 @@ add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
 # allows easy running of docker compose
-export PATH=".git/safe/../../bin/docker-compose:.git/safe/../../bin:$PATH"
+# export PATH=".git/safe/../../bin/docker-compose:.git/safe/../../bin:$PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# pnpm
+export PNPM_HOME="/Users/jkrueger/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

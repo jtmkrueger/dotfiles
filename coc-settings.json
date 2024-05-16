@@ -1,5 +1,6 @@
 {
   "suggest.noselect": true,
   "coc.preferences.jumpCommand": "split",
-  "diagnostic.displayByAle": true
+  "diagnostic.displayByAle": true,
+  "solargraph.useBundler": true
 }

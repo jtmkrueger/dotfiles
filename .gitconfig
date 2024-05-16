@@ -6,7 +6,7 @@
   email = john.krueger@nrel.gov
 
 [core]
-  excludesfile = /Users/jkrueger/.config/git/ignore
+	excludesfile = /Users/jkrueger/.gitignore
   editor = vim
 
 # [delta]

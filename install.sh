@@ -16,7 +16,8 @@ gem install rails_best_practices reek brakeman debride
 
 echo "Install neovim dependencies and less"
 # installing neovim & dependencies via apt
-apt update -y && apt install -y ripgrep lua5.3 python3-pip ninja-build gettext cmake unzip curl build-essential netcat xclip less
+# currently trying to exclude netcat xclip
+apt update -y && apt install -y ripgrep lua5.3 python3-pip ninja-build gettext cmake unzip curl build-essential less
 
 # create a .pryrc file and turn off the pager
 echo "Pry.config.pager = 'less'" > ~/.pryrc

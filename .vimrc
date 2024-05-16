@@ -42,6 +42,7 @@ Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'itchyny/vim-cursorword'
 Plug 'Yggdroot/indentLine'
+Plug 'sotte/presenting.nvim'
 
 " nvim specific
 Plug 'zbirenbaum/copilot.lua'
@@ -272,17 +273,21 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use h to show documentation in preview window.
+" Use h to show documentation in preview window. This is if I want if faster
+" and don't want to wait for the hover popup to show up.
 nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
 
 " for ChatGPT
 " map <leader>c :ChatGPT<CR>
 
+" dynamicaly set this depending on what the current ruby version is
+let g:ruby_host_prog = system('echo $(ruby -e "puts Gem.bin_path(\"neovim\", \"neovim-ruby-host\")")')
+
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
-    call CocAction('doHover')
+    call CocActionAsync('doHover')
   endif
 endfunction
 
