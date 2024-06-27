@@ -24,6 +24,7 @@ Plug 'posva/vim-vue'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'cappyzawa/starlark.vim'
 Plug 'carvel-dev/ytt.vim'
+Plug 'https://github.com/apple/pkl-neovim.git'
 
 " " colorschemes
 Plug 'altercation/vim-colors-solarized'
@@ -34,7 +35,7 @@ Plug 'dracula/vim'
 Plug 'ojroques/vim-oscyank', {'branch': 'main'}
 Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'Raimondi/delimitMate'
@@ -58,6 +59,12 @@ Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'onsails/lspkind.nvim'
 
 " all that tpope!
 Plug 'tpope/vim-repeat'
@@ -147,7 +154,7 @@ set completeopt=menu,menuone,noselect,noinsert
 " let g:netrw_banner = 1
 
 " HOLY SHIT the new engine just kills ruby files. This drastically improves performance!
-set regexpengine=1
+" set regexpengine=1
 
 " Normally, Vim messes with iskeyword when you open a shell file. This can
 " leak out, polluting other file types even after a 'set ft=' change. This
@@ -264,36 +271,37 @@ let g:indentLine_char = '│'
 let g:indentLine_concealcursor='nc'
 
 " COC
-inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
-inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
+" inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
+" inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
 
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
 
 " Use h to show documentation in preview window. This is if I want if faster
 " and don't want to wait for the hover popup to show up.
 nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
 
+" set the path to the current ruby version
+" autocmd VimEnter * let $PATH = system('chruby-exec -- sh -c "echo $PATH"')
+
 " for ChatGPT
 " map <leader>c :ChatGPT<CR>
 
 " dynamicaly set this depending on what the current ruby version is
-let g:ruby_host_prog = system('echo $(ruby -e "puts Gem.bin_path(\"neovim\", \"neovim-ruby-host\")")')
+" let g:ruby_host_prog = system('echo $(ruby -e "puts Gem.bin_path(\"neovim\", \"neovim-ruby-host\")")')
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocActionAsync('doHover')
-  endif
-endfunction
+" function! s:show_documentation()
+"   if (index(['vim','help'], &filetype) >= 0)
+"     execute 'h '.expand('<cword>')
+"   else
+"     call CocActionAsync('doHover')
+"   endif
+" endfunction
 
 " ale
-" Available language servers:
-"   ruby (solargraph)
 let g:ale_sign_error = '✘'
 let g:ale_echo_msg_error_str = '✘' " FIXME: not doing anything
 let g:ale_sign_warning = ''
@@ -303,15 +311,20 @@ let g:ale_virtualtext_prefix = ': '
 highlight ALEErrorSign ctermfg=red
 highlight ALEWarningSign ctermfg=red
 let g:ale_linters = {
-\   'javascript': ['eslint', 'prettier'],
+\   'javascript': ['prettier', 'eslint' ],
+\   'vue': ['eslint', 'prettier', 'vls'],
 \   'scss': ['prettier'],
-\   'ruby': ['standardrb', 'reek', 'rails_best_practices', 'brakeman', 'debride']
+\   'ruby': ['standardrb', 'reek', 'brakeman', 'debride']
+\}
+" ignore rubocop linter for ruby
+let g:ale_lint_ignore = {
+\   'ruby': ['rubocop']
 \}
 let g:ale_fixers = {
-\   'javascript': ['eslint', 'prettier'],
-\   'ruby': ['standardrb']
+\   'javascript': [ 'prettier', 'eslint'],
+\   'vue': ['eslint', 'prettier'],
 \}
-let g:ale_fix_on_save = 0
+let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 1
 let g:ale_disable_lsp = 1
 nmap <C-g> :ALEGoToDefinitionInTab<CR>
@@ -402,6 +415,9 @@ lua << END
   require('gitsigns').setup {
     current_line_blame = true,
   }
+  require('lspconfig').solargraph.setup{}
+  require('lspconfig').vls.setup{}
+
 
   local telescope = require("telescope")
   local telescopeConfig = require("telescope.config")
@@ -469,6 +485,19 @@ lua << END
     })
   end
 
+  local hasConfigs, configs = pcall(require, "nvim-treesitter.configs")
+  if hasConfigs then
+    configs.setup {
+      ensure_installed = "pkl",
+      highlight = {
+        enable = true,              -- false will disable the whole extension
+      },
+      indent = {
+        enable = true
+      }
+    }
+  end
+
   vim.api.nvim_create_user_command('NN', function()
     local timestamp = os.date('%Y%m%d-%H%M%S')
     local bufferDir = vim.fn.expand('%:p:h')
@@ -480,5 +509,49 @@ lua << END
   require("CopilotChat").setup {
     debug = true, -- Enable debugging
     -- See Configuration section for rest
+  }
+
+  local cmp = require'cmp'
+  cmp.setup({
+    snippet = {
+      expand = function(args)
+        vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
+      end,
+    },
+    completion = {
+      completeopt = table.concat(vim.opt.completeopt:get(), ","),
+    },
+    window = {
+      -- completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+      ["<Tab>"] = cmp.mapping.select_next_item({behavior=cmp.SelectBehavior.Insert}),
+      ["<S-Tab>"] = cmp.mapping.select_prev_item({behavior=cmp.SelectBehavior.Insert}),
+    }),
+    formatting = {
+      format = function(entry, vim_item)
+        if vim.tbl_contains({ 'path' }, entry.source.name) then
+          local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
+          if icon then
+            vim_item.kind = icon
+            vim_item.kind_hl_group = hl_group
+            return vim_item
+          end
+        end
+        return require('lspkind').cmp_format({ with_text = false })(entry, vim_item)
+      end
+    },
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+    }, {
+      { name = 'buffer' },
+    })
+  })
+   -- Set up lspconfig.
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  require('lspconfig')['solargraph'].setup {
+    capabilities = capabilities
   }
 END

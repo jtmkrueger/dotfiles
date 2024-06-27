@@ -2,5 +2,7 @@
   "suggest.noselect": true,
   "coc.preferences.jumpCommand": "split",
   "diagnostic.displayByAle": true,
-  "solargraph.useBundler": true
+  "solargraph.useBundler": true,
+  "coc.preferences.shellPath": "/usr/bin/env zsh",
+
 }

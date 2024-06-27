@@ -1,25 +1,58 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -z "$VIM" && -z "$NVIM" && $- == *i* ]]; then
+
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
+
+  export ZSH_DISABLE_COMPFIX="true"
+
+  # Path to your oh-my-zsh installation.
+  export ZSH=~/.oh-my-zsh
+  export PYTHON_CONFIGURE_OPTS="--enable-framework"
+  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+  ZSH_THEME="powerlevel10k/powerlevel10k"
+
+  DISABLE_AUTO_TITLE="true"
+
+  fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+  plugins=(git bundler zsh-system-clipboard zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
+
+  source $ZSH/oh-my-zsh.sh
+
+  # START VI mode
+  bindkey -v
+  bindkey -M vicmd 'k' history-substring-search-up
+  bindkey -M vicmd 'j' history-substring-search-down
+  bindkey -M vicmd 'H' beginning-of-line
+  bindkey -M vicmd 'L' end-of-line
+  function zle-keymap-select zle-line-init {
+      # RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+      # RPS2=$RPS1
+      zle reset-prompt
+      case $KEYMAP in
+          vicmd)      echo -ne '\e[1 q';;  # block cursor
+          viins|main) echo -ne '\e[5 q';;  # line cursor
+      esac
+
+      zle reset-prompt
+      zle -R
+  }
+
+  function zle-line-finish
+  {
+      echo -ne '\e[1 q'  # block cursor
+  }
+
+  zle -N zle-line-init
+  zle -N zle-line-finish
+  zle -N zle-keymap-select
+  export KEYTIMEOUT=1
+  # END VI mode
 fi
-
-export ZSH_DISABLE_COMPFIX="true"
-
-# Path to your oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
-export PYTHON_CONFIGURE_OPTS="--enable-framework"
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-DISABLE_AUTO_TITLE="true"
-
-fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-plugins=(git bundler zsh-system-clipboard zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
-
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$PATH"
 
 alias vim=nvim
 # brew install lsd
@@ -29,43 +62,12 @@ alias cat='bat'
 alias pretty_log="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'"
 alias dcvim="devcontainer up --remove-existing-container --mount 'type=bind,source=$HOME/.config/nvim,target=/root/.config/nvim' --additional-features '{\"ghcr.io/devcontainers-contrib/features/neovim:1\": {}}'"
 
-source $ZSH/oh-my-zsh.sh
-
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
 
 export VISUAL="code -w -n"
 export EDITOR="code -w -n"
 
-# START VI mode
-bindkey -v
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
-bindkey -M vicmd 'H' beginning-of-line
-bindkey -M vicmd 'L' end-of-line
-function zle-keymap-select zle-line-init {
-    # RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
-    # RPS2=$RPS1
-    zle reset-prompt
-    case $KEYMAP in
-        vicmd)      echo -ne '\e[1 q';;  # block cursor
-        viins|main) echo -ne '\e[5 q';;  # line cursor
-    esac
-
-    zle reset-prompt
-    zle -R
-}
-
-function zle-line-finish
-{
-    echo -ne '\e[1 q'  # block cursor
-}
-
-zle -N zle-line-init
-zle -N zle-line-finish
-zle -N zle-keymap-select
-export KEYTIMEOUT=1
-# END VI mode
 
 # catch completion and linting gems up.
 function rubyup() {
@@ -130,7 +132,6 @@ kbash() {
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# export PATH="$HOME/.homebrew/opt/node@16/bin:$PATH"
 
 
 # configure homebrew
@@ -138,8 +139,6 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # chruby
-# source $HOME/.homebrew/opt/chruby/share/chruby/chruby.sh
-# source $HOME/.homebrew/opt/chruby/share/chruby/auto.sh
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 chruby ruby-3.2.2
@@ -175,9 +174,6 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
-
-# allows easy running of docker compose
-# export PATH=".git/safe/../../bin/docker-compose:.git/safe/../../bin:$PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
