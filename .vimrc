@@ -35,26 +35,20 @@ Plug 'dracula/vim'
 Plug 'ojroques/vim-oscyank', {'branch': 'main'}
 Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'dense-analysis/ale'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'Raimondi/delimitMate'
 Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'itchyny/vim-cursorword'
-Plug 'Yggdroot/indentLine'
+Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'sotte/presenting.nvim'
 Plug 'sbdchd/neoformat'
-
-" nvim specific
 Plug 'zbirenbaum/copilot.lua'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
 Plug 'MunifTanjim/nui.nvim'
-" Plug 'jackMort/ChatGPT.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-" Plug 'dir-telescope.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
@@ -71,7 +65,6 @@ Plug 'onsails/lspkind.nvim'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
-" Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 call plug#end()
@@ -151,11 +144,6 @@ set list
 set listchars=tab:⬝➜
 set conceallevel=0
 set completeopt=menu,menuone,noselect,noinsert
-" let g:netrw_bufsettings = 'noma nomod nu nowrap ro nobl'
-" let g:netrw_banner = 1
-
-" HOLY SHIT the new engine just kills ruby files. This drastically improves performance!
-" set regexpengine=1
 
 " Normally, Vim messes with iskeyword when you open a shell file. This can
 " leak out, polluting other file types even after a 'set ft=' change. This
@@ -270,19 +258,6 @@ let g:indentLine_setColors=1
 let g:indentLine_char = '│'
 let g:indentLine_concealcursor='nc'
 
-" function! LinterStatus() abort
-"     let l:counts = ale#statusline#Count(bufnr(''))
-
-"     let l:all_errors = l:counts.error + l:counts.style_error
-"     let l:all_non_errors = l:counts.total - l:all_errors
-
-"     return l:counts.total == 0 ? 'OK' : printf(
-"     \   ':%d ✘:%d',
-"     \   all_non_errors,
-"     \   all_errors
-"     \)
-" endfunction
-
 " copilot
 imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 let g:copilot_no_tab_map = v:true
@@ -296,14 +271,6 @@ if exists('+termguicolors')
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
-
-" set tmux window name automatically
-" augroup Tmux "{{{2
-"   au!
-"   " autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "vim-' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1] . '"')
-"   autocmd VimEnter,BufNewFile,BufReadPost * call system('tmux rename-window "nvim"')
-"   autocmd VimLeave * call system('tmux rename-window ' . split(substitute(getcwd(), $HOME, '~', ''), '/')[-1])
-" augroup END
 
 " if (!has('nvim') && !has('clipboard_working'))
 " In the event that the clipboard isn't working, it's quite likely that
@@ -513,7 +480,6 @@ lua << END
   vim.opt.signcolumn = "yes" -- otherwise it bounces in and out, not strictly needed though
   vim.api.nvim_create_autocmd("FileType", {
     pattern = "ruby",
-    -- group = vim.api.nvim_create_augroup("RubyLSP", { clear = true }), -- also this is not /needed/ but it's good practice 
     callback = function()
       vim.lsp.start {
         name = "standardrb",
@@ -523,4 +489,10 @@ lua << END
   })
 
   require('lspconfig').vls.setup{}
+
+  -- indentation
+  vim.api.nvim_set_hl(0, "IblIndent", { fg = "#34342d" })
+  require("ibl").setup({
+    indent = { char = "│" },
+  })
 END
