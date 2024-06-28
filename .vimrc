@@ -36,7 +36,7 @@ Plug 'ojroques/vim-oscyank', {'branch': 'main'}
 Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'dense-analysis/ale'
+" Plug 'dense-analysis/ale'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'Raimondi/delimitMate'
 Plug 'elzr/vim-json'
@@ -44,6 +44,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'itchyny/vim-cursorword'
 Plug 'Yggdroot/indentLine'
 Plug 'sotte/presenting.nvim'
+Plug 'sbdchd/neoformat'
 
 " nvim specific
 Plug 'zbirenbaum/copilot.lua'
@@ -242,13 +243,12 @@ vnoremap L g_
 
 noremap <TAB> % " easer to hit
 
-" FZF
-" nnoremap <c-f> :FZF<Enter>
-" let g:fzf_action = {
-"   \ 'ctrl-t': 'tab split',
-"   \ 'ctrl-s': 'split',
-"   \ 'ctrl-v': 'vsplit' }
+" neoformat
+let g:neoformat_try_node_exe = 1
+" prettier on save
+autocmd BufWritePre *.js,*.css,*.vue Neoformat
 
+" telescope
 nnoremap <c-f> <cmd>Telescope find_files<cr>
 nnoremap <c-a> <cmd>Telescope live_grep<cr>
 
@@ -270,77 +270,18 @@ let g:indentLine_setColors=1
 let g:indentLine_char = '│'
 let g:indentLine_concealcursor='nc'
 
-" COC
-" inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
-" inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
+" function! LinterStatus() abort
+"     let l:counts = ale#statusline#Count(bufnr(''))
 
-" GoTo code navigation.
-" nmap <silent> gd <Plug>(coc-definition)
-" nmap <silent> gy <Plug>(coc-type-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
-" nmap <silent> gr <Plug>(coc-references)
+"     let l:all_errors = l:counts.error + l:counts.style_error
+"     let l:all_non_errors = l:counts.total - l:all_errors
 
-" Use h to show documentation in preview window. This is if I want if faster
-" and don't want to wait for the hover popup to show up.
-nnoremap <silent> <leader>h :call <SID>show_documentation()<CR>
-
-" set the path to the current ruby version
-" autocmd VimEnter * let $PATH = system('chruby-exec -- sh -c "echo $PATH"')
-
-" for ChatGPT
-" map <leader>c :ChatGPT<CR>
-
-" dynamicaly set this depending on what the current ruby version is
-" let g:ruby_host_prog = system('echo $(ruby -e "puts Gem.bin_path(\"neovim\", \"neovim-ruby-host\")")')
-
-" function! s:show_documentation()
-"   if (index(['vim','help'], &filetype) >= 0)
-"     execute 'h '.expand('<cword>')
-"   else
-"     call CocActionAsync('doHover')
-"   endif
+"     return l:counts.total == 0 ? 'OK' : printf(
+"     \   ':%d ✘:%d',
+"     \   all_non_errors,
+"     \   all_errors
+"     \)
 " endfunction
-
-" ale
-let g:ale_sign_error = '✘'
-let g:ale_echo_msg_error_str = '✘' " FIXME: not doing anything
-let g:ale_sign_warning = ''
-let g:ale_echo_msg_warning_str = '' " FIXME: not doing anything
-let g:ale_completion_enabled = 0
-let g:ale_virtualtext_prefix = ': '
-highlight ALEErrorSign ctermfg=red
-highlight ALEWarningSign ctermfg=red
-let g:ale_linters = {
-\   'javascript': ['prettier', 'eslint' ],
-\   'vue': ['eslint', 'prettier', 'vls'],
-\   'scss': ['prettier'],
-\   'ruby': ['standardrb', 'reek', 'brakeman', 'debride']
-\}
-" ignore rubocop linter for ruby
-let g:ale_lint_ignore = {
-\   'ruby': ['rubocop']
-\}
-let g:ale_fixers = {
-\   'javascript': [ 'prettier', 'eslint'],
-\   'vue': ['eslint', 'prettier'],
-\}
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 1
-let g:ale_disable_lsp = 1
-nmap <C-g> :ALEGoToDefinitionInTab<CR>
-
-function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-
-    return l:counts.total == 0 ? 'OK' : printf(
-    \   ':%d ✘:%d',
-    \   all_non_errors,
-    \   all_errors
-    \)
-endfunction
 
 " copilot
 imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
@@ -383,6 +324,12 @@ augroup END
 " endif
 
 lua << END
+  -- lsp custom diagnostics symbols
+  local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
+  for type, icon in pairs(signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+  end
   require('lualine').setup{
     sections = {
       lualine_b = {
@@ -390,8 +337,16 @@ lua << END
       },
       lualine_c = {},
       lualine_x = {'filetype'},
-      lualine_y = {'LinterStatus'},
-    },
+      lualine_y = {{
+        'diagnostics',
+        sources = { 'nvim_lsp' },
+        sections = { 'error', 'warn', 'info', 'hint' },
+        symbols = {error = '󰅚 ', warn = '󰀪 ', info = ' ', hint = '󰌶 '},
+        colored = true,
+        update_in_insert = false,
+        always_visible = false,
+      },
+    }},
     inactive_sections = {
       lualine_c = {{'filename', path = 1}},
       lualine_x = {'location'},
@@ -415,9 +370,6 @@ lua << END
   require('gitsigns').setup {
     current_line_blame = true,
   }
-  require('lspconfig').solargraph.setup{}
-  require('lspconfig').vls.setup{}
-
 
   local telescope = require("telescope")
   local telescopeConfig = require("telescope.config")
@@ -508,7 +460,7 @@ lua << END
 
   require("CopilotChat").setup {
     debug = true, -- Enable debugging
-    -- See Configuration section for rest
+    show_help = false,
   }
 
   local cmp = require'cmp'
@@ -554,4 +506,21 @@ lua << END
   require('lspconfig')['solargraph'].setup {
     capabilities = capabilities
   }
+  require('lspconfig')['standardrb'].setup {
+    capabilities = capabilities
+  }
+
+  vim.opt.signcolumn = "yes" -- otherwise it bounces in and out, not strictly needed though
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "ruby",
+    -- group = vim.api.nvim_create_augroup("RubyLSP", { clear = true }), -- also this is not /needed/ but it's good practice 
+    callback = function()
+      vim.lsp.start {
+        name = "standardrb",
+        cmd = { "standardrb", "--lsp" },
+      }
+    end,
+  })
+
+  require('lspconfig').vls.setup{}
 END
