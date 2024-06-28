@@ -15,3 +15,7 @@ dump.rdb
 *.dump
 .vscode/
 .ruby-version
+.pnpm-store/
+.prettierignore
+vetur.config.js
+

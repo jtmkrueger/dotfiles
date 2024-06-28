@@ -40,6 +40,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'elzr/vim-json'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'itchyny/vim-cursorword'
+Plug 'levouh/tint.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'sotte/presenting.nvim'
 Plug 'sbdchd/neoformat'
@@ -53,6 +54,8 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'NeogitOrg/neogit'
+Plug 'sindrets/diffview.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -136,6 +139,8 @@ set number " line numbers
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
+highlight Cursorline guibg=#1b1b1d
+highlight cursorcolumn guibg=#1b1b1d
 set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
@@ -250,9 +255,6 @@ let g:vim_json_syntax_conceal = 0
 " emmet expansions
 let g:user_emmet_leader_key = '<c-e>'
 
-" gitgutter
-set signcolumn=yes
-
 " indentline
 let g:indentLine_setColors=1
 let g:indentLine_char = '│'
@@ -297,12 +299,13 @@ lua << END
     local hl = "DiagnosticSign" .. type
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
   end
+
   require('lualine').setup{
     sections = {
       lualine_b = {
         {'filename', path = 1}
       },
-      lualine_c = {},
+      lualine_c = { 'diff' },
       lualine_x = {'filetype'},
       lualine_y = {{
         'diagnostics',
@@ -315,14 +318,14 @@ lua << END
       },
     }},
     inactive_sections = {
-      lualine_c = {{'filename', path = 1}},
+      lualine_c = {{'filename', path = 1}, { 'diff', colored = false}},
       lualine_x = {'location'},
     },
     tabline = {
       lualine_a = {
         {
             'tabs',
-            mode = 2,
+            mode = 1,
             max_length = vim.o.columns,
         }
       },
@@ -490,9 +493,19 @@ lua << END
 
   require('lspconfig').vls.setup{}
 
+  -- alias :stj to gd in normal mode
+  vim.api.nvim_set_keymap('n', 'gd', ':stj<CR>', {noremap = true})
+
   -- indentation
   vim.api.nvim_set_hl(0, "IblIndent", { fg = "#34342d" })
   require("ibl").setup({
     indent = { char = "│" },
   })
+
+  -- neogit
+  local neogit = require('neogit')
+  neogit.setup {}
+
+  -- tint
+  require("tint").setup()
 END
