@@ -20,7 +20,7 @@ Plug 'fatih/vim-go'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'jparise/vim-graphql'
-Plug 'posva/vim-vue'
+" Plug 'posva/vim-vue'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'cappyzawa/starlark.vim'
 Plug 'carvel-dev/ytt.vim'
@@ -30,10 +30,10 @@ Plug 'https://github.com/apple/pkl-neovim.git'
 Plug 'altercation/vim-colors-solarized'
 Plug 'jtmkrueger/grb256'
 Plug 'dracula/vim'
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 
 " " tools
 Plug 'ojroques/vim-oscyank', {'branch': 'main'}
-Plug 'github/copilot.vim'
 Plug 'mattn/emmet-vim'
 Plug 'jszakmeister/vim-togglecursor'
 Plug 'Raimondi/delimitMate'
@@ -53,6 +53,7 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'NeogitOrg/neogit'
 Plug 'sindrets/diffview.nvim'
@@ -62,6 +63,7 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'zbirenbaum/copilot-cmp'
 Plug 'onsails/lspkind.nvim'
 
 " all that tpope!
@@ -80,13 +82,11 @@ set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
 set ttyfast
 " set lazyredraw
-" set shell=/bin/bash
-set background=dark
-colorscheme dracula
-highlight Normal ctermbg=NONE guibg=NONE
+set background=light
+set pumblend=20
+set spell
 
-set t_ZH=^[[3m
-set t_ZR=^[[23m
+" highlight Normal ctermbg=NONE guibg=NONE
 highlight Comment cterm=italic gui=italic
 
 " tab styles
@@ -139,8 +139,6 @@ set number " line numbers
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
-highlight Cursorline guibg=#1b1b1d
-highlight cursorcolumn guibg=#1b1b1d
 set cursorcolumn " highlight the cursors current col
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
@@ -195,7 +193,7 @@ nnoremap <leader>T :Tex<CR>
 nnoremap <leader>n :bnext<CR>
 nnoremap <leader>b :bprevious<CR>
 
-" open github copilot
+" open github copilot chat
 nnoremap <leader>c :CopilotChatOpen<CR>
 
 " Open new splits to the right/bottom
@@ -256,13 +254,9 @@ let g:vim_json_syntax_conceal = 0
 let g:user_emmet_leader_key = '<c-e>'
 
 " indentline
-let g:indentLine_setColors=1
-let g:indentLine_char = '│'
-let g:indentLine_concealcursor='nc'
-
-" copilot
-imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
-let g:copilot_no_tab_map = v:true
+" let g:indentLine_setColors=1
+" let g:indentLine_char = '│'
+" let g:indentLine_concealcursor='nc'
 
 " conditionally run EnableYtt if file type is yaml without attaching to paste buffer
 autocmd FileType yaml EnableYtt
@@ -301,9 +295,10 @@ lua << END
   end
 
   require('lualine').setup{
+    theme = "catppuccin",
     sections = {
       lualine_b = {
-        {'filename', path = 1}
+        {'filename', path = 1},
       },
       lualine_c = { 'diff' },
       lualine_x = {'filetype'},
@@ -312,24 +307,54 @@ lua << END
         sources = { 'nvim_lsp' },
         sections = { 'error', 'warn', 'info', 'hint' },
         symbols = {error = '󰅚 ', warn = '󰀪 ', info = ' ', hint = '󰌶 '},
-        colored = true,
-        update_in_insert = false,
         always_visible = false,
-      },
-    }},
+      }},
+    },
     inactive_sections = {
       lualine_c = {{'filename', path = 1}, { 'diff', colored = false}},
       lualine_x = {'location'},
     },
-    tabline = {
-      lualine_a = {
-        {
-            'tabs',
-            mode = 1,
-            max_length = vim.o.columns,
-        }
+    -- tabline = {
+    --   lualine_a = {
+    --     {
+    --         'tabs',
+    --         mode = 1,
+    --         max_length = vim.o.columns,
+    --     },
+    --     {
+    --       'diagnostics',
+    --       sources = { 'nvim_lsp' },
+    --       sections = { 'error', 'warn', 'info', 'hint' },
+    --       symbols = {error = '󰅚 ', warn = '󰀪 ', info = ' ', hint = '󰌶 '},
+    --       colored = true,
+    --       update_in_insert = false,
+    --       always_visible = false,
+    --     },
+    --   },
+    --   lualine_x = {'nvim_treesitter#statusline'},
+    -- }
+  }
+
+  require("bufferline").setup{
+    options = {
+      mode = "tabs",
+      diagnostics = "nvim_lsp",
+      indicator = {
+        style = "underline"
       },
-      lualine_x = {'nvim_treesitter#statusline'},
+      numbers = "none",
+      show_buffer_close_icons = false,
+      show_close_icon = false,
+      diagnostics = "nvim_lsp",
+      diagnostics_indicator = function(count, level, diagnostics_dict, context)
+        local s = " "
+        for e, n in pairs(diagnostics_dict) do
+          local sym = e == "error" and " "
+            or (e == "warning" and " " or "" )
+          s = s .. n .. sym
+        end
+        return s
+      end
     }
   }
 
@@ -364,7 +389,6 @@ lua << END
     }
   }
 
-  -- this is all code to get ruby-lsp working
   _timers = {}
   local function setup_diagnostics(client, buffer)
     if require("vim.lsp.diagnostic")._enable then
@@ -428,6 +452,14 @@ lua << END
     vim.api.nvim_command('edit ' .. fullPath)
   end, {})
 
+  require("copilot").setup({
+    suggestion = {
+      auto_trigger = true,
+      keymap = {
+        accept = "<C-j>",
+      },
+    }
+  })
   require("CopilotChat").setup {
     debug = true, -- Enable debugging
     show_help = false,
@@ -470,34 +502,47 @@ lua << END
       { name = 'buffer' },
     })
   })
+
    -- Set up lspconfig.
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['solargraph'].setup {
-    capabilities = capabilities
+  local lspconfig = require('lspconfig')
+  lspconfig.solargraph.setup {
+    flags = {
+      allow_incremental_sync = true,
+    },
   }
-  require('lspconfig')['standardrb'].setup {
-    capabilities = capabilities
+  lspconfig.standardrb.setup {
+    flags = {
+      allow_incremental_sync = true,
+      debounce_text_changes = 150,
+    },
+    handlers = {
+      ["textDocument/publishDiagnostics"] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+          update_in_insert = true,
+        }
+      ),
+    },
+  }
+  lspconfig.tsserver.setup {
+    init_options = {
+      plugins = {
+        {
+          name = '@vue/typescript-plugin',
+          languages = { 'vue' },
+        },
+      },
+    },
+    filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
   }
 
-  vim.opt.signcolumn = "yes" -- otherwise it bounces in and out, not strictly needed though
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = "ruby",
-    callback = function()
-      vim.lsp.start {
-        name = "standardrb",
-        cmd = { "standardrb", "--lsp" },
-      }
-    end,
-  })
-
-  require('lspconfig').vls.setup{}
+  lspconfig.volar.setup {}
+  -- END lspconfig
 
   -- alias :stj to gd in normal mode
   vim.api.nvim_set_keymap('n', 'gd', ':stj<CR>', {noremap = true})
 
   -- indentation
-  vim.api.nvim_set_hl(0, "IblIndent", { fg = "#34342d" })
   require("ibl").setup({
     indent = { char = "│" },
   })
@@ -505,7 +550,34 @@ lua << END
   -- neogit
   local neogit = require('neogit')
   neogit.setup {}
+  vim.api.nvim_set_keymap('n', 'gd', ':stj<CR>', {noremap = true})
+  vim.api.nvim_set_keymap('n', '<C-d>', ':DiffviewOpen', {noremap = true, silent = true})
+  vim.api.nvim_set_keymap('n', '<C-g>', ':Neogit<CR>', {noremap = true, silent = true})
 
-  -- tint
-  require("tint").setup()
+  require("catppuccin").setup({
+    transparent_background = true,
+    dim_inactive = {
+        enabled = true,
+        shade = "dark",
+        percentage = 0.25,
+    },
+    integrations = {
+    native_lsp = {
+      enabled = true,
+      virtual_text = {
+        errors = { "italic" },
+        hints = { "italic" },
+        warnings = { "italic" },
+        information = { "italic" },
+      },
+      underlines = {
+        errors = { "undercurl" },
+        hints = { "undercurl" },
+        warnings = { "undercurl" },
+        information = { "undercurl" },
+      },
+    },
+  },
+  })
+  vim.cmd.colorscheme "catppuccin"
 END

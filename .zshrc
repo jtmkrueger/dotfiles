@@ -14,6 +14,9 @@ if [[ -z "$VIM" && -z "$NVIM" && $- == *i* ]]; then
   export PYTHON_CONFIGURE_OPTS="--enable-framework"
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
+  # oracle instant client
+  export OCI_DIR=$HOME/Downloads/instantclient_23_3
+
   ZSH_THEME="powerlevel10k/powerlevel10k"
 
   DISABLE_AUTO_TITLE="true"
@@ -54,6 +57,8 @@ if [[ -z "$VIM" && -z "$NVIM" && $- == *i* ]]; then
   # END VI mode
 fi
 
+bindkey '^j' autosuggest-accept
+
 alias vim=nvim
 # brew install lsd
 DISABLE_LS_COLORS="true" # so lsd can colorize
@@ -65,8 +70,7 @@ alias dcvim="devcontainer up --remove-existing-container --mount 'type=bind,sour
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
 
-export VISUAL="code -w -n"
-export EDITOR="code -w -n"
+export EDITOR="vim"
 
 
 # catch completion and linting gems up.
