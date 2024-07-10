@@ -82,7 +82,7 @@ set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
 set ttyfast
 " set lazyredraw
-set background=light
+set background=dark
 set pumblend=20
 set spell
 
@@ -297,6 +297,31 @@ lua << END
   require('lualine').setup{
     theme = "catppuccin",
     sections = {
+      lualine_a = {
+        {
+          function()
+            local mode_map = {
+              ['n'] = '',
+              ['i'] = '',
+              ['v'] = '󰸱',
+              ['V'] = '󰸱 󰘤',
+              [''] = '󰸱 ',
+              ['c'] = '󰘳',
+              ['s'] = '󰒅',
+              ['S'] = '󰒅 󰘤',
+              [''] = '󰒅 ',
+              ['r'] = '',
+              ['R'] = ' 󰘤',
+              ['!'] = '',
+              ['t'] = ''
+            }
+            local mode = vim.api.nvim_get_mode().mode
+            if mode_map[mode] == nil then return '?' end
+            return mode_map[mode]
+          end,
+          icon = nil,
+        },
+      },
       lualine_b = {
         {'filename', path = 1},
       },
