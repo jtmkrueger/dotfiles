@@ -33,6 +33,7 @@ Plug 'dracula/vim'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 
 " " tools
+Plug 'dense-analysis/ale'
 Plug 'ojroques/vim-oscyank', {'branch': 'main'}
 Plug 'mattn/emmet-vim'
 Plug 'jszakmeister/vim-togglecursor'
@@ -46,6 +47,7 @@ Plug 'sotte/presenting.nvim'
 Plug 'sbdchd/neoformat'
 Plug 'zbirenbaum/copilot.lua'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-pack/nvim-spectre'
 Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
 Plug 'MunifTanjim/nui.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -83,8 +85,7 @@ set guioptions-=e
 set ttyfast
 " set lazyredraw
 set background=dark
-set pumblend=20
-set spell
+set pumblend=10
 
 " highlight Normal ctermbg=NONE guibg=NONE
 highlight Comment cterm=italic gui=italic
@@ -185,9 +186,6 @@ nnoremap Y Y
 nnoremap <leader>v :vs<space>
 nnoremap <leader>s :sp<space>
 nnoremap <leader>t :tabe<space>
-nnoremap <leader>V :Vex<CR>
-nnoremap <leader>S :Sex<CR>
-nnoremap <leader>T :Tex<CR>
 
 " buffer navigation
 nnoremap <leader>n :bnext<CR>
@@ -268,6 +266,17 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
+" vim ale
+let g:ale_linters = {
+  \ 'ruby': ['reek', 'brakeman', 'rails_best_practices']
+\}
+
+" only lint ruby files
+
+
+" turn off autocomplete for ale
+let g:ale_completion_enabled = 0
+
 " if (!has('nvim') && !has('clipboard_working'))
 " In the event that the clipboard isn't working, it's quite likely that
 " the + and * registers will not be distinct from the unnamed register. In
@@ -301,15 +310,15 @@ lua << END
         {
           function()
             local mode_map = {
-              ['n'] = '',
-              ['i'] = '',
+              ['n'] = '',
+              ['i'] = '',
               ['v'] = '󰸱',
               ['V'] = '󰸱 󰘤',
-              [''] = '󰸱 ',
+              [''] = '󰸱 󱓻',
               ['c'] = '󰘳',
               ['s'] = '󰒅',
               ['S'] = '󰒅 󰘤',
-              [''] = '󰒅 ',
+              [''] = '󰒅 󱓻',
               ['r'] = '',
               ['R'] = ' 󰘤',
               ['!'] = '',
@@ -339,25 +348,6 @@ lua << END
       lualine_c = {{'filename', path = 1}, { 'diff', colored = false}},
       lualine_x = {'location'},
     },
-    -- tabline = {
-    --   lualine_a = {
-    --     {
-    --         'tabs',
-    --         mode = 1,
-    --         max_length = vim.o.columns,
-    --     },
-    --     {
-    --       'diagnostics',
-    --       sources = { 'nvim_lsp' },
-    --       sections = { 'error', 'warn', 'info', 'hint' },
-    --       symbols = {error = '󰅚 ', warn = '󰀪 ', info = ' ', hint = '󰌶 '},
-    --       colored = true,
-    --       update_in_insert = false,
-    --       always_visible = false,
-    --     },
-    --   },
-    --   lualine_x = {'nvim_treesitter#statusline'},
-    -- }
   }
 
   require("bufferline").setup{
@@ -564,8 +554,35 @@ lua << END
   lspconfig.volar.setup {}
   -- END lspconfig
 
-  -- alias :stj to gd in normal mode
-  vim.api.nvim_set_keymap('n', 'gd', ':stj<CR>', {noremap = true})
+  -- alias gd to find definition of word under cursor in normal mode
+  function PeekDefinition()
+    local params = vim.lsp.util.make_position_params()
+    vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result)
+      if err or not result then return end
+      if vim.tbl_isempty(result) then print("No definition found") return end
+      local target = result[1]
+      if target == nil then return end
+      local filename = target.uri and vim.fn.fnamemodify(vim.uri_to_fname(target.uri), ":p:.") or ""
+      local opts = {
+        border = "single",
+        title = filename,
+        focusable = true,
+        focus = true,
+      }
+      local preview_win_id = vim.lsp.util.preview_location(target, opts)
+      vim.schedule(function()
+        local win_ids = vim.api.nvim_list_wins()
+        local preview_win_id = win_ids[#win_ids]
+        vim.api.nvim_set_current_win(preview_win_id)
+      end)
+    end)
+  end
+  vim.api.nvim_set_keymap('n', 'gp', '<cmd>lua PeekDefinition()<CR>', {noremap = true, silent = true})
+  local function on_list(options)
+    vim.fn.setqflist({}, ' ', options)
+    vim.cmd.cfirst()
+  end
+vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition({ on_list = on_list })<CR>', {noremap = true, silent = true})
 
   -- indentation
   require("ibl").setup({
@@ -575,10 +592,10 @@ lua << END
   -- neogit
   local neogit = require('neogit')
   neogit.setup {}
-  vim.api.nvim_set_keymap('n', 'gd', ':stj<CR>', {noremap = true})
   vim.api.nvim_set_keymap('n', '<C-d>', ':DiffviewOpen', {noremap = true, silent = true})
   vim.api.nvim_set_keymap('n', '<C-g>', ':Neogit<CR>', {noremap = true, silent = true})
 
+  -- colorscheme
   require("catppuccin").setup({
     transparent_background = true,
     dim_inactive = {
@@ -587,22 +604,23 @@ lua << END
         percentage = 0.25,
     },
     integrations = {
-    native_lsp = {
-      enabled = true,
-      virtual_text = {
-        errors = { "italic" },
-        hints = { "italic" },
-        warnings = { "italic" },
-        information = { "italic" },
-      },
-      underlines = {
-        errors = { "undercurl" },
-        hints = { "undercurl" },
-        warnings = { "undercurl" },
-        information = { "undercurl" },
+      native_lsp = {
+        enabled = true,
+        virtual_text = {
+          errors = { "italic" },
+          hints = { "italic" },
+          warnings = { "italic" },
+          information = { "italic" },
+        },
+        underlines = {
+          errors = { "undercurl" },
+          hints = { "undercurl" },
+          warnings = { "undercurl" },
+          information = { "undercurl" },
+        },
       },
     },
-  },
   })
   vim.cmd.colorscheme "catppuccin"
+  vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {desc = "Toggle Spectre"})
 END
