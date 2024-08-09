@@ -351,6 +351,12 @@ lua << END
   }
 
   require("bufferline").setup{
+    highlights = {
+      fill = {
+        fg = '#1e1e2e',
+        bg = '#1e1e2e',
+      },
+    },
     options = {
       mode = "tabs",
       diagnostics = "nvim_lsp",
@@ -518,14 +524,101 @@ lua << END
     })
   })
 
-   -- Set up lspconfig.
+  -- Set up lspconfig. --------------------------------
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
   local lspconfig = require('lspconfig')
-  lspconfig.solargraph.setup {
-    flags = {
-      allow_incremental_sync = true,
-    },
-  }
+  local root_pattern = lspconfig.util.root_pattern('.git')
+  local function add_ruby_deps_command(client, bufnr)
+    vim.api.nvim_buf_create_user_command(bufnr, "ShowRubyDeps", function(opts)
+      local params = vim.lsp.util.make_text_document_params()
+      local showAll = opts.args == "all"
+
+      client.request("rubyLsp/workspace/dependencies", params, function(error, result)
+        if error then
+          print("Error showing deps: " .. error)
+          return
+        end
+
+        local qf_list = {}
+        for _, item in ipairs(result) do
+          if showAll or item.dependency then
+            table.insert(qf_list, {
+              text = string.format("%s (%s) - %s", item.name, item.version, item.dependency),
+              filename = item.path
+            })
+          end
+        end
+
+        vim.fn.setqflist(qf_list)
+        vim.cmd('copen')
+      end, bufnr)
+    end,
+    {nargs = "?", complete = function() return {"all"} end})
+  end
+
+  lspconfig.ruby_lsp.setup({
+    cmd = (function()
+      vim.lsp.log.warn("ruby_lsp setup----------------------------------------------")
+      local bufname = vim.api.nvim_buf_get_name(0)
+
+      -- Turned into a filename
+      local filename = lspconfig.util.path.is_absolute(bufname) and bufname or lspconfig.util.path.join(vim.loop.cwd(), bufname)
+
+
+      -- Then the directory of the project
+      local project_dirname = root_pattern(filename) or lspconfig.util.path.dirname(filename)
+      vim.lsp.log.warn('project_dirname: ' .. project_dirname)
+      local last_directory = vim.fn.fnamemodify(project_dirname, ':t')
+      vim.lsp.log.warn('last_directory: ' .. last_directory)
+
+      -- If the basename is in the list of afdc projects, prefix with afdc- and suffix with -1
+      local container_name = ''
+      if vim.tbl_contains({ 'sponge', 'stations', 'vehicles' }, last_directory) then
+        vim.lsp.log.warn(last_directory)
+        container_name = 'afdc-' .. last_directory .. '-1'
+      end
+
+      -- If the basename is epact, return epact-web-1
+      if vim.tbl_contains({ 'epact' }, last_directory) then
+        vim.lsp.log.warn('epact')
+        container_name = 'epact-web-1'
+      end
+      vim.lsp.log.warn('container_name: ' .. container_name)
+
+      if container_name == '' then
+        -- there's no container for this so start from current location
+        return {
+          'ruby-lsp',
+          'stdio'
+        }
+      else
+        return {
+          'docker',
+          'exec',
+          '-i',
+          container_name,
+          'ruby-lsp',
+          'stdio'
+        }
+      end
+    end)(),
+    on_attach = function(client, buffer)
+      add_ruby_deps_command(client, buffer)
+    end,
+  })
+
+  -- lspconfig.solargraph.setup {
+  --   cmd = {
+  --     'docker',
+  --     'exec',
+  --     'afdc-sponge-1',
+  --     'solargraph',
+  --     'stdio'
+  --   },
+  --   flags = {
+  --     allow_incremental_sync = true,
+  --   },
+  -- }
   lspconfig.standardrb.setup {
     flags = {
       allow_incremental_sync = true,
@@ -552,7 +645,7 @@ lua << END
   }
 
   lspconfig.volar.setup {}
-  -- END lspconfig
+  -- END lspconfig --------------------------------
 
   -- alias gd to find definition of word under cursor in normal mode
   function PeekDefinition()

@@ -7,23 +7,6 @@
     "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
   },
   {
-    "command": "vsnetrw.open",
-    "key": "-",
-    "when": "editorTextFocus && neovim.mode != insert"
-  },
-  {
-    "command": "vscode-neovim.send",
-    "key": "j",
-    "when": "editorTextFocus && neovim.mode != insert",
-    "args": "gj"
-  },
-  {
-    "command": "vscode-neovim.send",
-    "key": "k",
-    "when": "editorTextFocus && neovim.mode != insert",
-    "args": "gk"
-  },
-  {
     "key": "ctrl+t",
     "command": "rubyLsp.runTestInTerminal"
   },
@@ -92,101 +75,26 @@
     "when": "sideBarFocus"
   },
   {
-    "key": "right",
-    "command": "workbench.action.decreaseViewWidth",
-    "when": "editorTextFocus"
+    "key": "ctrl+enter",
+    "command": "-github.copilot.generate",
+    "when": "editorTextFocus && github.copilot.activated && !commentEditorFocused && !inInteractiveInput && !interactiveEditorFocused"
   },
   {
-    "key": "left",
-    "command": "workbench.action.increaseViewWidth",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "up",
-    "command": "workbench.action.decreaseViewHeight",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "down",
-    "command": "workbench.action.increaseViewHeight",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "editor.action.inlineSuggest.commit",
-    "when": "inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus"
-  },
-  {
-    "key": "tab",
-    "command": "-editor.action.inlineSuggest.commit",
-    "when": "inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible"
-  },
-  {
-    "key": "tab",
-    "command": "selectNextSuggestion",
-    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
-  },
-  {
-    "key": "shift+tab",
-    "command": "selectPrevSuggestion",
-    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "-selectNextSuggestion",
-    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "-selectPrevSuggestion",
-    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "-extension.vim_ctrl+j",
-    "when": "editorTextFocus && vim.active && vim.use<C-j> && !inDebugRepl"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "-editor.action.joinLines",
-    "when": "editorTextFocus && !editorReadonly"
+    "key": "ctrl+enter",
+    "command": "workbench.panel.chat.view.copilot.focus"
   },
   {
     "key": "cmd+j",
     "command": "workbench.action.toggleMaximizedPanel"
   },
   {
-    "key": "cmd+j",
-    "command": "-workbench.action.togglePanel"
+    "key": "tab",
+    "command": "selectNextSuggestion",
+    "when": "editorTextFocus && suggestWidgetVisible"
   },
   {
-    "key": "cmd+down",
-    "command": "-workbench.action.terminal.scrollToNextCommand",
-    "when": "terminalFocus && terminalHasBeenCreated && !accessibilityModeEnabled || terminalFocus && terminalProcessSupported && !accessibilityModeEnabled"
+    "key": "shift+tab",
+    "command": "selectPrevSuggestion",
+    "when": "editorTextFocus && suggestWidgetVisible"
   },
-  {
-    "key": "cmd+up",
-    "command": "-workbench.action.terminal.scrollToPreviousCommand",
-    "when": "terminalFocus && terminalHasBeenCreated && !accessibilityModeEnabled || terminalFocus && terminalProcessSupported && !accessibilityModeEnabled"
-  },
-  {
-    "key": "cmd+down",
-    "command": "workbench.action.terminal.scrollDown",
-    "when": "terminalFocusInAny && terminalHasBeenCreated && !terminalAltBufferActive || terminalFocusInAny && terminalProcessSupported && !terminalAltBufferActive"
-  },
-  {
-    "key": "alt+cmd+pagedown",
-    "command": "-workbench.action.terminal.scrollDown",
-    "when": "terminalFocusInAny && terminalHasBeenCreated && !terminalAltBufferActive || terminalFocusInAny && terminalProcessSupported && !terminalAltBufferActive"
-  },
-  {
-    "key": "cmd+up",
-    "command": "workbench.action.terminal.scrollUp",
-    "when": "terminalFocusInAny && terminalHasBeenCreated && !terminalAltBufferActive || terminalFocusInAny && terminalProcessSupported && !terminalAltBufferActive"
-  },
-  {
-    "key": "alt+cmd+pageup",
-    "command": "-workbench.action.terminal.scrollUp",
-    "when": "terminalFocusInAny && terminalHasBeenCreated && !terminalAltBufferActive || terminalFocusInAny && terminalProcessSupported && !terminalAltBufferActive"
-  }
 ]

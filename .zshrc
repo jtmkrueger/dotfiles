@@ -17,6 +17,7 @@ if [[ -z "$VIM" && -z "$NVIM" && $- == *i* ]]; then
   # oracle instant client
   export OCI_DIR=$HOME/Downloads/instantclient_23_3
 
+
   ZSH_THEME="powerlevel10k/powerlevel10k"
 
   DISABLE_AUTO_TITLE="true"
@@ -56,6 +57,8 @@ if [[ -z "$VIM" && -z "$NVIM" && $- == *i* ]]; then
   export KEYTIMEOUT=1
   # END VI mode
 fi
+
+export DYLD_LIBRARY_PATH="/usr/local/opt/libyaml/lib:$DYLD_LIBRARY_PATH"
 
 bindkey '^j' autosuggest-accept
 
@@ -123,7 +126,7 @@ function mfa() {
   echo "copied $1 OTP to clipboard"
 }
 
-# dbash <name of pod>
+# dbash <name of container>
 dbash() {
   docker exec -it $1 /bin/bash
 }

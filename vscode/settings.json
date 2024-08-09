@@ -1,15 +1,7 @@
 {
     "accessibility.dimUnfocused.enabled": true,
     "accessibility.dimUnfocused.opacity": 0.75,
-    "apc.electron": {
-      // "frame": false,
-      // "setWindowButtonVisibility": false,
-      // "roundedCorners": false,
-      "titleBarStyle": "customButtonsOnHover",
-      "simpleFullScreen": true,
-    },
-    "apc.menubar.compact": true,
-    "debug.console.fontSize": 14,
+    "debug.console.fontSize": 16,
     "debug.showSubSessionsInToolBar": true,
     "dev.containers.defaultExtensions": [
       "bierner.github-markdown-preview",
@@ -22,9 +14,10 @@
       "waderyan.gitblame",
     ],
     // "editor.formatOnSave": true,
+    "editor.acceptSuggestionOnTab": "off",
     "editor.cursorSurroundingLines": 6,
-    "editor.fontFamily": "OperatorMono Nerd Font",
-    "editor.fontSize": 15,
+    "editor.fontFamily": "OperatorMono Nerd Font medium",
+    "editor.fontSize": 16,
     "editor.fontVariations": true,
     "editor.lightbulb.experimental.showAiIcon": "on",
     "editor.minimap.enabled": false,
@@ -32,9 +25,11 @@
     "editor.wordWrap": "on",
     "editor.stickyScroll.enabled": true,
     "editor.stickyScroll.defaultModel": "indentationModel",
+    "editor.suggest.preview": true,
     "editor.rulers": [
         80
     ],
+    "editor.tabCompletion": "on",
     "editor.tokenColorCustomizations": {
         "textMateRules": [
           {
@@ -74,7 +69,7 @@
     },
     "emmet.showSuggestionsAsSnippets": true,
     "extensions.experimental.affinity": {
-        "asvetliakov.vscode-neovim": 1
+        "vscodevim.vim": 1
     },
     "files.autoSave": "onFocusChange",
     "git.enableSmartCommit": true,
@@ -112,17 +107,19 @@
     // "standardRuby.autofix": true,
     // currently not using ruby-lsp, but keeping the settings for future use
     "rubyLsp.enableExperimentalFeatures": true,
+    "rubyLsp.formatter": "standardrb",
+    "rubyLsp.lint": "standardrb",
     "rubyLsp.enabledFeatures": {
         "codeActions": true,
         "codeLens": true,
         "completion": true,
         "definition": true,
-        "diagnostics": false,
+        "diagnostics": true,
         "documentHighlights": true,
         "documentLink": true,
         "documentSymbols": true,
         "foldingRanges": true,
-        "formatting": false,
+        "formatting": true,
         "hover": true,
         "inlayHint": true,
         "onTypeFormatting": true,
@@ -131,33 +128,45 @@
         "workspaceSymbol": true
     },
     "terminal.integrated.cursorBlinking": true,
-    "terminal.integrated.fontFamily": "OperatorMono Nerd Font",
-    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.fontFamily": "OperatorMono Nerd Font medium",
+    "terminal.integrated.fontSize": 16,
     "terminal.integrated.scrollback": 10000,
+    "terminal.integrated.shellIntegration.enabled": true,
     "terminal.integrated.shellIntegration.suggestEnabled": true,
     "terminal.integrated.stickyScroll.enabled": true,
-    "terminal.integrated.tabs.enabled": false,
+    "vim.incsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.hlsearch": true,
+    "vim.normalModeKeyBindingsNonRecursive": [
+      {
+        "before": ["j"],
+        "after": ["g", "j"]
+      },
+      {
+        "before": ["k"],
+        "after": ["g", "k"]
+      },
+      {
+        "before": ["L"],
+        "after": ["$"]
+      },
+      {
+        "before": ["H"],
+        "after": ["^"]
+      },
+    ],
+    "vim.leader": "<space>",
     "win-ca.inject": "append",
     "window.autoDetectColorScheme": true,
     "window.confirmBeforeClose": "always",
-    "window.titleBarStyle": "native",
-    "workbench.activityBar.location": "top",
+    // "window.titleBarStyle": "native",
+    // "workbench.activityBar.location": "top",
     "workbench.sideBar.location": "right",
     "workbench.tree.enableStickyScroll": true,
     "workbench.editor.wrapTabs": true,
-    "window.density.editorTabHeight": "compact",
-    "window.nativeFullScreen": false,
+    // "window.nativeFullScreen": false,
     "window.newWindowDimensions": "maximized",
-    "workbench.colorCustomizations": {
-      "[Editor/EditorGroup]": {
-        "tab.activeBorder": "#ff0000" 
-      },
-      "[integrated-terminal]": {
-        "tab.activeBorder": "#00ff00"
-      }
-    },
-    "workbench.colorTheme": "GitHub Dark Default",
-    "window.customTitleBarVisibility": "never",
     "oracledevtools.bookmarkFileFolder": "/Users/jkrueger/Oracle/oracle.oracledevtools",
     "oracledevtools.download.otherFolder": "/Users/jkrueger/downloads",
     "oracledevtools.connectionConfiguration.configFilesFolder": "/Users/jkrueger/Oracle/network/admin",
@@ -169,5 +178,17 @@
         "strings": "on",
         "other": "on"
       }
+    },
+    "workbench.preferredDarkColorTheme": "Catppuccin Mocha",
+    "workbench.iconTheme": "catppuccin-mocha",
+    "window.density.editorTabHeight": "compact",
+    "workbench.activityBar.location": "top",
+    "editor.acceptSuggestionOnEnter": "on",
+    "diffEditor.ignoreTrimWhitespace": true,
+    "[vue]": {
+      "editor.defaultFormatter": "Vue.volar"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
 }
