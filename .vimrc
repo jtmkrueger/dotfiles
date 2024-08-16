@@ -527,6 +527,7 @@ lua << END
   -- Set up lspconfig. --------------------------------
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
   local lspconfig = require('lspconfig')
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover)
   local root_pattern = lspconfig.util.root_pattern('.git')
   local function add_ruby_deps_command(client, bufnr)
     vim.api.nvim_buf_create_user_command(bufnr, "ShowRubyDeps", function(opts)
@@ -585,7 +586,7 @@ lua << END
       end
       vim.lsp.log.warn('container_name: ' .. container_name)
 
-      if container_name == '' then
+      if container_name == '' or container_name == 'epact-web-1' then
         -- there's no container for this so start from current location
         return {
           'ruby-lsp',
@@ -593,17 +594,26 @@ lua << END
         }
       else
         return {
-          'docker',
-          'exec',
-          '-i',
-          container_name,
           'ruby-lsp',
           'stdio'
         }
+      --   return {
+      --     'docker',
+      --     'exec',
+      --     '-i',
+      --     container_name,
+      --     'ruby-lsp',
+      --     'stdio'
+      --   }
       end
     end)(),
     on_attach = function(client, buffer)
       add_ruby_deps_command(client, buffer)
+    end,
+    -- I don't think this does what I want it to do.
+    -- I haven't found a way to get rewrite these paths, and I don't think it's possible.
+    before_init = function(initialize_params, config)
+      initialize_params.rootUri = initialize_params.rootUri:gsub('/app', '/Users/jkrueger/Code')
     end,
   })
 
