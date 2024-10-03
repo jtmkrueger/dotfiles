@@ -5,26 +5,28 @@
     "debug.showSubSessionsInToolBar": true,
     "dev.containers.defaultExtensions": [
       "bierner.github-markdown-preview",
+      "ckolkman.vscode-postgres",
       "danprince.vsnetrw",
       "gitHub.copilot",
       "grapecity.gc-excelviewer",
       "iuriibarlukov.cursor-column-highlight",
       "ms-ossdata.vscode-postgresql",
       "oderwat.indent-rainbow",
+      "oracle.oracledevtools", // this can go away after EPACT migration completes
       "waderyan.gitblame",
     ],
     // "editor.formatOnSave": true,
     "editor.acceptSuggestionOnTab": "off",
     "editor.cursorSurroundingLines": 6,
-    "editor.fontFamily": "OperatorMono Nerd Font medium",
+    "editor.fontFamily": "Operator Mono Ssm Lig",
+    "editor.fontLigatures": true,
+    "editor.fontWeight": "500",
     "editor.fontSize": 16,
     "editor.fontVariations": true,
     "editor.lightbulb.experimental.showAiIcon": "on",
-    "editor.minimap.enabled": false,
     "editor.tabSize": 2,
-    "editor.wordWrap": "on",
     "editor.stickyScroll.enabled": true,
-    "editor.stickyScroll.defaultModel": "indentationModel",
+    "editor.stickyScroll.defaultModel": "foldingProviderModel",
     "editor.suggest.preview": true,
     "editor.rulers": [
         80
@@ -47,20 +49,20 @@
               "fontStyle": "italic"
             }
           },
-          {
-            "scope": [
-              //following will be excluded from italics (VSCode has some defaults for italics)
-              "invalid",
-              "keyword.operator",
-              "constant.numeric.css",
-              "keyword.other.unit.px.css",
-              "constant.numeric.decimal.js",
-              "constant.numeric.json"
-            ],
-            "settings": {
-              "fontStyle": ""
-            }
-          }
+          // {
+          //   "scope": [
+          //     //following will be excluded from italics (VSCode has some defaults for italics)
+          //     "invalid",
+          //     "keyword.operator",
+          //     "constant.numeric.css",
+          //     "keyword.other.unit.px.css",
+          //     "constant.numeric.decimal.js",
+          //     "constant.numeric.json"
+          //   ],
+          //   "settings": {
+          //     "fontStyle": ""
+          //   }
+          // }
         ]
     },
     "emmet.includeLanguages": {
@@ -69,7 +71,7 @@
     },
     "emmet.showSuggestionsAsSnippets": true,
     "extensions.experimental.affinity": {
-        "vscodevim.vim": 1
+      "asvetliakov.vscode-neovim": 1
     },
     "files.autoSave": "onFocusChange",
     "git.enableSmartCommit": true,
@@ -78,7 +80,7 @@
     "githubPullRequests.pullBranch": "never",
     "github-actions.use-enterprise": true,
     "indentRainbow.indicatorStyle": "light",
-    "indentRainbow.lightIndicatorStyleLineWidth": 2,
+    "indentRainbow.lightIndicatorStyleLineWidth": 3,
     "Lua.workspace.library": [
       "/path/to/PlaydateSDK/CoreLibs"
     ],
@@ -107,8 +109,7 @@
     // "standardRuby.autofix": true,
     // currently not using ruby-lsp, but keeping the settings for future use
     "rubyLsp.enableExperimentalFeatures": true,
-    "rubyLsp.formatter": "standardrb",
-    "rubyLsp.lint": "standardrb",
+    "rubyLsp.formatter": "standard",
     "rubyLsp.enabledFeatures": {
         "codeActions": true,
         "codeLens": true,
@@ -128,7 +129,6 @@
         "workspaceSymbol": true
     },
     "terminal.integrated.cursorBlinking": true,
-    "terminal.integrated.fontFamily": "OperatorMono Nerd Font medium",
     "terminal.integrated.fontSize": 16,
     "terminal.integrated.scrollback": 10000,
     "terminal.integrated.shellIntegration.enabled": true,
@@ -138,7 +138,13 @@
     "vim.useSystemClipboard": true,
     "vim.useCtrlKeys": true,
     "vim.hlsearch": true,
+    // marked for deletion. the neovim plugin seems pretty stable now
     "vim.normalModeKeyBindingsNonRecursive": [
+      {
+        "before": ["-"],
+        "commands": ["vsnetrw.open"],
+        "when": "editorLangId != vsnetrw"
+      },
       {
         "before": ["j"],
         "after": ["g", "j"]
@@ -147,22 +153,42 @@
         "before": ["k"],
         "after": ["g", "k"]
       },
+      // shift + k to trigger hover and focus hover in normal mode
       {
-        "before": ["L"],
-        "after": ["$"]
+        "before": ["K"],
+        "commands": ["editor.action.showHover"],
       },
       {
-        "before": ["H"],
-        "after": ["^"]
+        "before": ["<"],
+        "commands": ["editor.action.outdentLines", "extension.vim_escape"],
+        "after": ["v", "gv"]
       },
+      {
+        "before": [">"],
+        "commands": ["editor.action.indentLines", "extension.vim_escape"],
+        "after": ["v", "gv"]
+      },
+      {
+        "before": ["<CR>"],
+        "commands": [":nohlsearch"]
+      }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+      {
+        "before": ["<"],
+        "commands": ["editor.action.outdentLines"],
+        "after": ["gv"]
+      },
+      {
+        "before": [">"],
+        "commands": ["editor.action.indentLines"],
+        "after": ["gv"]
+      }
     ],
     "vim.leader": "<space>",
     "win-ca.inject": "append",
     "window.autoDetectColorScheme": true,
     "window.confirmBeforeClose": "always",
-    // "window.titleBarStyle": "native",
-    // "workbench.activityBar.location": "top",
-    "workbench.sideBar.location": "right",
     "workbench.tree.enableStickyScroll": true,
     "workbench.editor.wrapTabs": true,
     // "window.nativeFullScreen": false,
@@ -179,16 +205,46 @@
         "other": "on"
       }
     },
-    "workbench.preferredDarkColorTheme": "Catppuccin Mocha",
-    "workbench.iconTheme": "catppuccin-mocha",
     "window.density.editorTabHeight": "compact",
-    "workbench.activityBar.location": "top",
     "editor.acceptSuggestionOnEnter": "on",
     "diffEditor.ignoreTrimWhitespace": true,
     "[vue]": {
-      "editor.defaultFormatter": "Vue.volar"
+      // "editor.defaultFormatter": "Vue.volar"
     },
     "[javascript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      // "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "workbench.sideBar.location": "right",
+    "oracledevtools.connections": [
+      {
+        "authenticationType": 2,
+        "dBAPrivilege": "None",
+        "userID": "FLEET_APPS",
+        "passwordSaved": true,
+        "dataSource": "3lv11epacd01.nrel.gov:1521/epct19d.nrel.gov",
+        "connectionType": 2,
+        "databaseHostName": "3lv11epacd01.nrel.gov",
+        "databasePortNumber": "1521",
+        "databaseServiceName": "epct19d.nrel.gov",
+        "tnsAdmin": "/Users/jkrueger/Oracle/network/admin",
+        "name": "FLEET_APPS.epct19d.nrel.gov",
+        "color": "ffa5ff",
+        "currentSchema": "",
+        "addSettingsScopeToConnectionName": false,
+        "addCurrentSchemaToConnectionName": false,
+        "filters": [],
+        "useCompatibleNamesDirectoryPath": true,
+        "passwordStore": "Secret Storage"
+      }
+    ],
+    "workbench.preferredLightColorTheme": "Solarized Light",
+    "workbench.iconTheme": "catppuccin-mocha",
+    "editor.minimap.enabled": false,
+    "debug.showBreakpointsInOverviewRuler": true,
+    "workbench.activityBar.location": "top",
+    "workbench.preferredDarkColorTheme": "Solarized Dark",
+    "gitlens.ai.experimental.model": "openai:gpt-4o",
+    "editor.wordWrap": "on",
+    "debug.console.fontFamily": "Operator Mono Ssm Lig",
+    "chat.editor.fontFamily": "Operator Mono Ssm Lig",
 }

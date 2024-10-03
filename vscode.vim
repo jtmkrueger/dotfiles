@@ -1,12 +1,11 @@
 " VSCode extension
 " START plug ----------------------------
 call plug#begin('~/.vim/plugged')
-  Plug 'andymass/vim-matchup'
   Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-rails'
 call plug#end()
 " END plug ------------------------
 
-let g:loaded_matchit = 1
 let mapleader = "\<Space>"
 set clipboard=unnamed " copy to system register
 set completeopt=menu,menuone,noselect,noinsert
@@ -21,13 +20,15 @@ nunmap <C-w>k
 " neovim needs to be like vim
 nnoremap Y Y
 " Easier to type, and I never use the default behavior.
-noremap H ^
-noremap L $
-vnoremap L g_
+" noremap H ^
+" noremap L $
+" vnoremap L g_
 
 " up/down on wrapped lines
-nnoremap j gj
-nnoremap k gk
+nmap j gj
+nmap k gk
+vmap j gj
+vmap k gk
 
 " Reselect visual block after indent
 vnoremap < <gv
@@ -42,6 +43,7 @@ nnoremap <CR> :silent! nohls<CR>
 " very VSCode specific
 " find word under cursor across all files
 nnoremap ? <Cmd>call VSCodeNotify('workbench.action.findInFiles', { 'query': expand('<cword>')})<CR>
+nnoremap - <Cmd>call VSCodeNotify('vsnetrw.open')<CR>
 
 " comment out things
 xmap gc  <Plug>VSCodeCommentary

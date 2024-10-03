@@ -27,10 +27,10 @@ Plug 'carvel-dev/ytt.vim'
 Plug 'https://github.com/apple/pkl-neovim.git'
 
 " " colorschemes
-Plug 'altercation/vim-colors-solarized'
+Plug 'shaunsingh/solarized.nvim'
 Plug 'jtmkrueger/grb256'
 Plug 'dracula/vim'
-Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+" Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 
 " " tools
 Plug 'dense-analysis/ale'
@@ -84,7 +84,18 @@ set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
 set ttyfast
 " set lazyredraw
-set background=dark
+if system('echo $TERM_PROGRAM') =~ 'iTerm.app'
+    " iTerm has a special variable that tells us if it's in dark mode
+    if system('defaults read -g AppleInterfaceStyle') =~ 'Dark'
+        set background=dark
+    else
+        set background=light
+    endif
+else
+    " For other terminals, we'll just default to dark mode
+    set background=dark
+endif
+colorscheme solarized
 set pumblend=10
 
 " highlight Normal ctermbg=NONE guibg=NONE
@@ -140,7 +151,8 @@ set number " line numbers
 set scrolloff=5 " 5 line buffer below cursor when scrolling
 set hlsearch " highlight search results
 set cursorline " highlight line cursor is on
-set cursorcolumn " highlight the cursors current col
+" set cursorcolumn " highlight the cursors current col
+highlight link CursorColumn CursorLine " have them always be the same color
 set clipboard=unnamed " copy to system register
 set mouse=a " turn on all mouse functionality
 set timeoutlen=300 " Time to wait after ESC (default causes an annoying delay)
@@ -304,7 +316,7 @@ lua << END
   end
 
   require('lualine').setup{
-    theme = "catppuccin",
+    theme = "solarized",
     sections = {
       lualine_a = {
         {
@@ -353,8 +365,8 @@ lua << END
   require("bufferline").setup{
     highlights = {
       fill = {
-        fg = '#1e1e2e',
-        bg = '#1e1e2e',
+        fg = '#dce0e8',
+        bg = '#dce0e8',
       },
     },
     options = {
@@ -699,31 +711,31 @@ vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition({ on_list = 
   vim.api.nvim_set_keymap('n', '<C-g>', ':Neogit<CR>', {noremap = true, silent = true})
 
   -- colorscheme
-  require("catppuccin").setup({
-    transparent_background = true,
-    dim_inactive = {
-        enabled = true,
-        shade = "dark",
-        percentage = 0.25,
-    },
-    integrations = {
-      native_lsp = {
-        enabled = true,
-        virtual_text = {
-          errors = { "italic" },
-          hints = { "italic" },
-          warnings = { "italic" },
-          information = { "italic" },
-        },
-        underlines = {
-          errors = { "undercurl" },
-          hints = { "undercurl" },
-          warnings = { "undercurl" },
-          information = { "undercurl" },
-        },
-      },
-    },
-  })
-  vim.cmd.colorscheme "catppuccin"
+  -- require("catppuccin").setup({
+  --   transparent_background = true,
+  --   dim_inactive = {
+  --       enabled = true,
+  --       shade = "dark",
+  --       percentage = 0.25,
+  --   },
+  --   integrations = {
+  --     native_lsp = {
+  --       enabled = true,
+  --       virtual_text = {
+  --         errors = { "italic" },
+  --         hints = { "italic" },
+  --         warnings = { "italic" },
+  --         information = { "italic" },
+  --       },
+  --       underlines = {
+  --         errors = { "undercurl" },
+  --         hints = { "undercurl" },
+  --         warnings = { "undercurl" },
+  --         information = { "undercurl" },
+  --       },
+  --     },
+  --   },
+  -- })
+  -- vim.cmd.colorscheme "solarized"
   vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {desc = "Toggle Spectre"})
 END

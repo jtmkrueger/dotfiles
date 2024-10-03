@@ -18,4 +18,4 @@ dump.rdb
 .pnpm-store/
 .prettierignore
 vetur.config.js
-
+.nova/
