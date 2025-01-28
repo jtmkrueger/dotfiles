@@ -2,8 +2,8 @@
 # be sure to install https://github.com/dandavison/delta
 # delta is cool, but it doesn't really play well with a containerized environment
 [user]
-  name = Krueger, John
-  email = john.krueger@nrel.gov
+	name = Krueger, John
+	email = john.krueger@nrel.gov
 
 [core]
 	excludesfile = /Users/jkrueger/.gitignore

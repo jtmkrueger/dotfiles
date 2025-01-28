@@ -27,7 +27,7 @@ Plug 'carvel-dev/ytt.vim'
 Plug 'https://github.com/apple/pkl-neovim.git'
 
 " " colorschemes
-Plug 'shaunsingh/solarized.nvim'
+Plug 'maxmx03/solarized.nvim'
 Plug 'jtmkrueger/grb256'
 Plug 'dracula/vim'
 " Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
@@ -314,6 +314,8 @@ lua << END
     local hl = "DiagnosticSign" .. type
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
   end
+  require('solarized').setup()
+  vim.cmd.colorscheme = 'solarized'
 
   require('lualine').setup{
     theme = "solarized",
@@ -366,7 +368,7 @@ lua << END
     highlights = {
       fill = {
         fg = '#dce0e8',
-        bg = '#dce0e8',
+        bg = '#002b36',
       },
     },
     options = {

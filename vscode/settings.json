@@ -7,12 +7,12 @@
       "bierner.github-markdown-preview",
       "ckolkman.vscode-postgres",
       "danprince.vsnetrw",
+      "eamodio.gitlens",
       "gitHub.copilot",
       "grapecity.gc-excelviewer",
       "iuriibarlukov.cursor-column-highlight",
       "ms-ossdata.vscode-postgresql",
       "oderwat.indent-rainbow",
-      "oracle.oracledevtools", // this can go away after EPACT migration completes
       "waderyan.gitblame",
     ],
     // "editor.formatOnSave": true,
@@ -93,8 +93,7 @@
     "open-in-browser.default": "Safari",
     "remote.autoForwardPortsSource": "hybrid",
     "[ruby]": {
-        "editor.defaultFormatter": "testdouble.vscode-standard-ruby",
-        "editor.formatOnType": true,
+      "editor.formatOnType": true,
         "editor.formatOnSave": false,
         "files.insertFinalNewline": true,
         "editor.insertSpaces": true,
@@ -106,9 +105,6 @@
         "files.trimTrailingWhitespace": true,
         "files.trimFinalNewlines": true,
     },
-    // "standardRuby.autofix": true,
-    // currently not using ruby-lsp, but keeping the settings for future use
-    "rubyLsp.enableExperimentalFeatures": true,
     "rubyLsp.formatter": "standard",
     "rubyLsp.enabledFeatures": {
         "codeActions": true,
@@ -242,9 +238,17 @@
     "editor.minimap.enabled": false,
     "debug.showBreakpointsInOverviewRuler": true,
     "workbench.activityBar.location": "top",
-    "workbench.preferredDarkColorTheme": "Solarized Dark",
     "gitlens.ai.experimental.model": "openai:gpt-4o",
     "editor.wordWrap": "on",
     "debug.console.fontFamily": "Operator Mono Ssm Lig",
     "chat.editor.fontFamily": "Operator Mono Ssm Lig",
+    "workbench.preferredDarkColorTheme": "Solarized Dark",
+    "window.nativeTabs": true,
+    "window.customTitleBarVisibility": "never",
+    "debug.toolBarLocation": "docked",
+    "window.titleBarStyle": "native",
+    "rubyLsp.featureFlags": {
+      "launcher": false,
+      "all": true
+    },
 }
