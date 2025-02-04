@@ -48,7 +48,7 @@ Plug 'sbdchd/neoformat'
 Plug 'zbirenbaum/copilot.lua'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-pack/nvim-spectre'
-Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
+Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
 Plug 'MunifTanjim/nui.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
