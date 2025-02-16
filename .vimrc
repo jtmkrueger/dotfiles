@@ -24,7 +24,6 @@ Plug 'jparise/vim-graphql'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'cappyzawa/starlark.vim'
 Plug 'carvel-dev/ytt.vim'
-Plug 'https://github.com/apple/pkl-neovim.git'
 
 " " colorschemes
 Plug 'maxmx03/solarized.nvim'
@@ -84,18 +83,9 @@ set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
 set ttyfast
 " set lazyredraw
-if system('echo $TERM_PROGRAM') =~ 'iTerm.app'
-    " iTerm has a special variable that tells us if it's in dark mode
-    if system('defaults read -g AppleInterfaceStyle') =~ 'Dark'
-        set background=dark
-    else
-        set background=light
-    endif
-else
-    " For other terminals, we'll just default to dark mode
-    set background=dark
-endif
-colorscheme solarized
+set background=dark
+let g:dracula_colorterm = 0
+colorscheme dracula
 set pumblend=10
 
 " highlight Normal ctermbg=NONE guibg=NONE
@@ -324,8 +314,8 @@ lua << END
         {
           function()
             local mode_map = {
-              ['n'] = '',
-              ['i'] = '',
+              ['n'] = '$',
+              ['i'] = '-',
               ['v'] = '󰸱',
               ['V'] = '󰸱 󰘤',
               [''] = '󰸱 󱓻',
@@ -469,7 +459,6 @@ lua << END
   local hasConfigs, configs = pcall(require, "nvim-treesitter.configs")
   if hasConfigs then
     configs.setup {
-      ensure_installed = "pkl",
       highlight = {
         enable = true,              -- false will disable the whole extension
       },
@@ -572,63 +561,6 @@ lua << END
   end
 
   lspconfig.ruby_lsp.setup({
-    cmd = (function()
-      vim.lsp.log.warn("ruby_lsp setup----------------------------------------------")
-      local bufname = vim.api.nvim_buf_get_name(0)
-
-      -- Turned into a filename
-      local filename = lspconfig.util.path.is_absolute(bufname) and bufname or lspconfig.util.path.join(vim.loop.cwd(), bufname)
-
-
-      -- Then the directory of the project
-      local project_dirname = root_pattern(filename) or lspconfig.util.path.dirname(filename)
-      vim.lsp.log.warn('project_dirname: ' .. project_dirname)
-      local last_directory = vim.fn.fnamemodify(project_dirname, ':t')
-      vim.lsp.log.warn('last_directory: ' .. last_directory)
-
-      -- If the basename is in the list of afdc projects, prefix with afdc- and suffix with -1
-      local container_name = ''
-      if vim.tbl_contains({ 'sponge', 'stations', 'vehicles' }, last_directory) then
-        vim.lsp.log.warn(last_directory)
-        container_name = 'afdc-' .. last_directory .. '-1'
-      end
-
-      -- If the basename is epact, return epact-web-1
-      if vim.tbl_contains({ 'epact' }, last_directory) then
-        vim.lsp.log.warn('epact')
-        container_name = 'epact-web-1'
-      end
-      vim.lsp.log.warn('container_name: ' .. container_name)
-
-      if container_name == '' or container_name == 'epact-web-1' then
-        -- there's no container for this so start from current location
-        return {
-          'ruby-lsp',
-          'stdio'
-        }
-      else
-        return {
-          'ruby-lsp',
-          'stdio'
-        }
-      --   return {
-      --     'docker',
-      --     'exec',
-      --     '-i',
-      --     container_name,
-      --     'ruby-lsp',
-      --     'stdio'
-      --   }
-      end
-    end)(),
-    on_attach = function(client, buffer)
-      add_ruby_deps_command(client, buffer)
-    end,
-    -- I don't think this does what I want it to do.
-    -- I haven't found a way to get rewrite these paths, and I don't think it's possible.
-    before_init = function(initialize_params, config)
-      initialize_params.rootUri = initialize_params.rootUri:gsub('/app', '/Users/jkrueger/Code')
-    end,
   })
 
   -- lspconfig.solargraph.setup {
@@ -656,7 +588,7 @@ lua << END
       ),
     },
   }
-  lspconfig.tsserver.setup {
+  lspconfig.ts_ls.setup {
     init_options = {
       plugins = {
         {
