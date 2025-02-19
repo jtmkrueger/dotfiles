@@ -37,3 +37,5 @@
 	required = true
 [submodule]
 	recurse = true
+[merge]
+	conflictstyle = diff3
