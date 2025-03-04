@@ -1,82 +1,3 @@
-" START plug ----------------------------
-call plug#begin('~/.vim/plugged')
-
-" " syntaxes
-Plug 'kchmck/vim-coffee-script'
-Plug 'pangloss/vim-javascript'
-Plug 'jelera/vim-javascript-syntax'
-Plug 'mxw/vim-jsx'
-Plug 'cakebaker/scss-syntax.vim'
-Plug 'vim-ruby/vim-ruby'
-Plug 'mustache/vim-mustache-handlebars'
-Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'briancollins/vim-jst'
-Plug 'tmux-plugins/vim-tmux'
-Plug 'chrisbra/csv.vim'
-Plug 'elixir-editors/vim-elixir'
-Plug 'slashmili/alchemist.vim'
-Plug 'slim-template/vim-slim'
-Plug 'fatih/vim-go'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'jparise/vim-graphql'
-" Plug 'posva/vim-vue'
-Plug 'martinda/Jenkinsfile-vim-syntax'
-Plug 'cappyzawa/starlark.vim'
-Plug 'carvel-dev/ytt.vim'
-Plug 'https://github.com/apple/pkl-neovim.git'
-
-" " colorschemes
-Plug 'maxmx03/solarized.nvim'
-Plug 'jtmkrueger/grb256'
-Plug 'dracula/vim'
-" Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
-
-" " tools
-Plug 'dense-analysis/ale'
-Plug 'ojroques/vim-oscyank', {'branch': 'main'}
-Plug 'mattn/emmet-vim'
-Plug 'jszakmeister/vim-togglecursor'
-Plug 'Raimondi/delimitMate'
-Plug 'elzr/vim-json'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'itchyny/vim-cursorword'
-Plug 'levouh/tint.nvim'
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'sotte/presenting.nvim'
-Plug 'sbdchd/neoformat'
-Plug 'zbirenbaum/copilot.lua'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-pack/nvim-spectre'
-Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'main' }
-Plug 'MunifTanjim/nui.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-tree/nvim-web-devicons'
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'NeogitOrg/neogit'
-Plug 'sindrets/diffview.nvim'
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'zbirenbaum/copilot-cmp'
-Plug 'onsails/lspkind.nvim'
-
-" all that tpope!
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-endwise'
-call plug#end()
-" END plug ------------------------
-
 filetype plugin on
 syntax enable
 
@@ -84,18 +5,17 @@ set guifont=mononoki-Regular\ Nerd\ Font\ Complete:h11
 set guioptions-=e
 set ttyfast
 " set lazyredraw
-if system('echo $TERM_PROGRAM') =~ 'iTerm.app'
-    " iTerm has a special variable that tells us if it's in dark mode
-    if system('defaults read -g AppleInterfaceStyle') =~ 'Dark'
-        set background=dark
-    else
-        set background=light
-    endif
-else
-    " For other terminals, we'll just default to dark mode
-    set background=dark
-endif
-colorscheme solarized
+" if system('echo $TERM_PROGRAM') =~ 'iTerm.app'
+"     " iTerm has a special variable that tells us if it's in dark mode
+"     if system('defaults read -g AppleInterfaceStyle') =~ 'Dark'
+"         set background=dark
+"     else
+"         set background=light
+"     endif
+" else
+"     " For other terminals, we'll just default to dark mode
+"     set background=dark
+" endif
 set pumblend=10
 
 " highlight Normal ctermbg=NONE guibg=NONE
@@ -308,14 +228,134 @@ augroup END
 " endif
 
 lua << END
+
+  -- Bootstrap lazy.nvim
+  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+  if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+      vim.api.nvim_echo({
+        { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+        { out, "WarningMsg" },
+        { "\nPress any key to exit..." },
+      }, true, {})
+      vim.fn.getchar()
+      os.exit(1)
+    end
+  end
+  vim.opt.rtp:prepend(lazypath)
+
+  -- Setup lazy.nvim
+  require("lazy").setup({
+    'kchmck/vim-coffee-script',
+    'pangloss/vim-javascript',
+    'jelera/vim-javascript-syntax',
+    'mxw/vim-jsx',
+    'cakebaker/scss-syntax.vim',
+    'vim-ruby/vim-ruby',
+    'mustache/vim-mustache-handlebars',
+    'othree/javascript-libraries-syntax.vim',
+    'briancollins/vim-jst',
+    'tmux-plugins/vim-tmux',
+    'chrisbra/csv.vim',
+    'elixir-editors/vim-elixir',
+    'slashmili/alchemist.vim',
+    'slim-template/vim-slim',
+    'fatih/vim-go',
+    'leafgarland/typescript-vim',
+    'peitalin/vim-jsx-typescript',
+    'jparise/vim-graphql',
+    'martinda/Jenkinsfile-vim-syntax',
+    'cappyzawa/starlark.vim',
+    'carvel-dev/ytt.vim',
+    'https://github.com/apple/pkl-neovim.git',
+
+    -- tools
+    'dense-analysis/ale',
+    'mattn/emmet-vim',
+    'jszakmeister/vim-togglecursor',
+    'Raimondi/delimitMate',
+    'elzr/vim-json',
+    -- { 'junegunn/fzf', dir = '~/.fzf', build = './install --all' },
+    "ibhagwan/fzf-lua",
+    'itchyny/vim-cursorword',
+    'levouh/tint.nvim',
+    'lukas-reineke/indent-blankline.nvim',
+    'sotte/presenting.nvim',
+    'sbdchd/neoformat',
+    'zbirenbaum/copilot.lua',
+    'nvim-lua/plenary.nvim',
+    'nvim-pack/nvim-spectre',
+    { 'CopilotC-Nvim/CopilotChat.nvim', branch = 'main' },
+    'MunifTanjim/nui.nvim',
+    {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+    {
+      "telescope.nvim",
+      dependencies = {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+        config = function()
+          require("telescope").load_extension("fzf")
+        end,
+      },
+    },
+    'nvim-telescope/telescope.nvim',
+    'nvim-tree/nvim-web-devicons',
+    'nvim-lualine/lualine.nvim',
+    {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
+    'lewis6991/gitsigns.nvim',
+    'NeogitOrg/neogit',
+    'sindrets/diffview.nvim',
+    'neovim/nvim-lspconfig',
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-cmdline',
+    'hrsh7th/nvim-cmp',
+    'zbirenbaum/copilot-cmp',
+    'onsails/lspkind.nvim',
+
+    -- all that tpope!
+    'tpope/vim-repeat',
+    'tpope/vim-vinegar',
+    'tpope/vim-surround',
+    'tpope/vim-commentary',
+    'tpope/vim-endwise',
+
+    { 'ojroques/vim-oscyank', branch = 'main', },
+    {
+      'maxmx03/solarized.nvim',
+      lazy = false,
+      priority = 1000,
+      ---@type solarized.config
+      opts = {},
+      config = function(_, opts)
+        vim.o.termguicolors = true
+        vim.o.background = 'dark'
+        require('solarized').setup({
+          transparent = {
+            enabled = true,         -- Master switch to enable transparency
+            pmenu = true,           -- Popup menu (e.g., autocomplete suggestions)
+            normal = true,          -- Main editor window background
+            normalfloat = true,     -- Floating windows
+            whichkey = true,        -- Which-key popup
+            telescope = true,       -- Telescope fuzzy finder
+          },
+        })
+        vim.cmd.colorscheme 'solarized'
+      end,
+    },
+  })
+
+  -- END lazy.nvim
+
   -- lsp custom diagnostics symbols
   local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
   for type, icon in pairs(signs) do
     local hl = "DiagnosticSign" .. type
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
   end
-  require('solarized').setup()
-  vim.cmd.colorscheme = 'solarized'
 
   require('lualine').setup{
     theme = "solarized",
@@ -393,10 +433,6 @@ lua << END
     }
   }
 
-  require'nvim-treesitter.configs'.setup {
-    ensure_installed = "all",
-  }
-
   require('gitsigns').setup {
     current_line_blame = true,
   }
@@ -469,12 +505,15 @@ lua << END
   local hasConfigs, configs = pcall(require, "nvim-treesitter.configs")
   if hasConfigs then
     configs.setup {
-      ensure_installed = "pkl",
+      auto_install = true,
+      sync_install = false,
+      ensure_installed = "all",
       highlight = {
-        enable = true,              -- false will disable the whole extension
+        enable = true,
       },
       indent = {
-        enable = true
+        enable = true,
+        additional_vim_regex_highlighting = false,
       }
     }
   end
@@ -744,6 +783,5 @@ vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition({ on_list = 
   --     },
   --   },
   -- })
-  -- vim.cmd.colorscheme "solarized"
   vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {desc = "Toggle Spectre"})
 END
