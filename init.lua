@@ -55,7 +55,7 @@ require("lazy").setup({
   'sbdchd/neoformat',
   'nvim-pack/nvim-spectre',
   {
-    "github/copilot.vim",
+    "github/copilot.lua",
     config = function ()
       require("copilot").setup({
         suggestion = {
@@ -71,7 +71,7 @@ require("lazy").setup({
     'CopilotC-Nvim/CopilotChat.nvim',
     branch = 'main',
     dependencies = {
-      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+      { "github/copilot.lua" }, -- or zbirenbaum/copilot.lua
       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
     },
     build = "make tiktoken", -- Only on MacOS or Linux
