@@ -53,10 +53,35 @@ require("lazy").setup({
   'lukas-reineke/indent-blankline.nvim',
   'sotte/presenting.nvim',
   'sbdchd/neoformat',
-  'zbirenbaum/copilot.lua',
-  'nvim-lua/plenary.nvim',
   'nvim-pack/nvim-spectre',
-  { 'CopilotC-Nvim/CopilotChat.nvim', branch = 'main' },
+  {
+    "github/copilot.vim",
+    config = function ()
+      require("copilot").setup({
+        suggestion = {
+          auto_trigger = true,
+          keymap = {
+            accept = "<C-j>",
+          },
+        }
+      })
+    end,
+  },
+  {
+    'CopilotC-Nvim/CopilotChat.nvim',
+    branch = 'main',
+    dependencies = {
+      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+    },
+    build = "make tiktoken", -- Only on MacOS or Linux
+    config = function ()
+      require("CopilotChat").setup {
+        debug = true, -- Enable debugging
+        show_help = false,
+      }
+    end
+  },
   'MunifTanjim/nui.nvim',
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   {
@@ -515,19 +540,6 @@ vim.api.nvim_create_user_command('NN', function()
   local fullPath = bufferDir .. '/' .. filename .. '.md'
   vim.api.nvim_command('edit ' .. fullPath)
 end, {})
-
-require("copilot").setup({
-  suggestion = {
-    auto_trigger = true,
-    keymap = {
-      accept = "<C-j>",
-    },
-  }
-})
-require("CopilotChat").setup {
-  debug = true, -- Enable debugging
-  show_help = false,
-}
 
 local cmp = require'cmp'
 cmp.setup({

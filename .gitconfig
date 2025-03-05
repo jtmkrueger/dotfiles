@@ -9,21 +9,21 @@
 	excludesfile = /Users/jkrueger/.gitignore
   editor = vim
 
-# [delta]
-#   line-numbers = true
-#   navigate = true
+[delta]
+  line-numbers = true
+  navigate = true
 
-# [pager]
-#   diff = delta
-#   log = delta
-#   reflog = delta
-#   show = delta
+[pager]
+  diff = delta
+  log = delta
+  reflog = delta
+  show = delta
 
 [push]
   default = current
 
-# [interactive]
-#   diffFilter = delta --color-only
+[interactive]
+  diffFilter = delta --color-only
 
 [diff]
   colorMoved = default
