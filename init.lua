@@ -55,8 +55,10 @@ require("lazy").setup({
   'sbdchd/neoformat',
   'nvim-pack/nvim-spectre',
   {
-    "github/copilot.lua",
-    config = function ()
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
       require("copilot").setup({
         suggestion = {
           auto_trigger = true,
@@ -71,7 +73,7 @@ require("lazy").setup({
     'CopilotC-Nvim/CopilotChat.nvim',
     branch = 'main',
     dependencies = {
-      { "github/copilot.lua" }, -- or zbirenbaum/copilot.lua
+      { "zbirenbaum/copilot.lua" },
       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
     },
     build = "make tiktoken", -- Only on MacOS or Linux
@@ -99,7 +101,19 @@ require("lazy").setup({
   'nvim-lualine/lualine.nvim',
   {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
   'lewis6991/gitsigns.nvim',
-  'NeogitOrg/neogit',
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",         -- required
+      "sindrets/diffview.nvim",        -- optional - Diff integration
+
+      -- Only one of these is needed.
+      "nvim-telescope/telescope.nvim", -- optional
+      "ibhagwan/fzf-lua",              -- optional
+      "echasnovski/mini.pick",         -- optional
+    },
+    config = true
+  },
   'sindrets/diffview.nvim',
   'neovim/nvim-lspconfig',
   'hrsh7th/cmp-nvim-lsp',
@@ -158,7 +172,7 @@ vim.opt.pumblend = 10
 vim.opt.showtabline = 2 -- always show tabs
 
 vim.opt.encoding = 'UTF-8'
-vim.opt.fileencoding = 'utf-8'
+-- vim.opt.fileencoding = 'utf-8'
 vim.opt.magic = true -- for regular expressions turn magic on
 
 vim.opt.vb = true
@@ -653,10 +667,7 @@ require("ibl").setup({
   indent = { char = "│" },
 })
 
--- neogit
-local neogit = require('neogit')
-neogit.setup {}
-vim.api.nvim_set_keymap('n', '<C-d>', ':DiffviewOpen', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<C-d>', ':DiffviewOpen<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<C-g>', ':Neogit<CR>', {noremap = true, silent = true})
 
 vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {desc = "Toggle Spectre"})
