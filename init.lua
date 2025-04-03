@@ -194,27 +194,43 @@ require("lazy").setup({
 
   { 'ojroques/vim-oscyank', branch = 'main', },
   {
-    'maxmx03/solarized.nvim',
-    lazy = false,
+    "catppuccin/nvim",
+    name = "catppuccin",
     priority = 1000,
-    ---@type solarized.config
-    opts = {},
-    config = function(_, opts)
-      vim.o.termguicolors = true
-      vim.o.background = 'dark'
-      require('solarized').setup({
-        transparent = {
-          enabled = true,         -- Master switch to enable transparency
-          pmenu = true,           -- Popup menu (e.g., autocomplete suggestions)
-          normal = true,          -- Main editor window background
-          normalfloat = true,     -- Floating windows
-          whichkey = true,        -- Which-key popup
-          telescope = true,       -- Telescope fuzzy finder
+    config = function()
+      require("catppuccin").setup({
+        transparent_background = true,
+        dim_inactive = {
+          enabled = true, -- dims the background color of inactive window
+          shade = "light",
+          percentage = 0.50, -- percentage of the shade to apply to the inactive window
         },
       })
-      vim.cmd.colorscheme 'solarized'
+      vim.cmd.colorscheme "catppuccin"
     end,
   },
+  --{
+  --  'maxmx03/solarized.nvim',
+  --  lazy = false,
+  --  priority = 1000,
+  --  ---@type solarized.config
+  --  opts = {},
+  --  config = function(_, opts)
+  --    vim.o.termguicolors = true
+  --    vim.o.background = 'dark'
+  --    require('solarized').setup({
+  --      transparent = {
+  --        enabled = true,         -- Master switch to enable transparency
+  --        pmenu = true,           -- Popup menu (e.g., autocomplete suggestions)
+  --        normal = true,          -- Main editor window background
+  --        normalfloat = true,     -- Floating windows
+  --        whichkey = true,        -- Which-key popup
+  --        telescope = true,       -- Telescope fuzzy finder
+  --      },
+  --    })
+  --    vim.cmd.colorscheme 'solarized'
+  --  end,
+  --},
 })
 
 -- END lazy.nvim
@@ -448,7 +464,7 @@ for type, icon in pairs(signs) do
 end
 
 require('lualine').setup{
-  theme = "solarized",
+  theme = "catppuccin",
   sections = {
     lualine_a = {
       {
