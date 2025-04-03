@@ -15,6 +15,17 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
+local opts = { noremap=true, silent=true }
+
+local function quickfix()
+  vim.lsp.buf.code_action({
+    filter = function(a) return a.isPreferred end,
+    apply = true
+  })
+end
+vim.keymap.set('n', '<leader>qf', quickfix, opts)
+
 -- Setup lazy.nvim
 require("lazy").setup({
   'kchmck/vim-coffee-script',
@@ -46,7 +57,6 @@ require("lazy").setup({
   'jszakmeister/vim-togglecursor',
   'Raimondi/delimitMate',
   'elzr/vim-json',
-  -- { 'junegunn/fzf', dir = '~/.fzf', build = './install --all' },
   "ibhagwan/fzf-lua",
   'itchyny/vim-cursorword',
   'levouh/tint.nvim',
@@ -115,7 +125,58 @@ require("lazy").setup({
     config = true
   },
   'sindrets/diffview.nvim',
-  'neovim/nvim-lspconfig',
+  {
+    'adam12/ruby-lsp.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'neovim/nvim-lspconfig',
+    },
+    config = true,
+    opts = {
+      lspconfig = {
+        init_options = {
+          formatter = 'standard',
+          linters = { 'standard' },
+        },
+      },
+    },
+  },
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'hrsh7th/nvim-cmp',
+      'onsails/lspkind.nvim',
+    },
+    config = function()
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      local lspconfig = require('lspconfig')
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover)
+      local root_pattern = lspconfig.util.root_pattern('.git')
+
+      lspconfig.ts_ls.setup {
+        capabilities = capabilities,
+        root_dir = root_pattern,
+        init_options = {
+          plugins = {
+            {
+              name = '@vue/typescript-plugin',
+              languages = { 'vue' },
+            },
+          },
+        },
+        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+      }
+
+      lspconfig.volar.setup {
+        capabilities = capabilities,
+        root_dir = root_pattern,
+      }
+    end,
+  },
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-path',
@@ -592,45 +653,6 @@ cmp.setup({
     { name = 'buffer' },
   })
 })
-
--- Set up lspconfig. --------------------------------
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local lspconfig = require('lspconfig')
-vim.keymap.set('n', 'K', vim.lsp.buf.hover)
-local root_pattern = lspconfig.util.root_pattern('.git')
-lspconfig.ruby_lsp.setup {
-  init_options = {
-    formatter = 'standard',
-    linters = { 'standard' },
-  },
-}
-lspconfig.standardrb.setup {
-  flags = {
-    allow_incremental_sync = true,
-    debounce_text_changes = 150,
-  },
-  handlers = {
-    ["textDocument/publishDiagnostics"] = vim.lsp.with(
-      vim.lsp.diagnostic.on_publish_diagnostics, {
-        update_in_insert = true,
-      }
-    ),
-  },
-}
-lspconfig.ts_ls.setup {
-  init_options = {
-    plugins = {
-      {
-        name = '@vue/typescript-plugin',
-        languages = { 'vue' },
-      },
-    },
-  },
-  filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-}
-
-lspconfig.volar.setup {}
--- END lspconfig --------------------------------
 
 -- alias gd to find definition of word under cursor in normal mode
 function PeekDefinition()
