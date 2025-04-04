@@ -187,10 +187,20 @@ require("lazy").setup({
 
   -- all that tpope!
   'tpope/vim-repeat',
-  'tpope/vim-vinegar',
   'tpope/vim-surround',
   'tpope/vim-commentary',
   'tpope/vim-endwise',
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
+  },
 
   { 'ojroques/vim-oscyank', branch = 'main', },
   {
@@ -347,6 +357,9 @@ vim.api.nvim_set_keymap('n', '<leader>b', ':bprevious<CR>', {noremap = true})
 
 -- open github copilot chat
 vim.api.nvim_set_keymap('n', '<leader>c', ':CopilotChatOpen<CR>', {noremap = true})
+
+-- so oil behaves like vim.vinegar did
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 -- Open new splits to the right/bottom
 vim.opt.splitright = true
@@ -511,12 +524,6 @@ require('lualine').setup{
 }
 
 require("bufferline").setup{
-  highlights = {
-    fill = {
-      fg = '#dce0e8',
-      bg = '#002b36',
-    },
-  },
   options = {
     mode = "tabs",
     diagnostics = "nvim_lsp",
