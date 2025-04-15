@@ -79,11 +79,12 @@ require("lazy").setup({
       })
     end,
   },
+  "giuxtaposition/blink-cmp-copilot",
   {
     'CopilotC-Nvim/CopilotChat.nvim',
     branch = 'main',
     dependencies = {
-      { "zbirenbaum/copilot.lua" },
+      { "zbirenbaum/copilot.lua", },
       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
     },
     build = "make tiktoken", -- Only on MacOS or Linux
@@ -137,22 +138,111 @@ require("lazy").setup({
         init_options = {
           formatter = 'standard',
           linters = { 'standard' },
+          filetypes = { "ruby", "eruby" },
         },
       },
     },
   },
   {
+    'saghen/blink.cmp',
+    -- optional: provides snippets for the snippet source
+    dependencies = { 'rafamadriz/friendly-snippets' },
+
+    -- use a release tag to download pre-built binaries
+    version = '1.*',
+    -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+    -- build = 'cargo build --release',
+    -- If you use nix, you can build from source using latest nightly rust with:
+    -- build = 'nix run .#build-plugin',
+
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      keymap = {
+        -- set to 'none' to disable the 'default' preset
+        preset = 'default',
+
+        ['<Tab>'] = { 'select_next', 'fallback' },
+        ['<S-Tab>'] = { 'select_prev', 'fallback' },
+      },
+
+      appearance = {
+        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- Adjusts spacing to ensure icons are aligned
+        nerd_font_variant = 'mono'
+      },
+
+      completion = {
+        -- Don't select by default, auto insert on selection
+        list = { selection = { preselect = false, auto_insert = true } },
+        documentation = { auto_show = true },
+        menu = {
+          draw = {
+            components = {
+              kind_icon = {
+                text = function(ctx)
+                  local lspkind = require("lspkind")
+                  local icon = ctx.kind_icon
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                      local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                      if dev_icon then
+                          icon = dev_icon
+                      end
+                  else
+                      icon = require("lspkind").symbolic(ctx.kind, {
+                          mode = "symbol",
+                      })
+                  end
+
+                  return icon .. ctx.icon_gap
+                end,
+
+                highlight = function(ctx)
+                  local hl = ctx.kind_hl
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                    local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                    if dev_icon then
+                      hl = dev_hl
+                    end
+                  end
+                  return hl
+                end,
+              }
+            }
+          }
+        }
+      },
+
+      -- Default list of enabled providers defined so that you can extend it
+      -- elsewhere in your config, without redefining it, due to `opts_extend`
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+        providers = {
+          path = {
+            opts = {
+              get_cwd = function(_)
+                return vim.fn.getcwd()
+              end,
+            },
+          },
+        },
+      },
+
+      -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+      -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+      -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+      --
+      -- See the fuzzy documentation for more information
+      fuzzy = { implementation = "prefer_rust_with_warning" }
+    },
+    opts_extend = { "sources.default" }
+  },
+  {
     'neovim/nvim-lspconfig',
     dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline',
-      'hrsh7th/nvim-cmp',
-      'onsails/lspkind.nvim',
+      'saghen/blink.cmp'
     },
     config = function()
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
       local lspconfig = require('lspconfig')
       vim.keymap.set('n', 'K', vim.lsp.buf.hover)
       local root_pattern = lspconfig.util.root_pattern('.git')
@@ -175,14 +265,25 @@ require("lazy").setup({
         capabilities = capabilities,
         root_dir = root_pattern,
       }
+
+      lspconfig.copilot.setup {
+        cmd = { "copilot-language-server" },
+        root_dir = root_pattern,
+        capabilities = capabilities,
+      }
+
+      config = function(_, opts)
+        local lspconfig = require('lspconfig')
+        for server, config in pairs(opts.servers) do
+          -- passing config.capabilities to blink.cmp merges with the capabilities in your
+          -- `opts[server].capabilities, if you've defined it
+          config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+          lspconfig[server].setup(config)
+        end
+      end
     end,
   },
-  'hrsh7th/cmp-nvim-lsp',
-  'hrsh7th/cmp-buffer',
-  'hrsh7th/cmp-path',
-  'hrsh7th/cmp-cmdline',
-  'hrsh7th/nvim-cmp',
-  'zbirenbaum/copilot-cmp',
+  -- 'zbirenbaum/copilot-cmp',
   'onsails/lspkind.nvim',
 
   -- all that tpope!
@@ -639,43 +740,43 @@ vim.api.nvim_create_user_command('NN', function()
   vim.api.nvim_command('edit ' .. fullPath)
 end, {})
 
-local cmp = require'cmp'
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
-    end,
-  },
-  completion = {
-    completeopt = table.concat(vim.opt.completeopt:get(), ","),
-  },
-  window = {
-    -- completion = cmp.config.window.bordered(),
-    -- documentation = cmp.config.window.bordered(),
-  },
-  mapping = cmp.mapping.preset.insert({
-    ["<Tab>"] = cmp.mapping.select_next_item({behavior=cmp.SelectBehavior.Insert}),
-    ["<S-Tab>"] = cmp.mapping.select_prev_item({behavior=cmp.SelectBehavior.Insert}),
-  }),
-  formatting = {
-    format = function(entry, vim_item)
-      if vim.tbl_contains({ 'path' }, entry.source.name) then
-        local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
-        if icon then
-          vim_item.kind = icon
-          vim_item.kind_hl_group = hl_group
-          return vim_item
-        end
-      end
-      return require('lspkind').cmp_format({ with_text = false })(entry, vim_item)
-    end
-  },
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-  }, {
-    { name = 'buffer' },
-  })
-})
+-- local cmp = require'cmp'
+-- cmp.setup({
+--   snippet = {
+--     expand = function(args)
+--       vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
+--     end,
+--   },
+--   completion = {
+--     completeopt = table.concat(vim.opt.completeopt:get(), ","),
+--   },
+--   window = {
+--     -- completion = cmp.config.window.bordered(),
+--     -- documentation = cmp.config.window.bordered(),
+--   },
+--   mapping = cmp.mapping.preset.insert({
+--     ["<Tab>"] = cmp.mapping.select_next_item({behavior=cmp.SelectBehavior.Insert}),
+--     ["<S-Tab>"] = cmp.mapping.select_prev_item({behavior=cmp.SelectBehavior.Insert}),
+--   }),
+--   formatting = {
+--     format = function(entry, vim_item)
+--       if vim.tbl_contains({ 'path' }, entry.source.name) then
+--         local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
+--         if icon then
+--           vim_item.kind = icon
+--           vim_item.kind_hl_group = hl_group
+--           return vim_item
+--         end
+--       end
+--       return require('lspkind').cmp_format({ with_text = false })(entry, vim_item)
+--     end
+--   },
+--   sources = cmp.config.sources({
+--     { name = 'nvim_lsp' },
+--   }, {
+--     { name = 'buffer' },
+--   })
+-- })
 
 -- alias gd to find definition of word under cursor in normal mode
 function PeekDefinition()
