@@ -52,7 +52,82 @@ require("lazy").setup({
   'https://github.com/apple/pkl-neovim.git',
 
   -- tools
-  'dense-analysis/ale',
+  {
+    "mfussenegger/nvim-lint",
+    config = function()
+      local parser = function(output, bufnr)
+        if not output or output == '' then
+          return {}
+        end
+
+        local ok, decoded = pcall(vim.json.decode, output)
+        if not ok or not decoded or not decoded.warnings then
+          vim.notify("Failed to parse Brakeman output", vim.log.levels.ERROR)
+          return {}
+        end
+
+        local diagnostics = {}
+        local file_path = vim.api.nvim_buf_get_name(bufnr)
+        local rel_file = vim.fn.fnamemodify(file_path, ':.')
+
+        for _, warning in ipairs(decoded.warnings) do
+
+          local normalized_rel_file = vim.fs.normalize(rel_file or "")
+          local normalized_warning_file = vim.fs.normalize(warning.file or "")
+
+          if normalized_rel_file:sub(-#normalized_warning_file) == normalized_warning_file then
+            table.insert(diagnostics, {
+              lnum = (warning.line or 1) - 1,
+              col = 0,
+              end_lnum = (warning.line or 1) - 1,
+              end_col = 1000,
+              severity = vim.diagnostic.severity.WARN,
+              message = warning.message .. " [" .. warning.confidence .. "]",
+              source = "brakeman",
+            })
+          end
+        end
+
+        return diagnostics
+      end
+
+      require("lint").linters.brakeman = {
+        cmd = "brakeman",
+        stdin = false,
+        append_fname = false,
+        args = {
+          "--format", "json",
+          "--quiet",
+          "--no-pager",
+          "-p", vim.fn.getcwd(),
+        },
+        stream = "stdout",
+        ignore_exitcode = true,
+        parser = parser,
+      }
+
+      require("lint").linters_by_ft = {
+        ruby = { "standardrb", "brakeman" },
+      }
+      vim.api.nvim_create_user_command("BrakemanLint", function()
+        require("lint").try_lint("brakeman")
+      end, {})
+
+      -- Enable virtual text and run on save
+      vim.diagnostic.config({ virtual_text = true })
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
+        callback = function()
+          local ft = vim.bo.filetype
+          require("lint").try_lint() -- uses linters_by_ft[ft]
+
+          -- run Brakeman only on Ruby files
+          if ft == "ruby" then
+            require("lint").try_lint("brakeman")
+          end
+        end,
+      })
+    end,
+  },
   'mattn/emmet-vim',
   'jszakmeister/vim-togglecursor',
   'Raimondi/delimitMate',
@@ -64,6 +139,15 @@ require("lazy").setup({
   'sotte/presenting.nvim',
   'sbdchd/neoformat',
   'nvim-pack/nvim-spectre',
+  -- NOTE: Probably not something that I'll turn on
+  -- {
+  --   "olimorris/codecompanion.nvim",
+  --   opts = {},
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  -- },
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
@@ -92,6 +176,7 @@ require("lazy").setup({
       require("CopilotChat").setup {
         debug = true, -- Enable debugging
         show_help = false,
+        model = 'gpt-4.1',
       }
     end
   },
@@ -127,27 +212,7 @@ require("lazy").setup({
   },
   'sindrets/diffview.nvim',
   {
-    'adam12/ruby-lsp.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'neovim/nvim-lspconfig',
-    },
-    config = true,
-    opts = {
-      lspconfig = {
-        init_options = {
-          formatter = 'standard',
-          linters = { 'standard' },
-          filetypes = { "ruby", "eruby" },
-        },
-      },
-    },
-  },
-  {
     'saghen/blink.cmp',
-    -- optional: provides snippets for the snippet source
-    dependencies = { 'rafamadriz/friendly-snippets' },
-
     -- use a release tag to download pre-built binaries
     version = '1.*',
     -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
@@ -240,47 +305,47 @@ require("lazy").setup({
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      'saghen/blink.cmp'
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      'saghen/blink.cmp',
     },
-    config = function()
-      local lspconfig = require('lspconfig')
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover)
-      local root_pattern = lspconfig.util.root_pattern('.git')
-
-      lspconfig.ts_ls.setup {
-        capabilities = capabilities,
-        root_dir = root_pattern,
-        init_options = {
-          plugins = {
-            {
-              name = '@vue/typescript-plugin',
-              languages = { 'vue' },
-            },
+    opts = {
+      servers = {
+        ts_ls = {},
+        volar = {},
+        jsonls = {},
+        yamlls = {},
+        ruby_lsp = {
+          init_options = {
+            formatter = 'standard',
+            linters = { 'standard' },
+            filetypes = { 'ruby', 'eruby' },
           },
         },
-        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-      }
+      },
+    },
+    config = function(_, opts)
+      local lspconfig = require('lspconfig')
+      local configs = require('lspconfig.configs')
+      local util = require('lspconfig.util')
 
-      lspconfig.volar.setup {
-        capabilities = capabilities,
-        root_dir = root_pattern,
-      }
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover)
 
-      lspconfig.copilot.setup {
-        cmd = { "copilot-language-server" },
-        root_dir = root_pattern,
-        capabilities = capabilities,
-      }
+      local root_pattern = util.root_pattern('.git')
 
-      config = function(_, opts)
-        local lspconfig = require('lspconfig')
-        for server, config in pairs(opts.servers) do
-          -- passing config.capabilities to blink.cmp merges with the capabilities in your
-          -- `opts[server].capabilities, if you've defined it
-          config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-          lspconfig[server].setup(config)
-        end
-      end
+      -- Setup Mason
+      require('mason').setup()
+      require('mason-lspconfig').setup({
+        ensure_installed = vim.tbl_keys(opts.servers),
+      })
+
+      require('mason-lspconfig').setup_handlers({
+        function(server_name)
+          local server_opts = opts.servers[server_name] or {}
+          server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
+          lspconfig[server_name].setup(server_opts)
+        end,
+      })
     end,
   },
   -- 'zbirenbaum/copilot-cmp',
@@ -540,16 +605,6 @@ if vim.fn.exists('+termguicolors') then
   -- vim.opt.t_8b = "\\<Esc>[48;2;%lu;%lu;%lum"
 end
 
--- vim ale
-vim.g.ale_linters = {
-  ruby = {'reek', 'brakeman', 'rails_best_practices'}
-}
-
--- only lint ruby files
-
--- turn off autocomplete for ale
-vim.g.ale_completion_enabled = 0
-
 -- if (!has('nvim') && !has('clipboard_working'))
 -- In the event that the clipboard isn't working, it's quite likely that
 -- the + and * registers will not be distinct from the unnamed register. In
@@ -571,11 +626,24 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- lsp custom diagnostics symbols
-local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
+local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
+
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = signs.Error,
+      [vim.diagnostic.severity.WARN] = signs.Warn,
+      [vim.diagnostic.severity.INFO] = signs.Info,
+      [vim.diagnostic.severity.HINT] = signs.Hint,
+    },
+    texthl = {
+      [vim.diagnostic.severity.ERROR] = "DiagnosticSignError",
+      [vim.diagnostic.severity.WARN] = "DiagnosticSignWarn",
+      [vim.diagnostic.severity.INFO] = "DiagnosticSignInfo",
+      [vim.diagnostic.severity.HINT] = "DiagnosticSignHint",
+    },
+  },
+})
 
 require('lualine').setup{
   theme = "catppuccin",
