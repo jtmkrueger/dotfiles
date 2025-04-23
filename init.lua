@@ -25,7 +25,6 @@ local function quickfix()
   })
 end
 vim.keymap.set('n', '<leader>qf', quickfix, opts)
-vim.g.copilot_node_command = "env NODE_TLS_REJECT_UNAUTHORIZED=0 node"
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -53,6 +52,82 @@ require("lazy").setup({
   'https://github.com/apple/pkl-neovim.git',
 
   -- tools
+  {
+    "mfussenegger/nvim-lint",
+    config = function()
+      local parser = function(output, bufnr)
+        if not output or output == '' then
+          return {}
+        end
+
+        local ok, decoded = pcall(vim.json.decode, output)
+        if not ok or not decoded or not decoded.warnings then
+          vim.notify("Failed to parse Brakeman output", vim.log.levels.ERROR)
+          return {}
+        end
+
+        local diagnostics = {}
+        local file_path = vim.api.nvim_buf_get_name(bufnr)
+        local rel_file = vim.fn.fnamemodify(file_path, ':.')
+
+        for _, warning in ipairs(decoded.warnings) do
+
+          local normalized_rel_file = vim.fs.normalize(rel_file or "")
+          local normalized_warning_file = vim.fs.normalize(warning.file or "")
+
+          if normalized_rel_file:sub(-#normalized_warning_file) == normalized_warning_file then
+            table.insert(diagnostics, {
+              lnum = (warning.line or 1) - 1,
+              col = 0,
+              end_lnum = (warning.line or 1) - 1,
+              end_col = 1000,
+              severity = vim.diagnostic.severity.WARN,
+              message = warning.message .. " [" .. warning.confidence .. "]",
+              source = "brakeman",
+            })
+          end
+        end
+
+        return diagnostics
+      end
+
+      require("lint").linters.brakeman = {
+        cmd = "brakeman",
+        stdin = false,
+        append_fname = false,
+        args = {
+          "--format", "json",
+          "--quiet",
+          "--no-pager",
+          "-p", vim.fn.getcwd(),
+        },
+        stream = "stdout",
+        ignore_exitcode = true,
+        parser = parser,
+      }
+
+      require("lint").linters_by_ft = {
+        ruby = { "brakeman" },
+      }
+      vim.api.nvim_create_user_command("BrakemanLint", function()
+        require("lint").try_lint("brakeman")
+      end, {})
+
+      -- Enable virtual text and run on save
+      vim.diagnostic.config({ virtual_text = true })
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
+        callback = function()
+          local ft = vim.bo.filetype
+          require("lint").try_lint() -- uses linters_by_ft[ft]
+
+          -- run Brakeman only on Ruby files
+          if ft == "ruby" then
+            require("lint").try_lint("brakeman")
+          end
+        end,
+      })
+    end,
+  },
   'mattn/emmet-vim',
   'jszakmeister/vim-togglecursor',
   'Raimondi/delimitMate',
@@ -64,6 +139,14 @@ require("lazy").setup({
   'sotte/presenting.nvim',
   'sbdchd/neoformat',
   'nvim-pack/nvim-spectre',
+  {
+    "olimorris/codecompanion.nvim",
+    opts = {},
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
@@ -79,21 +162,23 @@ require("lazy").setup({
       })
     end,
   },
-  {
-    'CopilotC-Nvim/CopilotChat.nvim',
-    branch = 'main',
-    dependencies = {
-      { "zbirenbaum/copilot.lua", },
-      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
-    },
-    build = "make tiktoken", -- Only on MacOS or Linux
-    config = function ()
-      require("CopilotChat").setup {
-        debug = true, -- Enable debugging
-        show_help = false,
-      }
-    end
-  },
+  "giuxtaposition/blink-cmp-copilot",
+  -- {
+  --   'CopilotC-Nvim/CopilotChat.nvim',
+  --   branch = 'main',
+  --   dependencies = {
+  --     { "zbirenbaum/copilot.lua", },
+  --     { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+  --   },
+  --   build = "make tiktoken", -- Only on MacOS or Linux
+  --   config = function ()
+  --     require("CopilotChat").setup {
+  --       debug = true, -- Enable debugging
+  --       show_help = false,
+  --       model = 'gpt-4.1',
+  --     }
+  --   end
+  -- },
   'MunifTanjim/nui.nvim',
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   {
@@ -125,57 +210,158 @@ require("lazy").setup({
     config = true
   },
   'sindrets/diffview.nvim',
-  'hrsh7th/cmp-nvim-lsp',
-  'hrsh7th/cmp-buffer',
-  'hrsh7th/cmp-path',
-  'hrsh7th/cmp-cmdline',
-  'hrsh7th/nvim-cmp',
-  'zbirenbaum/copilot-cmp',
   {
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline',
-      'hrsh7th/nvim-cmp',
-      'onsails/lspkind.nvim',
-    },
-    config = function()
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      local lspconfig = require('lspconfig')
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover)
-      local root_pattern = lspconfig.util.root_pattern('.git')
+    'saghen/blink.cmp',
+    -- use a release tag to download pre-built binaries
+    version = '1.*',
+    -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+    -- build = 'cargo build --release',
+    -- If you use nix, you can build from source using latest nightly rust with:
+    -- build = 'nix run .#build-plugin',
 
-      lspconfig.ts_ls.setup {
-        capabilities = capabilities,
-        root_dir = root_pattern,
-        init_options = {
-          plugins = {
-            {
-              name = '@vue/typescript-plugin',
-              languages = { 'vue' },
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      keymap = {
+        -- set to 'none' to disable the 'default' preset
+        preset = 'default',
+
+        ['<Tab>'] = { 'select_next', 'fallback' },
+        ['<S-Tab>'] = { 'select_prev', 'fallback' },
+      },
+
+      appearance = {
+        -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- Adjusts spacing to ensure icons are aligned
+        nerd_font_variant = 'mono'
+      },
+
+      completion = {
+        -- Don't select by default, auto insert on selection
+        list = { selection = { preselect = false, auto_insert = true } },
+        documentation = { auto_show = true },
+        menu = {
+          draw = {
+            components = {
+              kind_icon = {
+                text = function(ctx)
+                  local lspkind = require("lspkind")
+                  local icon = ctx.kind_icon
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                      local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                      if dev_icon then
+                          icon = dev_icon
+                      end
+                  else
+                      icon = require("lspkind").symbolic(ctx.kind, {
+                          mode = "symbol",
+                      })
+                  end
+
+                  return icon .. ctx.icon_gap
+                end,
+
+                highlight = function(ctx)
+                  local hl = ctx.kind_hl
+                  if vim.tbl_contains({ "Path" }, ctx.source_name) then
+                    local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+                    if dev_icon then
+                      hl = dev_hl
+                    end
+                  end
+                  return hl
+                end,
+              }
+            }
+          }
+        }
+      },
+
+      -- Default list of enabled providers defined so that you can extend it
+      -- elsewhere in your config, without redefining it, due to `opts_extend`
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'codecompanion' },
+        providers = {
+          path = {
+            opts = {
+              get_cwd = function(_)
+                return vim.fn.getcwd()
+              end,
             },
           },
         },
-        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-      }
+      },
 
-      lspconfig.volar.setup {
-        capabilities = capabilities,
-        root_dir = root_pattern,
-      }
+      -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+      -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+      -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+      --
+      -- See the fuzzy documentation for more information
+      fuzzy = { implementation = "prefer_rust_with_warning" }
+    },
+    opts_extend = { "sources.default" }
+  },
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      'saghen/blink.cmp',
+    },
+    opts = {
+      servers = {
+        ts_ls = {},
+        volar = {},
+        jsonls = {},
+        yamlls = {},
 
-      lspconfig.ruby_lsp.setup({
-        -- cmd = { "bundle exec ruby-lsp" },
-        cmd = { "sh", "-c", "bundle exec ruby-lsp" }, -- Use shell to execute the command
-        filetypes = { "ruby", "eruby" },
-        root_dir = lspconfig.util.root_pattern("Gemfile", ".git"), -- Define project root
-        settings = {
-          ruby = {
-            formatting = true, -- Enable formatting if desired
+        ruby_lsp = {
+          cmd = { "bundle", "exec", "ruby-lsp" },
+          filetypes = { "ruby", "eruby" },
+          init_options = {
+            formatter = 'auto',
+            enabledFeatures = {
+              "codeActions",
+              "diagnostics",
+              "documentHighlights",
+              "documentLink",
+              "documentSymbols",
+              "foldingRanges",
+              "formatting",
+              "hover",
+              "inlayHint",
+              "selectionRanges",
+              "completion",
+              "codeLens",
+              "definition",
+              "workspaceSymbol",
+              "signatureHelp"
+            },
           },
         },
+      },
+    },
+    config = function(_, opts)
+      local lspconfig = require('lspconfig')
+      local configs = require('lspconfig.configs')
+      local util = require('lspconfig.util')
+
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover)
+
+      local root_pattern = util.root_pattern('.git')
+
+      -- Setup Mason
+      require('mason').setup()
+      require('mason-lspconfig').setup({
+        ensure_installed = vim.tbl_keys(opts.servers),
+      })
+
+      require('mason-lspconfig').setup_handlers({
+        function(server_name)
+          local server_opts = opts.servers[server_name] or {}
+          server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
+          lspconfig[server_name].setup(server_opts)
+        end,
       })
     end,
   },
@@ -353,7 +539,7 @@ vim.api.nvim_set_keymap('n', '<leader>n', ':bnext<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>b', ':bprevious<CR>', {noremap = true})
 
 -- open github copilot chat
-vim.api.nvim_set_keymap('n', '<leader>c', ':CopilotChatOpen<CR>', {noremap = true})
+vim.keymap.set({'n', 'v'}, '<leader>c', ':CodeCompanionActions<CR>', {noremap = true})
 
 -- so oil behaves like vim.vinegar did
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
@@ -418,6 +604,11 @@ vim.g.vim_json_syntax_conceal = 0
 -- emmet expansions
 vim.g.user_emmet_leader_key = '<c-e>'
 
+-- indentline
+-- vim.g.indentLine_setColors = 1
+-- vim.g.indentLine_char = '│'
+-- vim.g.indentLine_concealcursor = 'nc'
+
 -- conditionally run EnableYtt if file type is yaml without attaching to paste buffer
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "yaml",
@@ -451,6 +642,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end
 })
 
+
 vim.diagnostic.config({
 	virtual_text = true, -- show virtual text
 	signs = true,        -- enable signs
@@ -471,15 +663,15 @@ vim.diagnostic.config({
     numhl = {
       [vim.diagnostic.severity.ERROR] = "",
       [vim.diagnostic.severity.WARN] = "",
-      [vim.diagnostic.severity.HINT] = "",
       [vim.diagnostic.severity.INFO] = "",
+      [vim.diagnostic.severity.HINT] = "",
     },
   },
 })
 
 require('lualine').setup{
-theme = "catppuccin",
-sections = {
+  theme = "catppuccin",
+  sections = {
     lualine_a = {
       {
         function()
@@ -514,7 +706,7 @@ sections = {
       'diagnostics',
       sources = { 'nvim_lsp' },
       sections = { 'error', 'warn', 'info', 'hint' },
-      symbols = {error = ' ', warn = ' ', info = '󰋼 ', hint = '󰌵'},
+      symbols = {error = '󰅚 ', warn = '󰀪 ', info = ' ', hint = '󰌶 '},
       always_visible = false,
     }},
   },
@@ -538,8 +730,8 @@ require("bufferline").setup{
     diagnostics_indicator = function(count, level, diagnostics_dict, context)
       local s = " "
       for e, n in pairs(diagnostics_dict) do
-        local sym = e == "error" and ""
-          or (e == "warning" and "" or "" )
+        local sym = e == "error" and " "
+          or (e == "warning" and " " or "" )
         s = s .. n .. sym
       end
       return s
@@ -640,47 +832,47 @@ vim.api.nvim_create_user_command('NN', function()
   vim.api.nvim_command('edit ' .. fullPath)
 end, {})
 
-local cmp = require'cmp'
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
-    end,
-  },
-  completion = {
-    completeopt = table.concat(vim.opt.completeopt:get(), ","),
-  },
-  window = {
-    -- completion = cmp.config.window.bordered(),
-    -- documentation = cmp.config.window.bordered(),
-  },
-  mapping = cmp.mapping.preset.insert({
-    ["<Tab>"] = cmp.mapping.select_next_item({behavior=cmp.SelectBehavior.Insert}),
-    ["<S-Tab>"] = cmp.mapping.select_prev_item({behavior=cmp.SelectBehavior.Insert}),
-  }),
-  formatting = {
-    format = function(entry, vim_item)
-      if vim.tbl_contains({ 'path' }, entry.source.name) then
-        local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
-        if icon then
-          vim_item.kind = icon
-          vim_item.kind_hl_group = hl_group
-          return vim_item
-        end
-      end
-      return require('lspkind').cmp_format({ with_text = false })(entry, vim_item)
-    end
-  },
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-  }, {
-    { name = 'buffer' },
-  })
-})
+-- local cmp = require'cmp'
+-- cmp.setup({
+--   snippet = {
+--     expand = function(args)
+--       vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
+--     end,
+--   },
+--   completion = {
+--     completeopt = table.concat(vim.opt.completeopt:get(), ","),
+--   },
+--   window = {
+--     -- completion = cmp.config.window.bordered(),
+--     -- documentation = cmp.config.window.bordered(),
+--   },
+--   mapping = cmp.mapping.preset.insert({
+--     ["<Tab>"] = cmp.mapping.select_next_item({behavior=cmp.SelectBehavior.Insert}),
+--     ["<S-Tab>"] = cmp.mapping.select_prev_item({behavior=cmp.SelectBehavior.Insert}),
+--   }),
+--   formatting = {
+--     format = function(entry, vim_item)
+--       if vim.tbl_contains({ 'path' }, entry.source.name) then
+--         local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
+--         if icon then
+--           vim_item.kind = icon
+--           vim_item.kind_hl_group = hl_group
+--           return vim_item
+--         end
+--       end
+--       return require('lspkind').cmp_format({ with_text = false })(entry, vim_item)
+--     end
+--   },
+--   sources = cmp.config.sources({
+--     { name = 'nvim_lsp' },
+--   }, {
+--     { name = 'buffer' },
+--   })
+-- })
 
 -- alias gd to find definition of word under cursor in normal mode
 function PeekDefinition()
-  local params = vim.lsp.util.make_position_params()
+  local params = vim.lsp.util.make_position_params(0, "utf-16")
   vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result)
     if err or not result then return end
     if vim.tbl_isempty(result) then print("No definition found") return end
