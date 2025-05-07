@@ -196,6 +196,7 @@ require("lazy").setup({
     'nvim-telescope/telescope.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
+      'princejoogie/dir-telescope.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     },
     opts = {
@@ -208,8 +209,6 @@ require("lazy").setup({
         },
         mappings = {
           i = {
-            -- ["<C-j>"] = require('telescope.actions').move_selection_next,
-            -- ["<C-k>"] = require('telescope.actions').move_selection_previous,
           },
         },
         vimgrep_arguments = {
@@ -254,6 +253,7 @@ require("lazy").setup({
       local builtin = require('telescope.builtin')
       vim.api.nvim_set_keymap('n', '<c-f>', '<cmd>Telescope find_files<cr>', {noremap = true})
       vim.api.nvim_set_keymap('n', '<c-a>', '<cmd>Telescope live_grep<cr>', {noremap = true})
+      vim.keymap.set("n", "<c-F>", "<cmd>Telescope dir live_grep<CR>", { noremap = true, silent = true })
     end,
   },
   'nvim-tree/nvim-web-devicons',
