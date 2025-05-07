@@ -139,13 +139,24 @@ require("lazy").setup({
   'sotte/presenting.nvim',
   'sbdchd/neoformat',
   'nvim-pack/nvim-spectre',
+  { 'echasnovski/mini.diff', version = '*' },
   {
     "olimorris/codecompanion.nvim",
     opts = {},
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
+      'echasnovski/mini.diff',
     },
+    config = function()
+      require("codecompanion").setup({
+        display = {
+          diff = {
+            provider = "mini_diff",
+          },
+        },
+      })
+    end
   },
   {
     "zbirenbaum/copilot.lua",
@@ -182,16 +193,69 @@ require("lazy").setup({
   'MunifTanjim/nui.nvim',
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   {
-    "telescope.nvim",
+    'nvim-telescope/telescope.nvim',
     dependencies = {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      build = "make",
-      config = function()
-        require("telescope").load_extension("fzf")
-      end,
+      'nvim-lua/plenary.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     },
+    opts = {
+      defaults = {
+        prompt_prefix = "> ",
+        selection_caret = ">> ",
+        sorting_strategy = "ascending",
+        layout_config = {
+          horizontal = { preview_width = 0.6 },
+        },
+        mappings = {
+          i = {
+            -- ["<C-j>"] = require('telescope.actions').move_selection_next,
+            -- ["<C-k>"] = require('telescope.actions').move_selection_previous,
+          },
+        },
+        vimgrep_arguments = {
+          "rg",
+          "--color=never",
+          "--no-heading",
+          "--with-filename",
+          "--line-number",
+          "--column",
+          "--smart-case",
+          "--hidden", -- Include hidden files
+          "--glob=!.git/" -- Exclude .git directory
+        },
+      },
+      pickers = {
+        find_files = {
+          hidden = true, -- Show hidden files
+        },
+        live_grep = {
+          additional_args = function()
+            return { "--hidden", "--glob=!.git/" } -- Include hidden files, exclude .git
+          end,
+        },
+      },
+      extensions = {
+        fzf = {
+          fuzzy = true, -- Enable fuzzy matching
+          override_generic_sorter = true, -- Override the generic sorter
+          override_file_sorter = true, -- Override the file sorter
+          case_mode = "smart_case", -- Use smart case matching
+        },
+      },
+    },
+    config = function(_, opts)
+      local telescope = require('telescope')
+      telescope.setup(opts)
+
+      -- Load extensions
+      telescope.load_extension('fzf')
+
+      -- Custom key mappings
+      local builtin = require('telescope.builtin')
+      vim.api.nvim_set_keymap('n', '<c-f>', '<cmd>Telescope find_files<cr>', {noremap = true})
+      vim.api.nvim_set_keymap('n', '<c-a>', '<cmd>Telescope live_grep<cr>', {noremap = true})
+    end,
   },
-  'nvim-telescope/telescope.nvim',
   'nvim-tree/nvim-web-devicons',
   'nvim-lualine/lualine.nvim',
   {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
@@ -383,6 +447,14 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
     -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
     lazy = false,
+
+    config = function(_, opts)
+      require("oil").setup({
+        view_options = {
+          show_hidden = true,
+        },
+      })
+    end
   },
 
   { 'ojroques/vim-oscyank', branch = 'main', },
@@ -590,10 +662,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   command = "Neoformat"
 })
 
--- telescope
-vim.api.nvim_set_keymap('n', '<c-f>', '<cmd>Telescope find_files<cr>', {noremap = true})
-vim.api.nvim_set_keymap('n', '<c-a>', '<cmd>Telescope live_grep<cr>', {noremap = true})
-
 -- togglecursor
 vim.g.togglecursor_force = 'xterm'
 vim.g.togglecursor_default = 'blinking_block'
@@ -741,29 +809,6 @@ require("bufferline").setup{
 
 require('gitsigns').setup {
   current_line_blame = true,
-}
-
-local telescope = require("telescope")
-local telescopeConfig = require("telescope.config")
--- Clone the default Telescope configuration
-local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
--- I want to search in hidden/dot files.
-table.insert(vimgrep_arguments, "--hidden")
--- I don't want to search in the `.git` directory.
-table.insert(vimgrep_arguments, "--glob")
-table.insert(vimgrep_arguments, "!**/.git/*")
-require('telescope').setup{
-  defaults = {
-    wrap_results = true,
-    vimgrep_arguments = vimgrep_arguments,
-  },
-  pickers = {
-    find_files = {
-      find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
-    },
-  },
-  extensions = {
-  }
 }
 
 _timers = {}
