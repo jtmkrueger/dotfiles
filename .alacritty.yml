@@ -19,8 +19,8 @@ window:
   # If both are `0`, this setting is ignored.
   # FIXME: this is a hack to make windowed fill the screen
   dimensions:
-    columns: 0
-    lines: 0
+    columns: 500
+    lines: 500
 
   # Window position (changes require restart)
   #
@@ -50,11 +50,11 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  decorations: buttonless
+  decorations: none
 
   # When true, alacritty starts maximized.
   # options: Windowed, Maximized, Fullscreen, SimpleFullscreen
-  startup_mode: SimpleFullscreen
+  startup_mode: Windowed
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.
@@ -96,7 +96,8 @@ font:
     #   - (macOS) Menlo
     #   - (Linux) monospace
     #   - (Windows) Consolas
-    family: mononoki Nerd Font
+    family: OperatorMono NerdFont
+    style: Medium
 
     # The `style` can be specified to pick a specific face.
     #style: Regular
@@ -107,7 +108,8 @@ font:
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: mononoki Nerd Font
+    family: OperatorMono Nerd Font
+    style: Bold
 
     # The `style` can be specified to pick a specific face.
     #style: Bold
@@ -118,13 +120,13 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: mononoki Nerd Font
+    family: OperatorMono Nerd Font
 
     # The `style` can be specified to pick a specific face.
     #style: Italic
 
   # Point size
-  size: 14.0
+  size: 16.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -153,7 +155,7 @@ font:
   #
   # This is a global setting and will require a log out or restart to take
   # effect.
-  use_thin_strokes: true
+  #! use_thin_strokes: true
 
 # Display the time it takes to redraw each frame.
 debug.render_timer: false
@@ -167,9 +169,9 @@ draw_bold_text_with_bright_colors: true
 # Colors (Tomorrow Night Bright)
 colors:
   # Default colors
-  primary:
-    background: '0x1c1f20'
-    foreground: '0xc4c7c6'
+  #! primary:
+  #!   background: '0x1c1f20'
+  #!   foreground: '0xc4c7c6'
 
     # Bright and dim foreground colors
     #
@@ -197,26 +199,26 @@ colors:
   #  background: '0x404040'
 
   # Normal colors
-  normal:
-    black:   '0x27292c'
-    red:     '0xa54141'
-    green:   '0x8c943f'
-    yellow:  '0xde925e'
-    blue:    '0x5f809d'
-    magenta: '0x85668e'
-    cyan:    '0x5e8c86'
-    white:   '0x707780'
+  #! normal:
+  #!   black:   '0x27292c'
+  #!   red:     '0xa54141'
+  #!   green:   '0x8c943f'
+  #!   yellow:  '0xde925e'
+  #!   blue:    '0x5f809d'
+  #!   magenta: '0x85668e'
+  #!   cyan:    '0x5e8c86'
+  #!   white:   '0x707780'
 
   # Bright colors
-  bright:
-    black:   '0x373b40'
-    red:     '0xcc6565'
-    green:   '0xb5bc67'
-    yellow:  '0xf0c673'
-    blue:    '0x81a2bd'
-    magenta: '0xb294ba'
-    cyan:    '0x8abeb6'
-    white:   '0xc5c8c6'
+  #! bright:
+  #!   black:   '0x373b40'
+  #!   red:     '0xcc6565'
+  #!   green:   '0xb5bc67'
+  #!   yellow:  '0xf0c673'
+  #!   blue:    '0x81a2bd'
+  #!   magenta: '0xb294ba'
+  #!   cyan:    '0x8abeb6'
+  #!   white:   '0xc5c8c6'
 
   # Dim colors
   #
@@ -272,7 +274,7 @@ visual_bell:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 1.0
+#! background_opacity: 1.0
 
 # Mouse bindings
 #
@@ -304,7 +306,7 @@ mouse:
   # If this is `true`, the cursor is temporarily hidden when typing.
   hide_when_typing: false
 
-  url:
+  #! url:
     # URL launcher
     #
     # This program is executed when clicking on a text which is recognized as a URL.
@@ -322,7 +324,7 @@ mouse:
     #
     # These are the modifiers that need to be held down for opening URLs when clicking
     # on them. The available modifiers are documented in the key binding section.
-    modifiers: None
+    #! modifiers: None
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"

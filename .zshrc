@@ -13,6 +13,7 @@ if [[ -z "$VIM" && -z "$NVIM" && $- == *i* ]]; then
   export ZSH=~/.oh-my-zsh
   export PYTHON_CONFIGURE_OPTS="--enable-framework"
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+  export PATH="${PATH}:/snap/bin"
 
   # oracle instant client
   export OCI_DIR=$HOME/Downloads/instantclient_23_3
@@ -136,22 +137,15 @@ kbash() {
   kubectl exec --stdin --tty $1 -- /bin/bash
 }
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-
-# configure homebrew
-# eval "$($HOME/.homebrew/bin/brew shellenv)"
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
 # chruby
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-chruby ruby-3.2.2
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+chruby ruby-3.4.3
 
 # set up pyenv
-eval "$(pyenv init -)"
+# eval "$(pyenv init -)"
 
 # environment variables if file exists
 if [ -f ~/.zsh_env_vars ]; then
