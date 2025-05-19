@@ -72,6 +72,12 @@ alias dcvim="devcontainer up --remove-existing-container --mount 'type=bind,sour
 
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
+# -I: ignore case when searching
+# -F: quit immediately when the entire file fits in one screen (in effect, mimic cat’s behavior)
+# -R: enable colored output (for example, when piping to less from diff --color=always)
+# -S: truncate long lines instead of wrapping them to the next line
+# -X: don’t clear screen on exit
+export LESS="IFRSX"
 
 export EDITOR="vim"
 

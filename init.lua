@@ -155,25 +155,53 @@ require("lazy").setup({
             provider = "mini_diff",
           },
         },
+        strategies = {
+          chat = {
+            adapter = "anthropic",
+            system_message = [[
+You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby on Rails, JavaScript, Vite, VueJS, Bash, and Docker. You respond succinctly and accurately, using proper jargon with experts, but clearly with beginners. Your tone is direct but warm. Avoid non-programming topics, legal advice, and unreleased tech. Ruby code should follow `standard` formatting (standrb). You provide clarification for ambiguous questions and balance professionalism with kindness.
+]],
+          },
+          inline = {
+            adapter = "anthropic",
+            system_message = [[
+You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby on Rails, JavaScript, Vite, VueJS, Bash, and Docker. You respond succinctly and accurately, using proper jargon with experts, but clearly with beginners. Your tone is direct but warm. Avoid non-programming topics, legal advice, and unreleased tech. Ruby code should follow `standard` formatting (standrb). You provide clarification for ambiguous questions and balance professionalism with kindness.
+]],
+          },
+        },
+        adapters = {
+          openai = function()
+            return require("codecompanion.adapters").extend("anthropic", {
+              env = {
+                api_key = "ANTHROPIC_API_KEY",
+              },
+              schema = {
+                model = {
+                default = "claude-sonnet",
+                },
+              },
+            })
+          end,
+        },
       })
     end
   },
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup({
-        suggestion = {
-          auto_trigger = true,
-          keymap = {
-            accept = "<C-j>",
-          },
-        }
-      })
-    end,
-  },
-  "giuxtaposition/blink-cmp-copilot",
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot").setup({
+  --       suggestion = {
+  --         auto_trigger = true,
+  --         keymap = {
+  --           accept = "<C-j>",
+  --         },
+  --       }
+  --     })
+  --   end,
+  -- },
+  -- "giuxtaposition/blink-cmp-copilot",
   -- {
   --   'CopilotC-Nvim/CopilotChat.nvim',
   --   branch = 'main',
@@ -253,7 +281,7 @@ require("lazy").setup({
       local builtin = require('telescope.builtin')
       vim.api.nvim_set_keymap('n', '<c-f>', '<cmd>Telescope find_files<cr>', {noremap = true})
       vim.api.nvim_set_keymap('n', '<c-a>', '<cmd>Telescope live_grep<cr>', {noremap = true})
-      vim.keymap.set("n", "<c-A>", "<cmd>Telescope dir live_grep<CR>", { noremap = true, silent = true })
+      -- vim.keymap.set("n", "<c-A>", "<cmd>Telescope dir live_grep<CR>", { noremap = true, silent = true })
     end,
   },
   'nvim-tree/nvim-web-devicons',
@@ -383,24 +411,8 @@ require("lazy").setup({
           cmd = { "bundle", "exec", "ruby-lsp" },
           filetypes = { "ruby", "eruby" },
           init_options = {
-            formatter = 'auto',
-            enabledFeatures = {
-              "codeActions",
-              "diagnostics",
-              "documentHighlights",
-              "documentLink",
-              "documentSymbols",
-              "foldingRanges",
-              "formatting",
-              "hover",
-              "inlayHint",
-              "selectionRanges",
-              "completion",
-              "codeLens",
-              "definition",
-              "workspaceSymbol",
-              "signatureHelp"
-            },
+            formatter = 'standard',
+            linters = { 'standard' },
           },
         },
       },
@@ -610,7 +622,7 @@ vim.api.nvim_set_keymap('n', '<leader>t', ':tabe<space>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>n', ':bnext<CR>', {noremap = true})
 vim.api.nvim_set_keymap('n', '<leader>b', ':bprevious<CR>', {noremap = true})
 
--- open github copilot chat
+-- open codecompanion menu
 vim.keymap.set({'n', 'v'}, '<leader>c', ':CodeCompanionActions<CR>', {noremap = true})
 
 -- so oil behaves like vim.vinegar did
@@ -626,6 +638,8 @@ vim.api.nvim_set_keymap('i', '<C-t>', '<%= %><Left><Left><Left>', {noremap = tru
 -- up/down on wrapped lines
 vim.api.nvim_set_keymap('n', 'j', 'gj', {noremap = true})
 vim.api.nvim_set_keymap('n', 'k', 'gk', {noremap = true})
+vim.api.nvim_set_keymap('x', 'j', 'gj', {noremap = true})
+vim.api.nvim_set_keymap('x', 'k', 'gk', {noremap = true})
 
 -- Reselect visual block after indent
 vim.api.nvim_set_keymap('v', '<', '<gv', {noremap = true})
@@ -650,7 +664,8 @@ vim.api.nvim_set_keymap('n', 'N', 'Nzzzv', {noremap = true})
 -- Easier to type, and I never use the default behavior.
 vim.api.nvim_set_keymap('n', 'H', '^', {noremap = true})
 vim.api.nvim_set_keymap('n', 'L', '$', {noremap = true})
-vim.api.nvim_set_keymap('v', 'L', 'g_', {noremap = true})
+vim.api.nvim_set_keymap('x', 'L', 'g_', {noremap = true})
+vim.api.nvim_set_keymap('x', 'H', '^', {noremap = true})
 
 vim.api.nvim_set_keymap('n', '<TAB>', '%', {noremap = true}) -- easier to hit
 
