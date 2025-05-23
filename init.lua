@@ -204,8 +204,13 @@ require("lazy").setup({
         prompt_prefix = "> ",
         selection_caret = ">> ",
         sorting_strategy = "ascending",
+        layout_strategy = "horizontal",
         layout_config = {
-          horizontal = { preview_width = 0.6 },
+          width = 0.9,
+          horizontal = {
+            preview_width = 0.6,
+            preview_cutoff = 20,
+          },
         },
         mappings = {
           i = {
@@ -366,6 +371,12 @@ require("lazy").setup({
     opts_extend = { "sources.default" }
   },
   {
+    'mrcjkb/rustaceanvim',
+    version = '^6', -- Recommended
+    lazy = false, -- This plugin is already lazy
+  },
+  'williamboman/mason-lspconfig.nvim',
+  {
     'neovim/nvim-lspconfig',
     dependencies = {
       'williamboman/mason.nvim',
@@ -407,27 +418,24 @@ require("lazy").setup({
     },
     config = function(_, opts)
       local lspconfig = require('lspconfig')
-      local configs = require('lspconfig.configs')
       local util = require('lspconfig.util')
+      local mason = require('mason')
+      local mason_lspconfig = require('mason-lspconfig')
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       vim.keymap.set('n', 'K', vim.lsp.buf.hover)
 
-      local root_pattern = util.root_pattern('.git')
-
-      -- Setup Mason
-      require('mason').setup()
-      require('mason-lspconfig').setup({
+      mason.setup()
+      mason_lspconfig.setup({
         ensure_installed = vim.tbl_keys(opts.servers),
       })
 
-      require('mason-lspconfig').setup_handlers({
-        function(server_name)
-          local server_opts = opts.servers[server_name] or {}
-          server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
-          lspconfig[server_name].setup(server_opts)
-        end,
-      })
-    end,
+      for server_name, server_opts in pairs(opts.servers) do
+        -- Inject capabilities
+        server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
+        lspconfig[server_name].setup(server_opts)
+      end
+    end
   },
   -- 'zbirenbaum/copilot-cmp',
   'onsails/lspkind.nvim',
@@ -550,7 +558,7 @@ vim.opt.hlsearch = true -- highlight search results
 vim.opt.cursorline = true -- highlight line cursor is on
 vim.opt.cursorcolumn = true -- highlight the cursor's current column
 vim.cmd('highlight link CursorColumn CursorLine') -- have them always be the same color
-vim.opt.clipboard = 'unnamed' -- copy to system register
+vim.opt.clipboard = 'unnamed,unnamedplus' -- copy to system register
 vim.opt.mouse = 'a' -- turn on all mouse functionality
 vim.opt.timeoutlen = 300 -- Time to wait after ESC (default causes an annoying delay)
 vim.opt.list = true
@@ -943,7 +951,11 @@ local function on_list(options)
   vim.fn.setqflist({}, ' ', options)
   vim.cmd.cfirst()
 end
-vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition({ on_list = on_list })<CR>', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition({ on_list = on_list })<CR>', {noremap = true, silent = true})
+vim.keymap.set('n', 'gd', function()
+  vim.cmd('tab split')
+  vim.lsp.buf.definition({ on_list = on_list })
+end, { noremap = true, silent = true })
 
 -- indentation
 require("ibl").setup({
