@@ -50,6 +50,8 @@ require("lazy").setup({
   'cappyzawa/starlark.vim',
   'carvel-dev/ytt.vim',
   'https://github.com/apple/pkl-neovim.git',
+  { 'glacambre/firenvim', build = ":call firenvim#install(0)" },
+
 
   -- tools
   {
@@ -139,7 +141,7 @@ require("lazy").setup({
   'sotte/presenting.nvim',
   'sbdchd/neoformat',
   'nvim-pack/nvim-spectre',
-  { 'echasnovski/mini.diff', version = '*' },
+  'jidn/vim-dbml',
   {
     "olimorris/codecompanion.nvim",
     opts = {},
@@ -291,17 +293,11 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
   {
     "NeogitOrg/neogit",
     dependencies = {
-      "nvim-lua/plenary.nvim",         -- required
-      "sindrets/diffview.nvim",        -- optional - Diff integration
-
-      -- Only one of these is needed.
+      "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim", -- optional
-      "ibhagwan/fzf-lua",              -- optional
-      "echasnovski/mini.pick",         -- optional
     },
     config = true
   },
-  'sindrets/diffview.nvim',
   {
     'saghen/blink.cmp',
     -- use a release tag to download pre-built binaries
@@ -321,7 +317,10 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
         ['<Tab>'] = { 'select_next', 'fallback' },
         ['<S-Tab>'] = { 'select_prev', 'fallback' },
       },
-
+      cmdline = {
+        keymap = { preset = 'inherit' },
+        completion = { menu = { auto_show = true } },
+      },
       appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- Adjusts spacing to ensure icons are aligned
@@ -413,6 +412,9 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
           init_options = {
             formatter = 'standard',
             linters = { 'standard' },
+            ["ruby-lsp-rails"] = {
+              enablePendingMigrationsPrompt = false
+            }
           },
         },
       },
@@ -465,10 +467,51 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
         view_options = {
           show_hidden = true,
         },
+        win_options = {
+          signcolumn = "yes:2",
+        },
       })
     end
   },
+  {
+    "refractalize/oil-git-status.nvim",
 
+    dependencies = {
+      "stevearc/oil.nvim",
+    },
+
+    config = function(_, opts)
+      require('oil-git-status').setup({
+        show_ignored = true, -- show files that match gitignore with !!
+        symbols = {
+          index = {
+            ["!"] = "",
+            ["?"] = "",
+            ["A"] = "",
+            ["C"] = "",
+            ["D"] = "",
+            ["M"] = "",
+            ["R"] = "",
+            ["T"] = "",
+            ["U"] = "",
+            [" "] = " ",
+          },
+          working_tree = {
+            ["!"] = "",
+            ["?"] = "",
+            ["A"] = "",
+            ["C"] = "",
+            ["D"] = "",
+            ["M"] = "",
+            ["R"] = "",
+            ["T"] = "",
+            ["U"] = "",
+            [" "] = " ",
+          },
+        },
+      })
+    end
+  },
   { 'ojroques/vim-oscyank', branch = 'main', },
   {
     "catppuccin/nvim",
@@ -481,6 +524,14 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
           enabled = true, -- dims the background color of inactive window
           shade = "light",
           percentage = 0.50, -- percentage of the shade to apply to the inactive window
+        },
+        highlight_overrides = {
+          all = function(colors)
+            return {
+              -- visible line numbers with tmux pane dimming
+              LineNr = { fg = colors.overlay1 },
+            }
+          end,
         },
       })
       vim.cmd.colorscheme "catppuccin"
@@ -523,7 +574,11 @@ vim.opt.ttyfast = true
 vim.opt.pumblend = 10
 
 -- tab styles
-vim.opt.showtabline = 2 -- always show tabs
+if vim.g.started_by_firenvim == true then
+  vim.opt.showtabline = 0
+else
+  vim.opt.showtabline = 2 -- always show tabs
+end
 
 vim.opt.encoding = 'UTF-8'
 -- vim.opt.fileencoding = 'utf-8'
@@ -752,75 +807,91 @@ vim.diagnostic.config({
   },
 })
 
-require('lualine').setup{
-  theme = "catppuccin",
+if vim.g.started_by_firenvim == true then
+  vim.opt.showtabline = 0 -- Hide the built-in tabline
+  vim.g.loaded_bufferline = 1 -- Prevents plugin from loading
+  
+  require('lualine').setup{
   sections = {
-    lualine_a = {
-      {
-        function()
-          local mode_map = {
-            ['n'] = '',
-            ['i'] = '',
-            ['v'] = '󰸱',
-            ['V'] = '󰸱 󰘤',
-            [''] = '󰸱 󱓻',
-            ['c'] = '󰘳',
-            ['s'] = '󰒅',
-            ['S'] = '󰒅 󰘤',
-            [''] = '󰒅 󱓻',
-            ['r'] = '',
-            ['R'] = ' 󰘤',
-            ['!'] = '',
-            ['t'] = ''
-          }
-          local mode = vim.api.nvim_get_mode().mode
-          if mode_map[mode] == nil then return '?' end
-          return mode_map[mode]
-        end,
-        icon = nil,
-      },
-    },
-    lualine_b = {
-      {'filename', path = 1},
-    },
-    lualine_c = { 'diff' },
-    lualine_x = {'filetype'},
-    lualine_y = {{
-      'diagnostics',
-      sources = { 'nvim_lsp' },
-      sections = { 'error', 'warn', 'info', 'hint' },
-      symbols = {error = '󰅚 ', warn = '󰀪 ', info = ' ', hint = '󰌶 '},
-      always_visible = false,
-    }},
+    lualine_a = {'mode'},
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = {'location'}
   },
-  inactive_sections = {
-    lualine_c = {{'filename', path = 1}, { 'diff', colored = false}},
-    lualine_x = {'location'},
-  },
-}
-
-require("bufferline").setup{
-  options = {
-    mode = "tabs",
-    diagnostics = "nvim_lsp",
-    indicator = {
-      style = "underline"
-    },
-    numbers = "none",
-    show_buffer_close_icons = false,
-    show_close_icon = false,
-    diagnostics = "nvim_lsp",
-    diagnostics_indicator = function(count, level, diagnostics_dict, context)
-      local s = " "
-      for e, n in pairs(diagnostics_dict) do
-        local sym = e == "error" and " "
-          or (e == "warning" and " " or "" )
-        s = s .. n .. sym
-      end
-      return s
-    end
   }
-}
+else
+  require('lualine').setup{
+    theme = "catppuccin",
+    sections = {
+      lualine_a = {
+        {
+          function()
+            local mode_map = {
+              ['n'] = '',
+              ['i'] = '',
+              ['v'] = '󰸱',
+              ['V'] = '󰸱 󰘤',
+              [''] = '󰸱 󱓻',
+              ['c'] = '󰘳',
+              ['s'] = '󰒅',
+              ['S'] = '󰒅 󰘤',
+              [''] = '󰒅 󱓻',
+              ['r'] = '',
+              ['R'] = ' 󰘤',
+              ['!'] = '',
+              ['t'] = ''
+            }
+            local mode = vim.api.nvim_get_mode().mode
+            if mode_map[mode] == nil then return '?' end
+            return mode_map[mode]
+          end,
+          icon = nil,
+        },
+      },
+      lualine_b = {
+        {'filename', path = 1},
+      },
+      lualine_c = { 'diff' },
+      lualine_x = {'filetype'},
+      lualine_y = {{
+        'diagnostics',
+        sources = { 'nvim_lsp' },
+        sections = { 'error', 'warn', 'info', 'hint' },
+        symbols = {error = '󰅚 ', warn = '󰀪 ', info = ' ', hint = '󰌶 '},
+        always_visible = false,
+      }},
+    },
+    inactive_sections = {
+      lualine_c = {{'filename', path = 1}, { 'diff', colored = false}},
+      lualine_x = {'location'},
+    },
+  }
+
+  require("bufferline").setup{
+    options = {
+      mode = "tabs",
+      diagnostics = "nvim_lsp",
+      indicator = {
+        style = "underline"
+      },
+      numbers = "none",
+      show_buffer_close_icons = false,
+      show_close_icon = false,
+      diagnostics = "nvim_lsp",
+      diagnostics_indicator = function(count, level, diagnostics_dict, context)
+        local s = " "
+        for e, n in pairs(diagnostics_dict) do
+          local sym = e == "error" and " "
+            or (e == "warning" and " " or "" )
+          s = s .. n .. sym
+        end
+        return s
+      end
+    }
+  }
+end
 
 require('gitsigns').setup {
   current_line_blame = true,
@@ -965,7 +1036,6 @@ require("ibl").setup({
   indent = { char = "│" },
 })
 
-vim.api.nvim_set_keymap('n', '<C-d>', ':DiffviewOpen<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<C-g>', ':Neogit<CR>', {noremap = true, silent = true})
 
 vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {desc = "Toggle Spectre"})

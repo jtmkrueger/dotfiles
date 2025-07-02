@@ -19,3 +19,4 @@ dump.rdb
 .prettierignore
 vetur.config.js
 .nova/
+.claude/
