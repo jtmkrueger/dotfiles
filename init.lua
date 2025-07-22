@@ -402,7 +402,7 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
     opts = {
       servers = {
         ts_ls = {},
-        volar = {},
+        -- volar = {},
         jsonls = {},
         yamlls = {},
 
@@ -412,9 +412,11 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
           init_options = {
             formatter = 'standard',
             linters = { 'standard' },
-            ["ruby-lsp-rails"] = {
-              enablePendingMigrationsPrompt = false
-            }
+            addonSettings = {
+              ["Ruby LSP Rails"] = {
+                enablePendingMigrationsPrompt = false,
+              },
+            },
           },
         },
       },
@@ -432,14 +434,13 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
       require('mason').setup()
       require('mason-lspconfig').setup({
         ensure_installed = vim.tbl_keys(opts.servers),
-      })
-
-      require('mason-lspconfig').setup_handlers({
-        function(server_name)
-          local server_opts = opts.servers[server_name] or {}
-          server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
-          lspconfig[server_name].setup(server_opts)
-        end,
+        handlers = {
+          function(server_name)
+            local server_opts = opts.servers[server_name] or {}
+            server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
+            lspconfig[server_name].setup(server_opts)
+          end,
+        }
       })
     end,
   },
