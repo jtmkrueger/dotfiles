@@ -402,45 +402,49 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
     opts = {
       servers = {
         ts_ls = {},
-        -- volar = {},
         jsonls = {},
         yamlls = {},
-
-        ruby_lsp = {
-          cmd = { "bundle", "exec", "ruby-lsp" },
-          filetypes = { "ruby", "eruby" },
-          init_options = {
-            formatter = 'standard',
-            linters = { 'standard' },
-            addonSettings = {
-              ["Ruby LSP Rails"] = {
-                enablePendingMigrationsPrompt = false,
-              },
-            },
-          },
-        },
+        -- Remove ruby_lsp from here since we'll configure it manually
       },
     },
     config = function(_, opts)
       local lspconfig = require('lspconfig')
-      local configs = require('lspconfig.configs')
       local util = require('lspconfig.util')
-
+      
       vim.keymap.set('n', 'K', vim.lsp.buf.hover)
-
-      local root_pattern = util.root_pattern('.git')
-
+      
       -- Setup Mason
       require('mason').setup()
       require('mason-lspconfig').setup({
         ensure_installed = vim.tbl_keys(opts.servers),
-        handlers = {
-          function(server_name)
-            local server_opts = opts.servers[server_name] or {}
-            server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
-            lspconfig[server_name].setup(server_opts)
-          end,
+        -- Exclude ruby_lsp from automatic setup
+        automatic_enable = {
+          exclude = { "ruby_lsp" }
         }
+      })
+      
+      -- Auto-setup servers that are managed by Mason
+      for server_name, server_opts in pairs(opts.servers) do
+        server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
+        lspconfig[server_name].setup(server_opts)
+      end
+      
+      -- Manually configure ruby_lsp with Docker Compose
+      local project_name = vim.fn.trim(vim.fn.system("basename $(pwd)"))
+      lspconfig.ruby_lsp.setup({
+        cmd = { "docker", "compose", "run", "--rm", project_name, "ruby-lsp" },
+        filetypes = { "ruby", "eruby" },
+        root_dir = util.root_pattern('.git', 'Gemfile'),
+        capabilities = require('blink.cmp').get_lsp_capabilities(),
+        init_options = {
+          formatter = 'standardrb',
+          linters = { 'standardrb' },
+          addonSettings = {
+            ["Ruby LSP Rails"] = {
+              enablePendingMigrationsPrompt = false,
+            },
+          },
+        },
       })
     end,
   },
@@ -741,7 +745,7 @@ vim.g.togglecursor_default = 'blinking_block'
 vim.g.vim_json_syntax_conceal = 0
 
 -- emmet expansions
-vim.g.user_emmet_leader_key = '<c-e>'
+-- vim.g.user_emmet_leader_key = '<c-e>'
 
 -- indentline
 -- vim.g.indentLine_setColors = 1

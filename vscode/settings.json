@@ -105,24 +105,31 @@
         "files.trimTrailingWhitespace": true,
         "files.trimFinalNewlines": true,
     },
+    "rubyLsp.addonSettings": {
+      "Ruby LSP Rails": {
+        "enablePendingMigrationsPrompt": false
+      }
+    },
     "rubyLsp.formatter": "standard",
     "rubyLsp.enabledFeatures": {
-        "codeActions": true,
-        "codeLens": true,
-        "completion": true,
-        "definition": true,
-        "diagnostics": true,
-        "documentHighlights": true,
-        "documentLink": true,
-        "documentSymbols": true,
-        "foldingRanges": true,
-        "formatting": true,
-        "hover": true,
-        "inlayHint": true,
-        "onTypeFormatting": true,
-        "selectionRanges": true,
-        "semanticHighlighting": true,
-        "workspaceSymbol": true
+      "codeActions": true,
+      "diagnostics": true,
+      "documentHighlights": true,
+      "documentLink": true,
+      "documentSymbols": true,
+      "foldingRanges": true,
+      "formatting": true,
+      "hover": true,
+      "inlayHint": true,
+      "onTypeFormatting": true,
+      "selectionRanges": true,
+      "semanticHighlighting": true,
+      "completion": true,
+      "codeLens": true,
+      "definition": true,
+      "workspaceSymbol": true,
+      "signatureHelp": true,
+      "typeHierarchy": true
     },
     "terminal.integrated.cursorBlinking": true,
     "terminal.integrated.fontSize": 16,
@@ -233,8 +240,8 @@
         "passwordStore": "Secret Storage"
       }
     ],
-    "workbench.preferredLightColorTheme": "Solarized Light",
-    "workbench.iconTheme": "catppuccin-mocha",
+    "workbench.preferredLightColorTheme": "Catppuccin Latte",
+    "workbench.iconTheme": "catppuccin-latte",
     "editor.minimap.enabled": false,
     "debug.showBreakpointsInOverviewRuler": true,
     "workbench.activityBar.location": "top",
@@ -243,7 +250,7 @@
     "debug.console.fontFamily": "Operator Mono Ssm Lig",
     "chat.editor.fontFamily": "Operator Mono Ssm Lig",
     "workbench.preferredDarkColorTheme": "Solarized Dark",
-    "window.nativeTabs": true,
+    // "window.nativeTabs": true,
     "window.customTitleBarVisibility": "never",
     "debug.toolBarLocation": "docked",
     "window.titleBarStyle": "native",
@@ -251,4 +258,13 @@
       "launcher": false,
       "all": true
     },
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.chat.agent.terminal.allowList": {
+      "bundle exec rspec": true
+    },
+    "github.copilot.chat.agent.thinkingTool": true,
+    "github.copilot.chat.generateTests.codeLens": true,
+    "zenMode.fullScreen": false,
+    "zenMode.centerLayout": false,
+    "window.nativeFullScreen": false,
 }
