@@ -20,3 +20,5 @@ dump.rdb
 vetur.config.js
 .nova/
 .claude/
+CLAUDE.md
+WARP.md

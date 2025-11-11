@@ -429,12 +429,8 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
         lspconfig[server_name].setup(server_opts)
       end
       
-      -- Manually configure ruby_lsp with Docker Compose
-      local project_name = vim.fn.trim(vim.fn.system("basename $(pwd)"))
+      -- Configure ruby_lsp (requires local install)
       lspconfig.ruby_lsp.setup({
-        cmd = { "docker", "compose", "run", "--rm", project_name, "ruby-lsp" },
-        filetypes = { "ruby", "eruby" },
-        root_dir = util.root_pattern('.git', 'Gemfile'),
         capabilities = require('blink.cmp').get_lsp_capabilities(),
         init_options = {
           formatter = 'standardrb',
