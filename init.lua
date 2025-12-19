@@ -25,6 +25,7 @@ local function quickfix()
   })
 end
 vim.keymap.set('n', '<leader>qf', quickfix, opts)
+vim.o.background = "dark"
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -523,12 +524,14 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
         transparent_background = true,
         dim_inactive = {
           enabled = true, -- dims the background color of inactive window
-          shade = "light",
-          percentage = 0.50, -- percentage of the shade to apply to the inactive window
+          shade = "dark",
+          percentage = 0.01, -- percentage of the shade to apply to the inactive window
         },
         highlight_overrides = {
           all = function(colors)
             return {
+              -- set color for inactive windows.
+              NormalNC = { bg = "#000000" },
               -- visible line numbers with tmux pane dimming
               LineNr = { fg = colors.overlay1 },
             }
