@@ -411,9 +411,9 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
     config = function(_, opts)
       local lspconfig = require('lspconfig')
       local util = require('lspconfig.util')
-      
+
       vim.keymap.set('n', 'K', vim.lsp.buf.hover)
-      
+
       -- Setup Mason
       require('mason').setup()
       require('mason-lspconfig').setup({
@@ -423,16 +423,20 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
           exclude = { "ruby_lsp" }
         }
       })
-      
+
+      -- Get base capabilities and disable semantic tokens
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
+      capabilities.textDocument.semanticTokens = nil
+
       -- Auto-setup servers that are managed by Mason
       for server_name, server_opts in pairs(opts.servers) do
-        server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
+        server_opts.capabilities = vim.tbl_deep_extend('force', capabilities, server_opts.capabilities or {})
         lspconfig[server_name].setup(server_opts)
       end
-      
+
       -- Configure ruby_lsp (requires local install)
       lspconfig.ruby_lsp.setup({
-        capabilities = require('blink.cmp').get_lsp_capabilities(),
+        capabilities = capabilities,
         init_options = {
           formatter = 'standardrb',
           linters = { 'standardrb' },
