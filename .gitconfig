@@ -3,7 +3,7 @@
 # delta is cool, but it doesn't really play well with a containerized environment
 [user]
 	name = Krueger, John
-	email = john.krueger@nrel.gov
+	email = johnk@linux.com
 
 [core]
 	excludesfile = /Users/jkrueger/.gitignore
