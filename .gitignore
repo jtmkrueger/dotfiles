@@ -23,3 +23,4 @@ vetur.config.js
 CLAUDE.md
 WARP.md
 docs/
+.nvim.lua

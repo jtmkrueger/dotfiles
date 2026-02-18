@@ -16,6 +16,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 
+-- map leader to space
+vim.g.mapleader = " "
+
 local opts = { noremap=true, silent=true }
 
 local function quickfix()
@@ -116,8 +119,6 @@ require("lazy").setup({
         require("lint").try_lint("brakeman")
       end, {})
 
-      -- Enable virtual text and run on save
-      vim.diagnostic.config({ virtual_text = true })
       vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
         callback = function()
           local ft = vim.bo.filetype
@@ -189,38 +190,6 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
       })
     end
   },
-  -- {
-  --   "zbirenbaum/copilot.lua",
-  --   cmd = "Copilot",
-  --   event = "InsertEnter",
-  --   config = function()
-  --     require("copilot").setup({
-  --       suggestion = {
-  --         auto_trigger = true,
-  --         keymap = {
-  --           accept = "<C-j>",
-  --         },
-  --       }
-  --     })
-  --   end,
-  -- },
-  -- "giuxtaposition/blink-cmp-copilot",
-  -- {
-  --   'CopilotC-Nvim/CopilotChat.nvim',
-  --   branch = 'main',
-  --   dependencies = {
-  --     { "zbirenbaum/copilot.lua", },
-  --     { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
-  --   },
-  --   build = "make tiktoken", -- Only on MacOS or Linux
-  --   config = function ()
-  --     require("CopilotChat").setup {
-  --       debug = true, -- Enable debugging
-  --       show_help = false,
-  --       model = 'gpt-4.1',
-  --     }
-  --   end
-  -- },
   'MunifTanjim/nui.nvim',
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   {
@@ -280,10 +249,8 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
       -- Load extensions
       telescope.load_extension('fzf')
 
-      -- Custom key mappings
-      local builtin = require('telescope.builtin')
-      vim.api.nvim_set_keymap('n', '<c-f>', '<cmd>Telescope find_files<cr>', {noremap = true})
-      vim.api.nvim_set_keymap('n', '<c-a>', '<cmd>Telescope live_grep<cr>', {noremap = true})
+      vim.keymap.set('n', '<c-f>', '<cmd>Telescope find_files<cr>')
+      vim.keymap.set('n', '<c-a>', '<cmd>Telescope live_grep<cr>')
       -- vim.keymap.set("n", "<c-A>", "<cmd>Telescope dir live_grep<CR>", { noremap = true, silent = true })
     end,
   },
@@ -345,7 +312,7 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
                           icon = dev_icon
                       end
                   else
-                      icon = require("lspkind").symbolic(ctx.kind, {
+                      icon = lspkind.symbolic(ctx.kind, {
                           mode = "symbol",
                       })
                   end
@@ -410,7 +377,6 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
     },
     config = function(_, opts)
       local lspconfig = require('lspconfig')
-      local util = require('lspconfig.util')
 
       vim.keymap.set('n', 'K', vim.lsp.buf.hover)
 
@@ -449,7 +415,6 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
       })
     end,
   },
-  -- 'zbirenbaum/copilot-cmp',
   'onsails/lspkind.nvim',
 
   -- all that tpope!
@@ -462,9 +427,7 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
     ---@module 'oil'
     ---@type oil.SetupOpts
     opts = {},
-    -- Optional dependencies
-    dependencies = { { "echasnovski/mini.icons", opts = {} } },
-    dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
     lazy = false,
 
@@ -545,28 +508,6 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
       vim.cmd.colorscheme "catppuccin"
     end,
   },
-  --{
-  --  'maxmx03/solarized.nvim',
-  --  lazy = false,
-  --  priority = 1000,
-  --  ---@type solarized.config
-  --  opts = {},
-  --  config = function(_, opts)
-  --    vim.o.termguicolors = true
-  --    vim.o.background = 'dark'
-  --    require('solarized').setup({
-  --      transparent = {
-  --        enabled = true,         -- Master switch to enable transparency
-  --        pmenu = true,           -- Popup menu (e.g., autocomplete suggestions)
-  --        normal = true,          -- Main editor window background
-  --        normalfloat = true,     -- Floating windows
-  --        whichkey = true,        -- Which-key popup
-  --        telescope = true,       -- Telescope fuzzy finder
-  --      },
-  --    })
-  --    vim.cmd.colorscheme 'solarized'
-  --  end,
-  --},
 })
 
 -- END lazy.nvim
@@ -588,8 +529,6 @@ else
   vim.opt.showtabline = 2 -- always show tabs
 end
 
-vim.opt.encoding = 'UTF-8'
--- vim.opt.fileencoding = 'utf-8'
 vim.opt.magic = true -- for regular expressions turn magic on
 
 vim.opt.vb = true
@@ -644,8 +583,6 @@ vim.api.nvim_create_autocmd("VimResized", {
 })
 
 -- Store swap files in a central spot
-vim.opt.backup = true
-vim.opt.backupdir = {'~/.vim-tmp', '~/.tmp', '~/tmp', '/var/tmp', '/tmp'}
 vim.opt.directory = {'~/.vim-tmp', '~/.tmp', '~/tmp', '/var/tmp', '/tmp'}
 vim.opt.backup = false
 vim.opt.writebackup = false
@@ -670,20 +607,17 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   command = "set filetype=slim"
 })
 
--- map leader to space
-vim.g.mapleader = " "
-
 -- neovim needs to be like vim
-vim.api.nvim_set_keymap('n', 'Y', 'Y', {noremap = true})
+vim.keymap.set('n', 'Y', 'Y')
 
 -- leader mappings
-vim.api.nvim_set_keymap('n', '<leader>v', ':vs<space>', {noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>s', ':sp<space>', {noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>t', ':tabe<space>', {noremap = true})
+vim.keymap.set('n', '<leader>v', ':vs<space>')
+vim.keymap.set('n', '<leader>s', ':sp<space>')
+vim.keymap.set('n', '<leader>t', ':tabe<space>')
 
 -- buffer navigation
-vim.api.nvim_set_keymap('n', '<leader>n', ':bnext<CR>', {noremap = true})
-vim.api.nvim_set_keymap('n', '<leader>b', ':bprevious<CR>', {noremap = true})
+vim.keymap.set('n', '<leader>n', ':bnext<CR>')
+vim.keymap.set('n', '<leader>b', ':bprevious<CR>')
 
 -- open codecompanion menu
 vim.keymap.set({'n', 'v'}, '<leader>c', ':CodeCompanionActions<CR>', {noremap = true})
@@ -696,48 +630,52 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 -- I want my custom commands!
-vim.api.nvim_set_keymap('i', '<C-t>', '<%= %><Left><Left><Left>', {noremap = true})
+vim.keymap.set('i', '<C-t>', '<%= %><Left><Left><Left>')
 
 -- up/down on wrapped lines
-vim.api.nvim_set_keymap('n', 'j', 'gj', {noremap = true})
-vim.api.nvim_set_keymap('n', 'k', 'gk', {noremap = true})
-vim.api.nvim_set_keymap('x', 'j', 'gj', {noremap = true})
-vim.api.nvim_set_keymap('x', 'k', 'gk', {noremap = true})
+vim.keymap.set('n', 'j', 'gj')
+vim.keymap.set('n', 'k', 'gk')
+vim.keymap.set('x', 'j', 'gj')
+vim.keymap.set('x', 'k', 'gk')
 
 -- Reselect visual block after indent
-vim.api.nvim_set_keymap('v', '<', '<gv', {noremap = true})
-vim.api.nvim_set_keymap('v', '>', '>gv', {noremap = true})
+vim.keymap.set('v', '<', '<gv')
+vim.keymap.set('v', '>', '>gv')
 
 -- make . work in visual mode
-vim.api.nvim_set_keymap('v', '.', ':norm.<CR>', {noremap = true})
+vim.keymap.set('v', '.', ':norm.<CR>')
 
 -- clear search highlights with enter
-vim.api.nvim_set_keymap('n', '<CR>', ':nohlsearch<CR>/<BS>', {noremap = true})
+vim.keymap.set('n', '<CR>', ':nohlsearch<CR>/<BS>')
 
 -- make resizing windows a bit easier
-vim.api.nvim_set_keymap('n', '<left>', '<C-w>>', {noremap = true})
-vim.api.nvim_set_keymap('n', '<right>', '<C-w><', {noremap = true})
-vim.api.nvim_set_keymap('n', '<up>', '<C-w>-', {noremap = true})
-vim.api.nvim_set_keymap('n', '<down>', '<C-w>+', {noremap = true})
+vim.keymap.set('n', '<left>', '<C-w>>')
+vim.keymap.set('n', '<right>', '<C-w><')
+vim.keymap.set('n', '<up>', '<C-w>-')
+vim.keymap.set('n', '<down>', '<C-w>+')
 
 -- Keep search matches in the middle of the window.
-vim.api.nvim_set_keymap('n', 'n', 'nzzzv', {noremap = true})
-vim.api.nvim_set_keymap('n', 'N', 'Nzzzv', {noremap = true})
+vim.keymap.set('n', 'n', 'nzzzv')
+vim.keymap.set('n', 'N', 'Nzzzv')
 
 -- Easier to type, and I never use the default behavior.
-vim.api.nvim_set_keymap('n', 'H', '^', {noremap = true})
-vim.api.nvim_set_keymap('n', 'L', '$', {noremap = true})
-vim.api.nvim_set_keymap('x', 'L', 'g_', {noremap = true})
-vim.api.nvim_set_keymap('x', 'H', '^', {noremap = true})
+vim.keymap.set('n', 'H', '^')
+vim.keymap.set('n', 'L', '$')
+vim.keymap.set('x', 'L', 'g_')
+vim.keymap.set('x', 'H', '^')
 
-vim.api.nvim_set_keymap('n', '<TAB>', '%', {noremap = true}) -- easier to hit
+vim.keymap.set('n', '<TAB>', '%') -- easier to hit
 
 -- neoformat
 vim.g.neoformat_try_node_exe = 1
+vim.opt.exrc = true -- enable per-project config via .nvim.lua
 -- prettier on save
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = {"*.js", "*.css", "*.vue"},
-  command = "Neoformat"
+  callback = function()
+    if vim.g.neoformat_enabled == false then return end
+    vim.cmd("Neoformat")
+  end,
 })
 
 -- togglecursor
@@ -783,22 +721,17 @@ end
 vim.api.nvim_create_augroup('VimOSCYankPost', {clear = true})
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = 'VimOSCYankPost',
-  callback = function(event)
-    VimOSCYankPostCallback(event)
+  callback = function()
+    VimOSCYankPostCallback(vim.v.event)
   end
 })
 
 
 vim.diagnostic.config({
-	virtual_text = true, -- show virtual text
-	signs = true,        -- enable signs
-	underline = true,    -- underline diagnostics
-	update_in_insert = false,
-	severity_sort = true,
-})
-
--- lsp custom diagnostics symbols
-vim.diagnostic.config({
+  virtual_text = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "",
@@ -880,7 +813,6 @@ else
   require("bufferline").setup{
     options = {
       mode = "tabs",
-      diagnostics = "nvim_lsp",
       indicator = {
         style = "underline"
       },
@@ -904,48 +836,6 @@ end
 require('gitsigns').setup {
   current_line_blame = true,
 }
-
-_timers = {}
-local function setup_diagnostics(client, buffer)
-  if require("vim.lsp.diagnostic")._enable then
-    return
-  end
-
-  local diagnostic_handler = function()
-    local params = vim.lsp.util.make_text_document_params(buffer)
-    client.request("textDocument/diagnostic", { textDocument = params }, function(err, result)
-      if err then
-        local err_msg = string.format("diagnostics error - %s", vim.inspect(err))
-        vim.lsp.log.error(err_msg)
-      end
-      local diagnostic_items = {}
-      if result then
-        diagnostic_items = result.items
-      end
-      vim.lsp.diagnostic.on_publish_diagnostics(
-        nil,
-        vim.tbl_extend("keep", params, { diagnostics = diagnostic_items }),
-        { client_id = client.id }
-      )
-    end)
-  end
-
-  diagnostic_handler() -- to request diagnostics on buffer when first attaching
-
-  vim.api.nvim_buf_attach(buffer, false, {
-    on_lines = function()
-      if _timers[buffer] then
-        vim.fn.timer_stop(_timers[buffer])
-      end
-      _timers[buffer] = vim.fn.timer_start(200, diagnostic_handler)
-    end,
-    on_detach = function()
-      if _timers[buffer] then
-        vim.fn.timer_stop(_timers[buffer])
-      end
-    end,
-  })
-end
 
 local hasConfigs, configs = pcall(require, "nvim-treesitter.configs")
 if hasConfigs then
@@ -971,46 +861,8 @@ vim.api.nvim_create_user_command('NN', function()
   vim.api.nvim_command('edit ' .. fullPath)
 end, {})
 
--- local cmp = require'cmp'
--- cmp.setup({
---   snippet = {
---     expand = function(args)
---       vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
---     end,
---   },
---   completion = {
---     completeopt = table.concat(vim.opt.completeopt:get(), ","),
---   },
---   window = {
---     -- completion = cmp.config.window.bordered(),
---     -- documentation = cmp.config.window.bordered(),
---   },
---   mapping = cmp.mapping.preset.insert({
---     ["<Tab>"] = cmp.mapping.select_next_item({behavior=cmp.SelectBehavior.Insert}),
---     ["<S-Tab>"] = cmp.mapping.select_prev_item({behavior=cmp.SelectBehavior.Insert}),
---   }),
---   formatting = {
---     format = function(entry, vim_item)
---       if vim.tbl_contains({ 'path' }, entry.source.name) then
---         local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
---         if icon then
---           vim_item.kind = icon
---           vim_item.kind_hl_group = hl_group
---           return vim_item
---         end
---       end
---       return require('lspkind').cmp_format({ with_text = false })(entry, vim_item)
---     end
---   },
---   sources = cmp.config.sources({
---     { name = 'nvim_lsp' },
---   }, {
---     { name = 'buffer' },
---   })
--- })
-
 -- alias gd to find definition of word under cursor in normal mode
-function PeekDefinition()
+local function PeekDefinition()
   local params = vim.lsp.util.make_position_params(0, "utf-16")
   vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result)
     if err or not result then return end
@@ -1024,26 +876,26 @@ function PeekDefinition()
       focusable = true,
       focus = true,
     }
-    local preview_win_id = vim.lsp.util.preview_location(target, opts)
+    vim.lsp.util.preview_location(target, opts)
     vim.schedule(function()
       local win_ids = vim.api.nvim_list_wins()
-      local preview_win_id = win_ids[#win_ids]
-      vim.api.nvim_set_current_win(preview_win_id)
+      local float_win_id = win_ids[#win_ids]
+      vim.api.nvim_set_current_win(float_win_id)
     end)
   end)
 end
-vim.api.nvim_set_keymap('n', 'gp', '<cmd>lua PeekDefinition()<CR>', {noremap = true, silent = true})
+vim.keymap.set('n', 'gp', PeekDefinition, {noremap = true, silent = true})
 local function on_list(options)
   vim.fn.setqflist({}, ' ', options)
   vim.cmd.cfirst()
 end
-vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition({ on_list = on_list })<CR>', {noremap = true, silent = true})
+vim.keymap.set('n', 'gd', function() vim.lsp.buf.definition({ on_list = on_list }) end, {silent = true})
 
 -- indentation
 require("ibl").setup({
   indent = { char = "│" },
 })
 
-vim.api.nvim_set_keymap('n', '<C-g>', ':Neogit<CR>', {noremap = true, silent = true})
+vim.keymap.set('n', '<C-g>', ':Neogit<CR>', {silent = true})
 
 vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {desc = "Toggle Spectre"})
