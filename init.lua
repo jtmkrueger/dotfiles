@@ -204,6 +204,7 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
         prompt_prefix = "> ",
         selection_caret = ">> ",
         sorting_strategy = "ascending",
+        path_display = { "smart" },
         layout_config = {
           horizontal = { preview_width = 0.6 },
         },
@@ -453,29 +454,29 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
       require('oil-git-status').setup({
         show_ignored = true, -- show files that match gitignore with !!
         symbols = {
-          index = {
-            ["!"] = "",
-            ["?"] = "",
-            ["A"] = "",
-            ["C"] = "",
-            ["D"] = "",
-            ["M"] = "",
-            ["R"] = "",
-            ["T"] = "",
-            ["U"] = "",
-            [" "] = " ",
+          index = {           -- staged changes
+            ["!"] = "",         -- ignored
+            ["?"] = "",         -- untracked
+            ["A"] = "",         -- added
+            ["C"] = "",         -- copied
+            ["D"] = "",         -- deleted
+            ["M"] = "",         -- modified
+            ["R"] = "",         -- renamed
+            ["T"] = "",         -- type changed
+            ["U"] = "",         -- unmerged
+            [" "] = " ",           -- unmodified
           },
-          working_tree = {
-            ["!"] = "",
-            ["?"] = "",
-            ["A"] = "",
-            ["C"] = "",
-            ["D"] = "",
-            ["M"] = "",
-            ["R"] = "",
-            ["T"] = "",
-            ["U"] = "",
-            [" "] = " ",
+          working_tree = {    -- unstaged changes
+            ["!"] = "",         -- ignored
+            ["?"] = "",         -- untracked
+            ["A"] = "",         -- added
+            ["C"] = "",         -- copied
+            ["D"] = "",         -- deleted
+            ["M"] = "",         -- modified
+            ["R"] = "",         -- renamed
+            ["T"] = "",         -- type changed
+            ["U"] = "",         -- unmerged
+            [" "] = " ",           -- unmodified
           },
         },
       })
