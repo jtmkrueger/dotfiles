@@ -27,11 +27,38 @@ local function quickfix()
     apply = true
   })
 end
-vim.keymap.set('n', '<leader>qf', quickfix, opts)
+vim.keymap.set('n', '<leader>qf', quickfix, opts) -- apply preferred code action
 vim.o.background = "dark"
 
 -- Setup lazy.nvim
 require("lazy").setup({
+  {
+    dir = '~/Code/clmux.nvim',
+    config = function()
+      require('clmux').setup()
+    end,
+  },
+  {
+    "rmagatti/goto-preview",
+    dependencies = { "rmagatti/logger.nvim" },
+    event = "BufEnter",
+    config = function() 
+        require('goto-preview').setup {
+          vim.keymap.set(
+            "n",
+            "gp",
+            "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+            {noremap=true}
+          ),
+          vim.keymap.set(
+            "n",
+            "gr",
+            "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
+            {noremap=true}
+          )
+      }
+    end,
+  },
   'kchmck/vim-coffee-script',
   'pangloss/vim-javascript',
   'jelera/vim-javascript-syntax',
@@ -854,6 +881,7 @@ if hasConfigs then
   }
 end
 
+-- this is for easy note taking
 vim.api.nvim_create_user_command('NN', function()
   local timestamp = os.date('%Y%m%d-%H%M%S')
   local bufferDir = vim.fn.expand('%:p:h')
@@ -862,34 +890,11 @@ vim.api.nvim_create_user_command('NN', function()
   vim.api.nvim_command('edit ' .. fullPath)
 end, {})
 
--- alias gd to find definition of word under cursor in normal mode
-local function PeekDefinition()
-  local params = vim.lsp.util.make_position_params(0, "utf-16")
-  vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result)
-    if err or not result then return end
-    if vim.tbl_isempty(result) then print("No definition found") return end
-    local target = result[1]
-    if target == nil then return end
-    local filename = target.uri and vim.fn.fnamemodify(vim.uri_to_fname(target.uri), ":p:.") or ""
-    local opts = {
-      border = "single",
-      title = filename,
-      focusable = true,
-      focus = true,
-    }
-    vim.lsp.util.preview_location(target, opts)
-    vim.schedule(function()
-      local win_ids = vim.api.nvim_list_wins()
-      local float_win_id = win_ids[#win_ids]
-      vim.api.nvim_set_current_win(float_win_id)
-    end)
-  end)
-end
-vim.keymap.set('n', 'gp', PeekDefinition, {noremap = true, silent = true})
 local function on_list(options)
   vim.fn.setqflist({}, ' ', options)
   vim.cmd.cfirst()
 end
+-- alias gd to find definition of word under cursor in normal mode
 vim.keymap.set('n', 'gd', function() vim.lsp.buf.definition({ on_list = on_list }) end, {silent = true})
 
 -- indentation
