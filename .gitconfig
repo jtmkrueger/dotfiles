@@ -12,6 +12,8 @@
 [delta]
   line-numbers = true
   navigate = true
+  wrap-max-lines = unlimited
+  max-line-length = 0
 
 [pager]
   diff = delta

@@ -25,3 +25,8 @@ WARP.md
 docs/
 .nvim.lua
 .worktrees
+
+# Beads / Dolt files (will be added by bd init in repos)
+.dolt/
+*.db
+.beads-credential-key
