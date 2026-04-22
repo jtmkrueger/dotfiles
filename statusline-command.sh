@@ -43,6 +43,28 @@ format_tokens() {
   fi
 }
 
+# Render a 10-segment bar filled proportional to pct (0-100).
+# Uses full block for filled and light shade for empty.
+render_bar() {
+  pct=$1
+  n=$(printf '%.0f' "$pct" 2>/dev/null || echo 0)
+  [ "$n" -lt 0 ] && n=0
+  [ "$n" -gt 100 ] && n=100
+  filled=$((n / 10))
+  [ "$n" -gt 0 ] && [ "$filled" -eq 0 ] && filled=1
+  empty=$((10 - filled))
+  i=0
+  while [ "$i" -lt "$filled" ]; do
+    printf '\xe2\x96\x88'
+    i=$((i + 1))
+  done
+  i=0
+  while [ "$i" -lt "$empty" ]; do
+    printf '\xe2\x96\x91'
+    i=$((i + 1))
+  done
+}
+
 # Format seconds-until as e.g. 2h14m, 5d3h, 45m
 format_until() {
   secs=$1
@@ -84,14 +106,18 @@ if [ -n "$used_pct" ] && [ -n "$ctx_size" ]; then
   size_fmt=$(format_tokens "$ctx_size")
   color=$(color_for_pct "$used_pct" 80 95)
   pct_int=$(printf '%.0f' "$used_pct")
-  printf '%s%sctx:%s%% (%s/%s)\033[0m' "$sep" "$color" "$pct_int" "$used_fmt" "$size_fmt"
+  printf '%sctx %s' "$sep" "$color"
+  render_bar "$used_pct"
+  printf ' %s%% (%s/%s)\033[0m' "$pct_int" "$used_fmt" "$size_fmt"
   sep="  "
 fi
 
 if [ -n "$rl5_pct" ]; then
   color=$(color_for_pct "$rl5_pct" 70 90)
   pct_int=$(printf '%.0f' "$rl5_pct")
-  printf '%s%s5h:%s%%\033[0m' "$sep" "$color" "$pct_int"
+  printf '%s5h %s' "$sep" "$color"
+  render_bar "$rl5_pct"
+  printf ' %s%%\033[0m' "$pct_int"
   if [ -n "$rl5_reset" ]; then
     secs=$((rl5_reset - now))
     printf '\033[2m \xe2\x86\xbb%s\033[0m' "$(format_until "$secs")"
@@ -102,7 +128,9 @@ fi
 if [ -n "$rl7_pct" ]; then
   color=$(color_for_pct "$rl7_pct" 70 90)
   pct_int=$(printf '%.0f' "$rl7_pct")
-  printf '%s%s7d:%s%%\033[0m' "$sep" "$color" "$pct_int"
+  printf '%s7d %s' "$sep" "$color"
+  render_bar "$rl7_pct"
+  printf ' %s%%\033[0m' "$pct_int"
   if [ -n "$rl7_reset" ]; then
     secs=$((rl7_reset - now))
     printf '\033[2m \xe2\x86\xbb%s\033[0m' "$(format_until "$secs")"
