@@ -12,6 +12,16 @@ devcontainer up --dotfiles-repository https://github.com/jtmkrueger/dotfiles --r
 ```
 
 
+## Claude Code statusline
+
+Symlink `statusline-command.sh` to `~/.claude/statusline-command.sh`:
+
+```bash
+ln -s ~/Code/dotfiles/statusline-command.sh ~/.claude/statusline-command.sh
+```
+
+Referenced by `~/.claude/settings.json` via the `statusLine` block.
+
 ## Set up iterm for operator
 
 1. Install both Regular and Italic OperatorMonoNerdFonts
