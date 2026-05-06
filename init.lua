@@ -367,7 +367,7 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'codecompanion' },
+        default = { 'lsp', 'path', 'buffer', 'codecompanion' },
         providers = {
           path = {
             opts = {
