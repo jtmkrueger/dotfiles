@@ -33,7 +33,7 @@ vim.o.background = "dark"
 -- Setup lazy.nvim
 require("lazy").setup({
   {
-    dir = '~/Code/clmux.nvim',
+    'jtmkrueger/clmux.nvim',
     config = function()
       require('clmux').setup()
     end,
