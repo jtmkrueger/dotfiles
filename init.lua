@@ -342,9 +342,7 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
                           icon = dev_icon
                       end
                   else
-                      icon = lspkind.symbolic(ctx.kind, {
-                          mode = "symbol",
-                      })
+                      icon = lspkind.symbol_map[ctx.kind] or icon
                   end
 
                   return icon .. ctx.icon_gap
@@ -406,33 +404,32 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
       },
     },
     config = function(_, opts)
-      local lspconfig = require('lspconfig')
-
       vim.keymap.set('n', 'K', vim.lsp.buf.hover)
-
-      -- Setup Mason
-      require('mason').setup()
-      require('mason-lspconfig').setup({
-        ensure_installed = vim.tbl_keys(opts.servers),
-        -- Exclude ruby_lsp from automatic setup
-        automatic_enable = {
-          exclude = { "ruby_lsp" }
-        }
-      })
 
       -- Get base capabilities and disable semantic tokens
       local capabilities = require('blink.cmp').get_lsp_capabilities()
       capabilities.textDocument.semanticTokens = nil
 
-      -- Auto-setup servers that are managed by Mason
+      -- Apply capabilities to every server via the wildcard config
+      vim.lsp.config('*', { capabilities = capabilities })
+
+      -- Register per-server configs (mason-lspconfig will enable installed ones)
       for server_name, server_opts in pairs(opts.servers) do
-        server_opts.capabilities = vim.tbl_deep_extend('force', capabilities, server_opts.capabilities or {})
-        lspconfig[server_name].setup(server_opts)
+        vim.lsp.config(server_name, server_opts)
       end
 
+      -- Setup Mason
+      require('mason').setup()
+      require('mason-lspconfig').setup({
+        ensure_installed = vim.tbl_keys(opts.servers),
+        -- Exclude ruby_lsp from automatic setup (managed manually below)
+        automatic_enable = {
+          exclude = { "ruby_lsp" }
+        }
+      })
+
       -- Configure ruby_lsp (requires local install)
-      lspconfig.ruby_lsp.setup({
-        capabilities = capabilities,
+      vim.lsp.config('ruby_lsp', {
         init_options = {
           formatter = 'standardrb',
           linters = { 'standardrb' },
@@ -443,6 +440,7 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
           },
         },
       })
+      vim.lsp.enable('ruby_lsp')
     end,
   },
   'onsails/lspkind.nvim',
