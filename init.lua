@@ -248,7 +248,9 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
           "--column",
           "--smart-case",
           "--hidden", -- Include hidden files
-          "--glob=!.git/" -- Exclude .git directory
+          "--glob=!.git/", -- Exclude .git directory
+          "--glob=!docs/",
+          "--glob=!.beads/",
         },
       },
       pickers = {
@@ -257,7 +259,7 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
         },
         live_grep = {
           additional_args = function()
-            return { "--hidden", "--glob=!.git/" } -- Include hidden files, exclude .git
+            return { "--hidden", "--glob=!.git/", "--glob=!docs/", "--glob=!.beads/" }
           end,
         },
       },
