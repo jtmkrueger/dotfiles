@@ -41,22 +41,23 @@ require("lazy").setup({
   {
     "rmagatti/goto-preview",
     dependencies = { "rmagatti/logger.nvim" },
-    event = "BufEnter",
-    config = function() 
-        require('goto-preview').setup {
-          vim.keymap.set(
-            "n",
-            "gp",
-            "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
-            {noremap=true}
-          ),
-          vim.keymap.set(
-            "n",
-            "gr",
-            "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
-            {noremap=true}
-          )
-      }
+    -- load on first keypress instead of BufEnter so startup stays fast
+    keys = { "gp", "gr" },
+    config = function()
+      require('goto-preview').setup({})
+
+      vim.keymap.set(
+        "n",
+        "gp",
+        "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+        { noremap = true }
+      )
+      vim.keymap.set(
+        "n",
+        "gr",
+        "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
+        { noremap = true }
+      )
     end,
   },
   'kchmck/vim-coffee-script',
@@ -428,8 +429,45 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
         }
       })
 
-      -- Configure ruby_lsp (requires local install)
+      -- Walk up from the buffer's directory to find a Ruby project root
+      -- (directory containing a Gemfile). Returns the dir or nil.
+      local function find_ruby_root(bufnr)
+        local start = vim.api.nvim_buf_get_name(bufnr)
+        if start == "" then start = vim.fn.getcwd() end
+        local found = vim.fs.find({ "Gemfile" }, { upward = true, path = start })[1]
+        return found and vim.fs.dirname(found) or nil
+      end
+
+      -- Configure ruby_lsp with per-buffer root + env. Solves three things:
+      --   1. Subdir launches: walk up from the buffer to find Gemfile.
+      --   2. Gem activation conflicts (standard vs rubocop, etc.): launch
+      --      via `bundle exec` so ruby-lsp resolves against the project's
+      --      Gemfile.lock, not the global gemset.
+      --   3. Per-project Gemfile.local: when present, scope BUNDLE_GEMFILE
+      --      to the spawned ruby-lsp process only via the cmd-fn's env —
+      --      does NOT mutate nvim's own env, so :terminal / :! and other
+      --      LSPs are unaffected. See rubyup in ~/.zshrc for the shell-
+      --      side pattern.
       vim.lsp.config('ruby_lsp', {
+        cmd = function(dispatchers, config)
+          local root = config.root_dir
+          local env = {}
+          if root then
+            local local_gemfile = root .. "/Gemfile.local"
+            if vim.uv.fs_stat(local_gemfile) then
+              env.BUNDLE_GEMFILE = local_gemfile
+            end
+          end
+          return vim.lsp.rpc.start(
+            { "bundle", "exec", "ruby-lsp" },
+            dispatchers,
+            { cwd = root, env = env }
+          )
+        end,
+        root_dir = function(bufnr, on_dir)
+          local root = find_ruby_root(bufnr)
+          if root then on_dir(root) end
+        end,
         init_options = {
           formatter = 'standardrb',
           linters = { 'standardrb' },

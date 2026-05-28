@@ -85,7 +85,35 @@ export EDITOR="vim"
 
 
 # catch completion and linting gems up.
+#
+# If the project has a Gemfile.local, point BUNDLE_GEMFILE at it so we
+# bundle against a local-only lockfile instead of the committed one.
+# Useful when the committed Gemfile.lock omits arm64-darwin and bundling
+# would otherwise try to compile native gems from source.
+#
+# To set one up:
+#   echo 'eval_gemfile "Gemfile"' > Gemfile.local
+#   # Hide from git. In a monorepo subproject, .git is a file; the real
+#   # exclude is at `$(git rev-parse --git-common-dir)/info/exclude`.
+#   echo Gemfile.local      >> .git/info/exclude   # or .gitignore
+#   echo Gemfile.local.lock >> .git/info/exclude
+#   export BUNDLE_GEMFILE=$PWD/Gemfile.local
+#   bundle lock --add-platform arm64-darwin
+#   gem uninstall nokogiri -aIx                    # nuke broken source builds
+#   bundle install
 function rubyup() {
+  # walk up looking for Gemfile.local so this works from any subdir.
+  # local -x keeps BUNDLE_GEMFILE scoped to this function so it doesn't
+  # stick around in the shell after rubyup returns.
+  local dir="$PWD"
+  while [[ "$dir" != "/" && ! -f "$dir/Gemfile.local" ]]; do
+    dir="${dir:h}"
+  done
+  if [[ -f "$dir/Gemfile.local" ]]; then
+    local -x BUNDLE_GEMFILE="$dir/Gemfile.local"
+    echo "rubyup: using $BUNDLE_GEMFILE"
+  fi
+
   bundle
   # gem install solargraph
   # gem update solargraph
@@ -101,26 +129,6 @@ function rubyup() {
   gem update rubocop
   gem install brakeman
   gem update brakeman
-  solargraph bundle
-  bundle exec yard gems
-}
-
-# https://github.com/jtmkrueger/bobafett
-function bobafett() {
-  echo "As you wish."
-  for i in  $@; do
-    if pgrep -f $i >/dev/null 2>&1;then
-      pkill $i
-    elif id -u $i >/dev/null 2>&1;then
-      userdel $i
-    fi
-  done
-}
-
-function termcolors() {
-  for i in {0..255}; do
-    print -Pn "%K{$i} %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+$'\n'};
-  done
 }
 
 # shows the auth thing and puts the auth you want in the paste buffer
