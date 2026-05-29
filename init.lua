@@ -33,12 +33,6 @@ vim.o.background = "dark"
 -- Setup lazy.nvim
 require("lazy").setup({
   {
-    'jtmkrueger/clmux.nvim',
-    config = function()
-      require('clmux').setup()
-    end,
-  },
-  {
     "rmagatti/goto-preview",
     dependencies = { "rmagatti/logger.nvim" },
     -- load on first keypress instead of BufEnter so startup stays fast
@@ -623,7 +617,59 @@ vim.opt.linebreak = true -- wrap lines at spaces
 vim.opt.wrapmargin = 0 -- wrap at last column
 vim.opt.autoindent = true
 vim.opt.autoread = true -- automatically reads file in
+vim.opt.updatetime = 1000 -- fire CursorHold ~1s after idle (drives auto-reload checks; also LSP/gitsigns)
 vim.opt.cmdheight = 1
+
+-- Auto-reload buffers changed on disk (git checkout/pull, AI agents, formatters).
+--
+-- autoread does the actual reload, but only when Neovim *checks* the file's
+-- mtime — it does not poll. So we force a :checktime on the events below.
+-- CursorHold(+I) covers the "agent rewrites the file while I sit idle in it"
+-- case (within ~updatetime); FocusGained/BufEnter cover returning from a tmux
+-- pane after a git op. focus-events are already on in ~/.tmux.conf.
+--
+-- On reload we stamp the buffer so a transient lualine marker (see the
+-- ts_reloaded component below) blinks for ~2.5s, then a one-shot uv timer
+-- nudges a statusline redraw so the marker clears itself even while idle.
+local reload_grp = vim.api.nvim_create_augroup("auto_reload", { clear = true })
+local RELOAD_BLINK_MS = 2500
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  group = reload_grp,
+  callback = function()
+    -- only real, named, listed file buffers — skip terminals/prompts/etc.
+    if vim.bo.buftype == "" then
+      vim.cmd("checktime")
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  group = reload_grp,
+  callback = function(args)
+    -- per-buffer stamp: monotonic ms when this buffer reloaded
+    vim.b[args.buf].reloaded_at = vim.uv.now()
+    vim.cmd("redrawstatus")
+    -- clear the blink even if the user never touches the keyboard
+    local timer = vim.uv.new_timer()
+    timer:start(RELOAD_BLINK_MS + 50, 0, vim.schedule_wrap(function()
+      timer:stop()
+      timer:close()
+      if vim.api.nvim_buf_is_valid(args.buf) then
+        vim.cmd("redrawstatus")
+      end
+    end))
+  end,
+})
+
+-- lualine component: show 󱄋 briefly when the *current* buffer just reloaded.
+function _G.ts_reloaded()
+  local at = vim.b.reloaded_at
+  if at and (vim.uv.now() - at) < RELOAD_BLINK_MS then
+    return "󱄋 "
+  end
+  return ""
+end
 vim.opt.smartindent = true
 vim.opt.textwidth = 0 -- disable auto line breaking on paste
 vim.opt.number = true -- line numbers
@@ -828,7 +874,7 @@ if vim.g.started_by_firenvim == true then
     lualine_c = {},
     lualine_x = {},
     lualine_y = {},
-    lualine_z = {'location'}
+    lualine_z = {}
   },
   }
 else
@@ -864,18 +910,28 @@ else
         {'filename', path = 1},
       },
       lualine_c = { 'diff' },
-      lualine_x = {'filetype'},
+      lualine_x = {
+        -- pass the function directly (lua_fun component); a string name would be
+        -- treated as a module/expr and render the function address literally.
+        { _G.ts_reloaded, color = { fg = '#f9e2af', gui = 'bold' } }, -- transient reload blink
+        'filetype',
+      },
       lualine_y = {{
         'diagnostics',
-        sources = { 'nvim_lsp' },
+        sources = { 'nvim_diagnostic' },
         sections = { 'error', 'warn', 'info', 'hint' },
         symbols = {error = '󰅚 ', warn = '󰀪 ', info = ' ', hint = '󰌶 '},
         always_visible = false,
       }},
+      -- lualine fills any unset section with its default (lualine_z defaults to
+      -- {'location'}); set unused sections empty explicitly to keep location off.
+      lualine_z = {},
     },
     inactive_sections = {
       lualine_c = {{'filename', path = 1}, { 'diff', colored = false}},
-      lualine_x = {'location'},
+      lualine_x = {},
+      lualine_y = {},
+      lualine_z = {},
     },
   }
 
@@ -930,14 +986,26 @@ if hasTS then
   -- Enable treesitter highlighting (and experimental indent) per buffer.
   -- pcall guards filetypes whose parser isn't installed yet so we don't
   -- error during the async install on first launch.
+  local function ts_attach(buf)
+    if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" then return end
+    local ok = pcall(vim.treesitter.start, buf)
+    if ok then
+      vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end
+
   vim.api.nvim_create_autocmd("FileType", {
-    callback = function(args)
-      local ok = pcall(vim.treesitter.start, args.buf)
-      if ok then
-        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-      end
-    end,
+    callback = function(args) ts_attach(args.buf) end,
   })
+
+  -- This config block runs after startup, so the FileType event for any file
+  -- opened on the command line has already fired and won't be caught above.
+  -- Retroactively attach to buffers that are already loaded.
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf) then
+      ts_attach(buf)
+    end
+  end
 end
 
 -- this is for easy note taking
