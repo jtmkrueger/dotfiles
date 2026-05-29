@@ -279,6 +279,7 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
 
       vim.keymap.set('n', '<c-f>', '<cmd>Telescope find_files<cr>')
       vim.keymap.set('n', '<c-a>', '<cmd>Telescope live_grep<cr>')
+      vim.keymap.set('n', '<c-t>', '<cmd>Telescope resume<cr>', { desc = 'Telescope resume' })
       -- vim.keymap.set("n", "<c-A>", "<cmd>Telescope dir live_grep<CR>", { noremap = true, silent = true })
     end,
   },
