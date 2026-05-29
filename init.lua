@@ -219,7 +219,10 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
     end
   },
   'MunifTanjim/nui.nvim',
-  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+  -- main branch: full rewrite, required for Neovim 0.12 (master is archived).
+  -- Requires the `tree-sitter` CLI on PATH (brew install tree-sitter-cli) to
+  -- compile parsers. Does not support lazy-loading; setup lives below.
+  {"nvim-treesitter/nvim-treesitter", branch = "main", lazy = false, build = ":TSUpdate"},
   {
     'nvim-telescope/telescope.nvim',
     dependencies = {
@@ -903,20 +906,38 @@ require('gitsigns').setup {
   current_line_blame = true,
 }
 
-local hasConfigs, configs = pcall(require, "nvim-treesitter.configs")
-if hasConfigs then
-  configs.setup {
-    auto_install = true,
-    sync_install = false,
-    ensure_installed = "all",
-    highlight = {
-      enable = true,
-    },
-    indent = {
-      enable = true,
-      additional_vim_regex_highlighting = false,
-    }
-  }
+-- nvim-treesitter (main branch) setup.
+--
+-- The main branch is a full rewrite: it only installs parsers + ships queries.
+-- Highlighting/indentation are core Neovim features we opt into ourselves,
+-- rather than module flags on a configs.setup{} call (that API is gone).
+local hasTS, ts = pcall(require, "nvim-treesitter")
+if hasTS then
+  ts.setup({})
+
+  -- Curated parser list covering the filetypes this config targets. (master's
+  -- ensure_installed = "all" is discouraged on main — slow and compiles
+  -- grammars you never open.) install() is async and a no-op for parsers
+  -- already present, so it's cheap to run on every startup.
+  ts.install({
+    "ruby", "javascript", "typescript", "tsx",
+    "json", "yaml", "lua", "go", "elixir",
+    "markdown", "markdown_inline", "html",
+    "css", "scss", "bash", "vim", "vimdoc",
+    "graphql", "dockerfile", "sql",
+  })
+
+  -- Enable treesitter highlighting (and experimental indent) per buffer.
+  -- pcall guards filetypes whose parser isn't installed yet so we don't
+  -- error during the async install on first launch.
+  vim.api.nvim_create_autocmd("FileType", {
+    callback = function(args)
+      local ok = pcall(vim.treesitter.start, args.buf)
+      if ok then
+        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end
+    end,
+  })
 end
 
 -- this is for easy note taking
