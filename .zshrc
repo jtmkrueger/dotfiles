@@ -115,10 +115,7 @@ function rubyup() {
   fi
 
   bundle
-  # gem install solargraph
-  # gem update solargraph
-  # gem install solargraph-rails
-  # gem update solargraph-rails
+  gem install ruby-lsp
   gem install reek
   gem update reek
   gem install debride
