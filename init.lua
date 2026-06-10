@@ -325,7 +325,7 @@ require("lazy").setup({
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { 'lsp', 'path', 'buffer', 'codecompanion' },
+        default = { 'lsp', 'path', 'buffer' },
         providers = {
           path = {
             opts = {
@@ -724,9 +724,6 @@ vim.keymap.set('n', '<leader>t', ':tabe<space>')
 -- buffer navigation
 vim.keymap.set('n', '<leader>n', ':bnext<CR>')
 vim.keymap.set('n', '<leader>b', ':bprevious<CR>')
-
--- open codecompanion menu
-vim.keymap.set({'n', 'v'}, '<leader>c', ':CodeCompanionActions<CR>', {noremap = true})
 
 -- so oil behaves like vim.vinegar did
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
