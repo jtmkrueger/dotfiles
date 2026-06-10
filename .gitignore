@@ -30,3 +30,6 @@ docs/
 .dolt/
 *.db
 .beads-credential-key
+# Local LLM/working artifacts (not for collaborators)
+.docs/
+

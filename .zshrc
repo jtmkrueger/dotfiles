@@ -14,8 +14,8 @@ if [[ -z "$VIM" && -z "$NVIM" && $- == *i* ]]; then
   export PYTHON_CONFIGURE_OPTS="--enable-framework"
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
-  # oracle instant client
-  export OCI_DIR=$HOME/Downloads/instantclient_23_3
+  # speed up db connections to AWS
+  export PGGSSENCMODE="disable";
 
 
   ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -164,36 +164,19 @@ source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 chruby ruby-3.2.2
 
 # set up pyenv
-eval "$(pyenv init -)"
+# --no-rehash skips the slow shim rebuild at startup; do it in the background instead
+eval "$(pyenv init - --no-rehash)"
+(pyenv rehash &) 2>/dev/null
 
 # environment variables if file exists
 if [ -f ~/.zsh_env_vars ]; then
   source ~/.zsh_env_vars
 fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_comp
-# place this after nvm initialization!
-autoload -U add-zsh-hook
-load-nvmrc() {
-  local nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
-      nvm use
-    fi
-  elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
+# fnm (replaces nvm)
+# --use-on-cd: auto-switch node version when cd-ing into a dir with .nvmrc
+# recursive: search parent dirs for .nvmrc, fall back to default if none
+eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

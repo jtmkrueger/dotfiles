@@ -166,57 +166,16 @@ require("lazy").setup({
   'sbdchd/neoformat',
   'nvim-pack/nvim-spectre',
   'jidn/vim-dbml',
-  {
-    "olimorris/codecompanion.nvim",
-    opts = {},
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      'echasnovski/mini.diff',
-    },
-    config = function()
-      require("codecompanion").setup({
-        display = {
-          diff = {
-            provider = "mini_diff",
-          },
-        },
-        strategies = {
-          chat = {
-            adapter = "anthropic",
-            system_message = [[
-You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby on Rails, JavaScript, Vite, VueJS, Bash, and Docker. You respond succinctly and accurately, using proper jargon with experts, but clearly with beginners. Your tone is direct but warm. Avoid non-programming topics, legal advice, and unreleased tech. Ruby code should follow `standard` formatting (standrb). You provide clarification for ambiguous questions and balance professionalism with kindness.
-]],
-          },
-          inline = {
-            adapter = "anthropic",
-            system_message = [[
-You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby on Rails, JavaScript, Vite, VueJS, Bash, and Docker. You respond succinctly and accurately, using proper jargon with experts, but clearly with beginners. Your tone is direct but warm. Avoid non-programming topics, legal advice, and unreleased tech. Ruby code should follow `standard` formatting (standrb). You provide clarification for ambiguous questions and balance professionalism with kindness.
-]],
-          },
-        },
-        adapters = {
-          openai = function()
-            return require("codecompanion.adapters").extend("anthropic", {
-              env = {
-                api_key = "ANTHROPIC_API_KEY",
-              },
-              schema = {
-                model = {
-                default = "claude-sonnet",
-                },
-              },
-            })
-          end,
-        },
-      })
-    end
-  },
   'MunifTanjim/nui.nvim',
   -- main branch: full rewrite, required for Neovim 0.12 (master is archived).
   -- Requires the `tree-sitter` CLI on PATH (brew install tree-sitter-cli) to
   -- compile parsers. Does not support lazy-loading; setup lives below.
-  {"nvim-treesitter/nvim-treesitter", branch = "main", lazy = false, build = ":TSUpdate"},
+  {
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    lazy = false,
+    build = ":TSUpdate"
+  },
   {
     'nvim-telescope/telescope.nvim',
     dependencies = {
@@ -399,7 +358,20 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
         ts_ls = {},
         jsonls = {},
         yamlls = {},
-        -- Remove ruby_lsp from here since we'll configure it manually
+        herb_ls = {
+          settings = {
+            languageServerHerb = {
+              linter = { enabled = true },
+              formatter = { enabled = false },
+            },
+          },
+          on_attach = function(client, _bufnr)
+            -- Keep the autoformatting off. If a repo specifically
+            -- has it turned on it the .yml file it'll override this
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          end,
+        },
       },
     },
     config = function(_, opts)
@@ -448,16 +420,34 @@ You are M.I.N.S.W.A.N., a friendly software engineer specializing in Ruby, Ruby 
       --      side pattern.
       vim.lsp.config('ruby_lsp', {
         cmd = function(dispatchers, config)
-          local root = config.root_dir
+          local root = config.root_dir or vim.fn.getcwd()
           local env = {}
-          if root then
-            local local_gemfile = root .. "/Gemfile.local"
-            if vim.uv.fs_stat(local_gemfile) then
-              env.BUNDLE_GEMFILE = local_gemfile
-            end
+          local local_gemfile = root .. "/Gemfile.local"
+          if vim.uv.fs_stat(local_gemfile) then
+            env.BUNDLE_GEMFILE = local_gemfile
           end
+          -- Ruby LSP has no server-side version-manager option; that lives in
+          -- the VS Code extension (rubyVersionManager). For other editors the
+          -- docs say to launch via a shell command that activates the right
+          -- Ruby (the "custom" / customRubyCommand pattern):
+          --   https://shopify.github.io/ruby-lsp/version-managers.html
+          -- chruby is a shell function (not on PATH), and nvim's LSP child
+          -- never sources it — so a bare `bundle exec` inherits whatever Ruby
+          -- launched nvim (manifested here as RubyVersionMismatch: Ruby 3.4.1
+          -- + gems from 3.2.2 vs a Gemfile pinned to 3.2.10). Mirror chruby's
+          -- documented activation: source chruby.sh, then `chruby` against the
+          -- project's .ruby-version, then exec the server. Scoped to this
+          -- spawned process only — nvim's own env, :terminal, :! and other
+          -- LSPs are untouched. We call chruby explicitly rather than auto.sh
+          -- because auto.sh hooks chpwd, which does not fire for a
+          -- non-interactive shell's starting directory.
           return vim.lsp.rpc.start(
-            { "bundle", "exec", "ruby-lsp" },
+            {
+              "/bin/zsh", "-c",
+              "source /opt/homebrew/share/chruby/chruby.sh && "
+                .. 'chruby "$(cat .ruby-version)" && '
+                .. "exec bundle exec ruby-lsp",
+            },
             dispatchers,
             { cwd = root, env = env }
           )
