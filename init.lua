@@ -974,8 +974,15 @@ if hasTS then
   -- Enable treesitter highlighting (and experimental indent) per buffer.
   -- pcall guards filetypes whose parser isn't installed yet so we don't
   -- error during the async install on first launch.
+  -- Filetypes that have a tree-sitter parser but no bundled highlight queries,
+  -- so starting treesitter would attach an empty highlighter and shadow the
+  -- built-in Vim syntax file. tmux ships syntax/tmux.vim in core Neovim but no
+  -- queries/tmux/highlights.scm, so let the Vim syntax handle it instead.
+  local ts_skip_highlight = { tmux = true }
+
   local function ts_attach(buf)
     if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" then return end
+    if ts_skip_highlight[vim.bo[buf].filetype] then return end
     local ok = pcall(vim.treesitter.start, buf)
     if ok then
       vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"

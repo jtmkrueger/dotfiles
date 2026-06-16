@@ -173,7 +173,7 @@ if [ -f ~/.zsh_env_vars ]; then
   source ~/.zsh_env_vars
 fi
 
-# fnm (replaces nvm)
+# fnm (replaces nvm): https://github.com/Schniz/fnm
 # --use-on-cd: auto-switch node version when cd-ing into a dir with .nvmrc
 # recursive: search parent dirs for .nvmrc, fall back to default if none
 eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
