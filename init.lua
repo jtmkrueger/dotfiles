@@ -358,6 +358,7 @@ require("lazy").setup({
         ts_ls = {},
         jsonls = {},
         yamlls = {},
+        lua_ls = {},
         herb_ls = {
           settings = {
             languageServerHerb = {

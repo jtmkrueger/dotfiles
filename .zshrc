@@ -1,62 +1,49 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -z "$VIM" && -z "$NVIM" && $- == *i* ]]; then
+export ZSH_DISABLE_COMPFIX="true"
 
-  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  fi
+export PYTHON_CONFIGURE_OPTS="--enable-framework"
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
-  export ZSH_DISABLE_COMPFIX="true"
+# speed up db connections to AWS
+export PGGSSENCMODE="disable";
 
-  # Path to your oh-my-zsh installation.
-  export ZSH=~/.oh-my-zsh
-  export PYTHON_CONFIGURE_OPTS="--enable-framework"
-  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+# Plugins
+#   plugins=(zsh-system-clipboard zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
 
-  # speed up db connections to AWS
-  export PGGSSENCMODE="disable";
+source ~/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
 
 
-  ZSH_THEME="powerlevel10k/powerlevel10k"
+# START VI mode
+bindkey -v
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+bindkey -M vicmd 'H' beginning-of-line
+bindkey -M vicmd 'L' end-of-line
+function zle-keymap-select zle-line-init {
+    # RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+    # RPS2=$RPS1
+    zle reset-prompt
+    case $KEYMAP in
+        vicmd)      echo -ne '\e[1 q';;  # block cursor
+        viins|main) echo -ne '\e[5 q';;  # line cursor
+    esac
 
-  DISABLE_AUTO_TITLE="true"
+    zle reset-prompt
+    zle -R
+}
 
-  fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-  plugins=(git bundler zsh-system-clipboard zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
+function zle-line-finish
+{
+    echo -ne '\e[1 q'  # block cursor
+}
 
-  source $ZSH/oh-my-zsh.sh
-
-  # START VI mode
-  bindkey -v
-  bindkey -M vicmd 'k' history-substring-search-up
-  bindkey -M vicmd 'j' history-substring-search-down
-  bindkey -M vicmd 'H' beginning-of-line
-  bindkey -M vicmd 'L' end-of-line
-  function zle-keymap-select zle-line-init {
-      # RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
-      # RPS2=$RPS1
-      zle reset-prompt
-      case $KEYMAP in
-          vicmd)      echo -ne '\e[1 q';;  # block cursor
-          viins|main) echo -ne '\e[5 q';;  # line cursor
-      esac
-
-      zle reset-prompt
-      zle -R
-  }
-
-  function zle-line-finish
-  {
-      echo -ne '\e[1 q'  # block cursor
-  }
-
-  zle -N zle-line-init
-  zle -N zle-line-finish
-  zle -N zle-keymap-select
-  export KEYTIMEOUT=1
-  # END VI mode
-fi
+zle -N zle-line-init
+zle -N zle-line-finish
+zle -N zle-keymap-select
+export KEYTIMEOUT=1
+# END VI mode
 
 export DYLD_LIBRARY_PATH="/usr/local/opt/libyaml/lib:$DYLD_LIBRARY_PATH"
 
@@ -178,9 +165,6 @@ fi
 # recursive: search parent dirs for .nvmrc, fall back to default if none
 eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 # pnpm
 export PNPM_HOME="/Users/jkrueger/Library/pnpm"
 case ":$PATH:" in
@@ -189,3 +173,50 @@ case ":$PATH:" in
 esac
 # pnpm end
 export PATH="$HOME/.local/bin:$PATH"
+
+## PROMPT stuff
+# Find and set branch name var if in git repository.
+function git_branch_color {
+  local color="blue" # assume no branch
+  local branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')
+
+  if [ -n "$branch" ]; then
+    local rs="$(git status --porcelain -b)"
+    if $(echo "$rs" | grep -v '^##' &> /dev/null); then # is dirty
+      color="red"
+    elif $(echo "$rs" | grep '^## .*diverged' &> /dev/null); then # has diverged
+      color="redm"
+    elif $(echo "$rs" | grep '^## .*behind' &> /dev/null); then # is behind
+      color="yellow"
+    elif $(echo "$rs" | grep '^## .*ahead' &> /dev/null); then # is ahead
+      color="yellow"
+    else # is clean
+      color="green"
+    fi
+  fi
+
+  echo -n $color
+}
+function git_branch_name()
+{
+  local branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')
+  if [[ $branch == "" ]];
+  then
+    :
+  else
+    echo $branch
+  fi
+}
+
+# Enable substitution in the prompt.
+setopt prompt_subst
+
+autoload -Uz compinit && compinit
+autoload -U colors && colors
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+newline=$'\n'
+pathpart="%{$bg[blue]%} %{$fg[black]%}%~ %{\$bg[\$(git_branch_color)]%}%{$fg[blue]%}%{$fg[black]%}"
+gitpart="%{\$bg[\$(git_branch_color)]%}\$(git_branch_name) %{$reset_color%}%{\$fg[\$(git_branch_color)]%}"
+secondline="${newline}%{$bg[green]%} %{$fg[black]%} %{$reset_color%}%{$fg[green]%} "
+prompt="${pathpart} ${gitpart}${secondline}"
