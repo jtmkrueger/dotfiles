@@ -9,10 +9,26 @@ export PGGSSENCMODE="disable";
 # Plugins
 #   plugins=(zsh-system-clipboard zsh-autosuggestions zsh-syntax-highlighting history-substring-search)
 
-source ~/.zsh/plugins/zsh-system-clipboard/zsh-system-clipboard.zsh
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+# Clone a plugin into ~/.zsh/plugins if missing, then source it.
+# Usage: _load_plugin <dir> <repo-url> <file-to-source>
+# Single source of truth for plugin loading. Most plugins load here, but a few
+# (e.g. fzf-tab) must load later because they call this helper from their own spot.
+_load_plugin() {
+  # NOTE: don't name a local "path" — in zsh it's tied to $PATH, so a local
+  # would wipe PATH for the duration of this function (breaks plugins that
+  # probe for binaries while sourcing, e.g. zsh-system-clipboard).
+  local dir="$1" url="$2" file="$3"
+  local plugin_dir="$HOME/.zsh/plugins/$dir"
+  [[ -d "$plugin_dir" ]] || git clone --depth 1 "$url" "$plugin_dir"
+  source "$plugin_dir/$file"
+}
+
+# Early plugins: must load before the vi-mode bindkeys below, which bind
+# widgets (history-substring-search-*, autosuggest-*) these plugins provide.
+_load_plugin zsh-system-clipboard          https://github.com/kutsan/zsh-system-clipboard          zsh-system-clipboard.zsh
+_load_plugin zsh-autosuggestions           https://github.com/zsh-users/zsh-autosuggestions        zsh-autosuggestions.zsh
+_load_plugin zsh-syntax-highlighting       https://github.com/zsh-users/zsh-syntax-highlighting    zsh-syntax-highlighting.zsh
+_load_plugin zsh-history-substring-search  https://github.com/zsh-users/zsh-history-substring-search zsh-history-substring-search.zsh
 
 
 # START VI mode
@@ -138,7 +154,12 @@ kbash() {
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# fzf shell integration (keybindings + completion). Needed by fzf-tab below.
+if command -v fzf &>/dev/null; then
+  source <(fzf --zsh)
+elif [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+fi
 
 
 # configure homebrew
@@ -214,6 +235,13 @@ setopt prompt_subst
 autoload -Uz compinit && compinit
 autoload -U colors && colors
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+# fzf-tab: replaces the completion menu with an fzf picker. Uses the same
+# _load_plugin helper as the plugins above, but must load here because it
+# depends on compinit (just run) and the fzf binary. Skipped if fzf is absent.
+if command -v fzf &>/dev/null; then
+  _load_plugin fzf-tab https://github.com/Aloxaf/fzf-tab fzf-tab.plugin.zsh
+fi
 
 newline=$'\n'
 pathpart="%{$bg[blue]%} %{$fg[black]%}%~ %{\$bg[\$(git_branch_color)]%}%{$fg[blue]%}%{$fg[black]%}"
