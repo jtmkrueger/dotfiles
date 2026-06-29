@@ -660,6 +660,13 @@ require("lazy").setup({
           },
         })
         vim.cmd.colorscheme("catppuccin")
+        -- Re-assert once-only highlight tweaks AFTER colorscheme, so a live
+        -- SIGUSR1 re-apply (which reloads the colorscheme) doesn't drop them:
+        --   * italic comments
+        --   * CursorColumn shares CursorLine's color (so the per-flavour
+        --     CursorLine bg above also fixes CursorColumn in both themes)
+        vim.cmd('highlight Comment cterm=italic gui=italic')
+        vim.cmd('highlight! link CursorColumn CursorLine')
       end
 
       -- expose for the SIGUSR1 autocmd (see below)
@@ -677,9 +684,6 @@ require("lazy").setup({
 })
 
 -- END lazy.nvim
-
--- italic comments
-vim.cmd('highlight Comment cterm=italic gui=italic')
 
 vim.cmd('filetype plugin on')
 vim.cmd('syntax enable')
@@ -781,7 +785,6 @@ vim.opt.scrolloff = 5 -- 5 line buffer below cursor when scrolling
 vim.opt.hlsearch = true -- highlight search results
 vim.opt.cursorline = true -- highlight line cursor is on
 vim.opt.cursorcolumn = true -- highlight the cursor's current column
-vim.cmd('highlight link CursorColumn CursorLine') -- have them always be the same color
 vim.opt.clipboard = 'unnamed' -- copy to system register
 vim.opt.mouse = 'a' -- turn on all mouse functionality
 vim.opt.timeoutlen = 300 -- Time to wait after ESC (default causes an annoying delay)

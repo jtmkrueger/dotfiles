@@ -49,5 +49,6 @@ iTerm2 AutoLaunch script. To enable it:
 3. Restart iTerm2.
 
 Without iTerm2 (or with the API disabled) you still get correct colors at
-startup/reload; only the automatic live switch is unavailable. Dark is the
-fallback.
+startup/reload; only the automatic live switch is unavailable. When the
+appearance can't be read, both default to light (macOS reports no
+`AppleInterfaceStyle` key in light mode).
