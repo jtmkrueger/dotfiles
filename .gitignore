@@ -25,6 +25,8 @@ WARP.md
 docs/
 .nvim.lua
 .worktrees
+__pycache__/
+*.pyc
 
 # Beads / Dolt files (will be added by bd init in repos)
 .dolt/

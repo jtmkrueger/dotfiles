@@ -285,9 +285,9 @@ if command -v fzf &>/dev/null; then
 fi
 
 newline=$'\n'
-pathpart="%{$bg[blue]%} %{$fg[black]%}%~ %{\$bg[\$(git_branch_color)]%}%{$fg[blue]%}%{$fg[black]%}"
-gitpart="%{\$bg[\$(git_branch_color)]%}\$(git_branch_name) %{$reset_color%}%{\$fg[\$(git_branch_color)]%}"
-secondline="${newline}%{$bg[green]%} %{$fg[black]%} %{$reset_color%}%{$fg[green]%} "
+pathpart="%{$fg[blue]%}%~ %{\$fg[\$(git_branch_color)]%}"
+gitpart="\$(git_branch_name) %{$reset_color%}"
+secondline="${newline}%{$fg[green]%} %{$reset_color%} "
 prompt="${pathpart} ${gitpart}${secondline}"
 
 # Load zsh-syntax-highlighting LAST. It wraps every zle widget present at source
