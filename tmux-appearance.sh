@@ -29,8 +29,7 @@ if [ "$mode" = "dark" ]; then
   pane_active_fg="green"
   status_bg="black"
   status_fg="white"
-  status_left_fill="blue"
-  status_left_fg="#eff1f5"
+  status_left_fg="green"
   status_bell_bg="white"
 else
   # Catppuccin Latte — active=base, inactive=crust.
@@ -40,8 +39,7 @@ else
   pane_active_fg="blue"
   status_bg="#dce0e8"
   status_fg="#4c4f69"
-  status_left_fill="blue"
-  status_left_fg="#eff1f5"
+  status_left_fg="blue"
   status_bell_bg="magenta"
 fi
 
@@ -55,6 +53,6 @@ set -g window-status-activity-style bg=${status_bg},fg=${status_fg},blink
 set -g window-status-bell-style bg=${status_bell_bg},fg=${status_fg},blink
 setw -g window-status-format '#{?window_activity_flag, #[fg=${status_fg} bg=${status_bg}]#[blink],#[fg=${status_fg} bg=${status_bg}]}#{?window_bell_flag,#[fg=${status_fg} bg=${status_bg}]#[blink],#[fg=${status_fg} bg=${status_bg}]}  #I-#W#{?window_zoomed_flag,,} #[bg=${status_bg}, fg=${status_fg}] '
 setw -g window-status-current-format '#[bg=magenta, fg=${status_bg}]#[bg=magenta, fg=${status_bg}] #I-#W#{?window_zoomed_flag,,} #[bg=${status_bg}, fg=magenta]'
-set -g status-left '#[bg=${status_left_fill}, fg=${status_left_fg}, italics]   #S #[bg=${status_bg}, fg=${status_left_fill}, noitalics]#[bg=${status_bg}, fg=terminal] '
-set -g status-right '#[fg=brightmagenta, italics] #[fg=blue]#(~/Code/dotfiles/simplewifi.sh)'
+set -g status-left '#[bg=${status_bg}, fg=${status_left_fg}, italics]  #S #[bg=${status_bg}, fg=${status_bg}, noitalics]#[bg=${status_bg}, fg=terminal] '
+set -g status-right '#[fg=brightmagenta, italics] #[fg=green]#(~/Code/dotfiles/simplewifi.sh)'
 EOF
