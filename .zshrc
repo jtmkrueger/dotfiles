@@ -14,9 +14,6 @@ export PGGSSENCMODE="disable";
 # Single source of truth for plugin loading. Most plugins load here, but a few
 # (e.g. fzf-tab) must load later because they call this helper from their own spot.
 _load_plugin() {
-  # NOTE: don't name a local "path" — in zsh it's tied to $PATH, so a local
-  # would wipe PATH for the duration of this function (breaks plugins that
-  # probe for binaries while sourcing, e.g. zsh-system-clipboard).
   local dir="$1" url="$2" file="$3"
   local plugin_dir="$HOME/.zsh/plugins/$dir"
   [[ -d "$plugin_dir" ]] || git clone --depth 1 "$url" "$plugin_dir"
@@ -25,10 +22,13 @@ _load_plugin() {
 
 # Early plugins: must load before the vi-mode bindkeys below, which bind
 # widgets (history-substring-search-*, autosuggest-*) these plugins provide.
-_load_plugin zsh-system-clipboard          https://github.com/kutsan/zsh-system-clipboard          zsh-system-clipboard.zsh
-_load_plugin zsh-autosuggestions           https://github.com/zsh-users/zsh-autosuggestions        zsh-autosuggestions.zsh
-_load_plugin zsh-syntax-highlighting       https://github.com/zsh-users/zsh-syntax-highlighting    zsh-syntax-highlighting.zsh
-_load_plugin zsh-history-substring-search  https://github.com/zsh-users/zsh-history-substring-search zsh-history-substring-search.zsh
+_load_plugin zsh-system-clipboard https://github.com/kutsan/zsh-system-clipboard zsh-system-clipboard.zsh
+_load_plugin zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions zsh-autosuggestions.zsh
+_load_plugin zsh-history-substring-search https://github.com/zsh-users/zsh-history-substring-search zsh-history-substring-search.zsh
+# NOTE: zsh-syntax-highlighting is intentionally NOT loaded here. It wraps every
+# zle widget that exists at source time, so it MUST be sourced last — after
+# compinit and fzf-tab bind their widgets. It's loaded at the very end of this
+# file. Sourcing it early leaves later widgets unwrapped and corrupts typing.
 
 
 # START VI mode
@@ -37,17 +37,21 @@ bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 bindkey -M vicmd 'H' beginning-of-line
 bindkey -M vicmd 'L' end-of-line
+# Switch the cursor shape to match the vi keymap (block in normal, line in
+# insert). Bound to both zle-keymap-select (fires on every mode change) and
+# zle-line-init (fires once when a new prompt's line editor starts).
+#
+# NOTE: do NOT call `zle reset-prompt` here. The prompt doesn't render the vi
+# mode (the RPS1 lines below are disabled), so there's nothing to redraw, and
+# forcing a reset/redisplay on every line-init under tmux repaints the prompt
+# multiple times and echoes typed characters into the stale copies.
 function zle-keymap-select zle-line-init {
     # RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
     # RPS2=$RPS1
-    zle reset-prompt
     case $KEYMAP in
         vicmd)      echo -ne '\e[1 q';;  # block cursor
         viins|main) echo -ne '\e[5 q';;  # line cursor
     esac
-
-    zle reset-prompt
-    zle -R
 }
 
 function zle-line-finish
@@ -66,9 +70,9 @@ export DYLD_LIBRARY_PATH="/usr/local/opt/libyaml/lib:$DYLD_LIBRARY_PATH"
 bindkey '^j' autosuggest-accept
 
 alias vim=nvim
-# brew install lsd
-DISABLE_LS_COLORS="true" # so lsd can colorize
-alias ls='lsd'
+# brew install eza
+# --git status shows automatically in long view (ls -l)
+alias ls='eza --icons=always --group-directories-first'
 alias cat='bat'
 alias pretty_log="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'"
 alias dcvim="devcontainer up --remove-existing-container --mount 'type=bind,source=$HOME/.config/nvim,target=/root/.config/nvim' --additional-features '{\"ghcr.io/devcontainers-contrib/features/neovim:1\": {}}'"
@@ -129,6 +133,9 @@ function rubyup() {
   gem update rubocop
   gem install brakeman
   gem update brakeman
+  # Herb ERB linter is an npm package (@herb-tools/linter -> `herb-lint`),
+  # NOT a Ruby gem. The Ruby `herb` gem is only the parser.
+  npm install -g @herb-tools/linter
 }
 
 # shows the auth thing and puts the auth you want in the paste buffer
@@ -163,7 +170,6 @@ fi
 
 
 # configure homebrew
-# eval "$($HOME/.homebrew/bin/brew shellenv)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # chruby
@@ -236,11 +242,46 @@ autoload -Uz compinit && compinit
 autoload -U colors && colors
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
+# --- completion styles that fzf-tab relies on (safe to set before sourcing) ---
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+# NOTE: don't use escape sequences (like '%F{red}%d%f') here, fzf-tab will ignore them
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# force zsh not to show completion menu, which lets fzf-tab capture the unambiguous prefix
+zstyle ':completion:*' menu no
+
 # fzf-tab: replaces the completion menu with an fzf picker. Uses the same
 # _load_plugin helper as the plugins above, but must load here because it
 # depends on compinit (just run) and the fzf binary. Skipped if fzf is absent.
 if command -v fzf &>/dev/null; then
   _load_plugin fzf-tab https://github.com/Aloxaf/fzf-tab fzf-tab.plugin.zsh
+
+  # --- fzf-tab styles: must be set AFTER fzf-tab is sourced ---
+  # render the picker in a centered tmux popup (falls back to inline outside tmux)
+  zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+  # floor the popup size so short lists (e.g. `cd` with a few dirs) don't
+  # collapse the list/preview into a tiny unusable box. width height (cols/rows),
+  # capped at the window size by ftb-tmux-popup.
+  zstyle ':fzf-tab:*' popup-min-size 80 15
+  # previews in the popup, per completion type:
+  # cd: directory contents (with file-type icons)
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --icons=always --color=always $realpath'
+  # files (cat/editors/etc): syntax-highlighted contents, dir listing for dirs
+  zstyle ':fzf-tab:complete:*:*' fzf-preview \
+    '[[ -d $realpath ]] && eza -1 --icons=always --color=always $realpath || bat --color=always --style=numbers $realpath 2>/dev/null'
+  # git checkout/branch refs: show the commit log for the selected ref
+  zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
+    'git log --oneline --graph --color=always $word 2>/dev/null'
+  # env vars (export/unset/$VAR): show the current value
+  zstyle ':fzf-tab:complete:(-command-|export|unset):*' fzf-preview \
+    'echo ${(P)word}'
+  # kill/process: full process info for the selected PID (BSD ps, macOS)
+  zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview \
+    'ps -p $word -o pid,ppid,%cpu,%mem,command 2>/dev/null'
+  zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags '--preview-window=down:4:wrap'
 fi
 
 newline=$'\n'
@@ -248,3 +289,9 @@ pathpart="%{$bg[blue]%} %{$fg[black]%}%~ %{\$bg[\$(git_branch_color)]%}%{$fg[blu
 gitpart="%{\$bg[\$(git_branch_color)]%}\$(git_branch_name) %{$reset_color%}%{\$fg[\$(git_branch_color)]%}"
 secondline="${newline}%{$bg[green]%} %{$fg[black]%} %{$reset_color%}%{$fg[green]%} "
 prompt="${pathpart} ${gitpart}${secondline}"
+
+# Load zsh-syntax-highlighting LAST. It wraps every zle widget present at source
+# time, so everything that binds widgets (the plugins above, compinit, fzf-tab,
+# the vi-mode bindkeys) must already be loaded. Sourcing it any earlier leaves
+# later widgets unwrapped and corrupts line editing (eaten/duplicated keys).
+_load_plugin zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting zsh-syntax-highlighting.zsh

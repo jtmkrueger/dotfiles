@@ -81,6 +81,93 @@ require("lazy").setup({
 
   -- tools
   {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
+    keys = {
+      { "<leader>cc", "<cmd>CodeCompanionChat Toggle<CR>", mode = { "n", "v" }, desc = "CodeCompanion chat" },
+      { "<leader>ca", "<cmd>CodeCompanionActions<CR>", mode = { "n", "v" }, desc = "CodeCompanion actions" },
+    },
+    config = function()
+      require("codecompanion").setup({
+        -- Local llama.cpp server (`llama serve`) as an OpenAI-compatible backend.
+        -- Start it first: ~/Code/claude-scripts/llama serve  (or `llama ensure`)
+        -- Custom HTTP adapters must live under adapters.http.<name> (v19+ API).
+        -- All point at the same local server (:8080); the `model` field is the
+        -- HF ref of the model you've loaded via `llama serve`. llama.cpp serves
+        -- whatever is loaded, so the practical switch is which model you serve —
+        -- but matching names keeps /adapter selection honest.
+        -- Helper to build an openai_compatible adapter for a given model ref.
+        adapters = {
+          http = {
+            -- DEFAULT chat: Qwen3-Coder-30B. Clean stops, just answers (Devstral
+            -- mis-behaves in plain chat: it write-and-waits for tools and leaked
+            -- <|im_end|> under the chatml workaround — so it's NOT the chat default).
+            llama_chat = function()
+              return require("codecompanion.adapters").extend("openai_compatible", {
+                env = {
+                  url = "http://localhost:8080",
+                  api_key = "sk-no-key-required",
+                  chat_url = "/v1/chat/completions",
+                },
+                schema = { model = { default = "unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:UD-Q4_K_XL" } },
+              })
+            end,
+            -- Fast/light chat (7B) — snappy Q&A when you don't need the 30B.
+            llama_fast = function()
+              return require("codecompanion.adapters").extend("openai_compatible", {
+                env = {
+                  url = "http://localhost:8080",
+                  api_key = "sk-no-key-required",
+                  chat_url = "/v1/chat/completions",
+                },
+                schema = { model = { default = "bartowski/Qwen2.5-Coder-7B-Instruct-GGUF:Q4_K_M" } },
+              })
+            end,
+            -- Agentic coder (Devstral) — only useful WITH tool execution (agent
+            -- mode / Aider), not plain chat. Serve it via `llama serve` first.
+            llama_agentic = function()
+              return require("codecompanion.adapters").extend("openai_compatible", {
+                env = {
+                  url = "http://localhost:8080",
+                  api_key = "sk-no-key-required",
+                  chat_url = "/v1/chat/completions",
+                },
+                schema = { model = { default = "unsloth/Devstral-Small-2-24B-Instruct-2512-GGUF:Q5_K_M" } },
+              })
+            end,
+          },
+        },
+        strategies = {
+          chat = { adapter = "llama_chat" },
+          inline = { adapter = "llama_chat" },
+        },
+        -- Load project conventions (gitignored AIRULES.md) into chat context when present.
+        prompt_library = {
+          ["EHS conventions"] = {
+            strategy = "chat",
+            description = "Open a chat preloaded with the repo's AIRULES.md conventions",
+            prompts = {
+              {
+                role = "system",
+                content = function()
+                  local f = vim.fn.getcwd() .. "/AIRULES.md"
+                  if vim.fn.filereadable(f) == 1 then
+                    return "Follow these project conventions:\n\n" .. table.concat(vim.fn.readfile(f), "\n")
+                  end
+                  return "You are a careful Ruby/Rails pair programmer. Match the surrounding code."
+                end,
+              },
+            },
+          },
+        },
+      })
+    end,
+  },
+  {
     "mfussenegger/nvim-lint",
     config = function()
       local parser = function(output, bufnr)

@@ -20,11 +20,11 @@ if command -v nvim &> /dev/null
 then
   alias vim=nvim
 fi
-if command -v lsd &> /dev/null
+if command -v eza &> /dev/null
 then
-  # brew install lsd
-  DISABLE_LS_COLORS="true" # so lsd can colorize
-  alias ls=lsd
+  # brew install eza
+  # --git status shows automatically in long view (ls -l)
+  alias ls='eza --icons=always --group-directories-first'
 fi
 if command -v bat &> /dev/null
 then

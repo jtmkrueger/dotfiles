@@ -41,3 +41,5 @@
 	recurse = true
 [merge]
 	conflictstyle = zdiff3
+[beads]
+	role = maintainer

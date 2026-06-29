@@ -32,4 +32,10 @@ docs/
 .beads-credential-key
 # Local LLM/working artifacts (not for collaborators)
 .docs/
+AIRULES.md
+.aider.conf.yml
+.aider*
 
+
+# Beads / Dolt files (added by bd init)
+.beads/proxieddb/

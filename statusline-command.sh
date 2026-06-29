@@ -137,4 +137,40 @@ if [ -n "$rl7_pct" ]; then
   fi
 fi
 
+# Local LLM stack: show when llama-server (:8080) is up + the loaded model's
+# short name, and flag if an aider session is running. Kept cheap: a fast
+# port probe first, only hitting HTTP when something is listening.
+llama_up=0
+if command -v nc >/dev/null 2>&1; then
+  nc -z -G 1 127.0.0.1 8080 >/dev/null 2>&1 && llama_up=1
+else
+  # fallback: short curl to the health endpoint
+  curl -s --max-time 1 http://localhost:8080/health >/dev/null 2>&1 && llama_up=1
+fi
+
+if [ "$llama_up" -eq 1 ]; then
+  # short model label = the bit after the last '/' and before ':', trimmed
+  llm_model=$(curl -s --max-time 1 http://localhost:8080/v1/models 2>/dev/null \
+    | sed -n 's/.*"id":"\([^"]*\)".*/\1/p' | head -1 \
+    | sed -E 's#.*/##; s/-GGUF.*//; s/-Instruct.*//')
+  [ -z "$llm_model" ] && llm_model="local"
+  # /slots exposes per-slot is_processing — count how many are busy right now.
+  # (Note: this statusline only re-renders on Claude Code activity, so the busy
+  # state is most reliable when Claude is driving the model.)
+  busy=$(curl -s --max-time 1 http://localhost:8080/slots 2>/dev/null \
+    | grep -o '"is_processing":true' | wc -l | tr -d ' ')
+  [ -z "$busy" ] && busy=0
+  if [ "$busy" -gt 0 ]; then
+    # yellow pulsing dot = generating
+    printf '%s\033[33m\xe2\x97\x8f llama busy\033[0m \033[2m%s\033[0m' "$sep" "$llm_model"
+  else
+    # green dot = up & idle
+    printf '%s\033[32m\xe2\x97\x8f llama\033[0m \033[2m%s\033[0m' "$sep" "$llm_model"
+  fi
+  # aider running?
+  if pgrep -x aider >/dev/null 2>&1 || pgrep -f '/aider ' >/dev/null 2>&1; then
+    printf ' \033[35m[aider]\033[0m'
+  fi
+fi
+
 printf '\n'
