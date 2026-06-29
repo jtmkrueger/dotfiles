@@ -29,3 +29,25 @@ Referenced by `~/.claude/settings.json` via the `statusLine` block.
     * Preferences > Profiles > Text > Italic text allowed
 3. Install xterm-256color-italic
     * tic xterm-256color-italic
+
+## Appearance: light/dark (Catppuccin)
+
+nvim and tmux follow the macOS appearance — dark = Catppuccin Mocha, light =
+Catppuccin Latte. Detection uses `defaults read -g AppleInterfaceStyle`; both
+detect at startup, and `prefix r` (tmux) re-detects on demand.
+
+Live switching (auto-flip when you toggle macOS appearance) is driven by an
+iTerm2 AutoLaunch script. To enable it:
+
+1. Enable iTerm2's Python API: Settings → General → Magic → "Enable Python API".
+2. Symlink the script into iTerm2's AutoLaunch folder:
+   ```sh
+   mkdir -p ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch
+   ln -sf ~/Code/dotfiles/iterm2-autolaunch-appearance.py \
+          ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch/appearance.py
+   ```
+3. Restart iTerm2.
+
+Without iTerm2 (or with the API disabled) you still get correct colors at
+startup/reload; only the automatic live switch is unavailable. Dark is the
+fallback.
