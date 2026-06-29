@@ -40,6 +40,8 @@ Live switching (auto-flip when you toggle macOS appearance) is driven by an
 iTerm2 AutoLaunch script. To enable it:
 
 1. Enable iTerm2's Python API: Settings → General → Magic → "Enable Python API".
+   The first time, iTerm2 downloads its Python runtime (`iterm2env`) — this only
+   happens on the next iTerm2 launch, so a restart is required (step 3).
 2. Symlink the script into iTerm2's AutoLaunch folder:
    ```sh
    mkdir -p ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch
@@ -47,6 +49,14 @@ iTerm2 AutoLaunch script. To enable it:
           ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch/appearance.py
    ```
 3. Restart iTerm2.
+
+AutoLaunch scripts load once at iTerm2 startup, so **after editing
+`iterm2-autolaunch-appearance.py` you must restart iTerm2** (or restart the
+script from the Scripts menu) for changes to take effect. The script runs from
+iTerm2's launchd environment, whose `PATH` lacks Homebrew's bin dir — so it
+prepends `/opt/homebrew/bin` and `/usr/local/bin` itself to find `tmux`. If the
+tmux side ever stops switching, check the script console (Scripts → Manage →
+Console) for errors.
 
 Without iTerm2 (or with the API disabled) you still get correct colors at
 startup/reload; only the automatic live switch is unavailable. When the
