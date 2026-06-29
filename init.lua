@@ -28,7 +28,7 @@ local function quickfix()
   })
 end
 vim.keymap.set('n', '<leader>qf', quickfix, opts) -- apply preferred code action
-vim.o.background = "dark"
+-- background/flavour are set by apply_appearance() in the catppuccin config below
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -629,25 +629,49 @@ require("lazy").setup({
     name = "catppuccin",
     priority = 1000,
     config = function()
-      require("catppuccin").setup({
-        transparent_background = true,
-        dim_inactive = {
-          enabled = true, -- dims the background color of inactive window
-          shade = "dark",
-          percentage = 0.01, -- percentage of the shade to apply to the inactive window
-        },
-        highlight_overrides = {
-          all = function(colors)
-            return {
-              -- set color for inactive windows.
-              NormalNC = { bg = "#000000" },
-              -- visible line numbers with tmux pane dimming
-              LineNr = { fg = colors.overlay1 },
-            }
-          end,
-        },
+      local function is_dark()
+        return vim.fn.system("defaults read -g AppleInterfaceStyle 2>/dev/null"):find("Dark") ~= nil
+      end
+
+      local function apply_appearance()
+        local dark = is_dark()
+        vim.o.background = dark and "dark" or "light"
+        vim.g.catppuccin_flavour = dark and "mocha" or "latte"
+        require("catppuccin").setup({
+          transparent_background = true,
+          dim_inactive = {
+            enabled = true, -- dims the background color of inactive window
+            shade = "dark",
+            percentage = 0.01, -- percentage of the shade to apply to the inactive window
+          },
+          highlight_overrides = {
+            all = function(colors)
+              return {
+                -- inactive-window bg: pure black in dark, Latte crust in light
+                NormalNC = { bg = dark and "#000000" or "#dce0e8" },
+                -- visible line numbers with tmux pane dimming
+                LineNr = { fg = colors.overlay1 },
+                -- cursorline/cursorcolumn: surface0 per flavour so they are
+                -- visible in BOTH themes (were too dark in Latte). CursorColumn
+                -- is `highlight link`ed to CursorLine elsewhere, so this covers both.
+                CursorLine = { bg = dark and "#313244" or "#ccd0da" },
+              }
+            end,
+          },
+        })
+        vim.cmd.colorscheme("catppuccin")
+      end
+
+      -- expose for the SIGUSR1 autocmd (see below)
+      _G.apply_appearance = apply_appearance
+
+      apply_appearance()
+
+      -- Live re-detect when the iTerm2 AutoLaunch script signals a theme change.
+      vim.api.nvim_create_autocmd("Signal", {
+        pattern = "SIGUSR1",
+        callback = function() _G.apply_appearance() end,
       })
-      vim.cmd.colorscheme "catppuccin"
     end,
   },
 })
