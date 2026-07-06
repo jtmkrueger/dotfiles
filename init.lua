@@ -629,13 +629,15 @@ require("lazy").setup({
     name = "catppuccin",
     priority = 1000,
     config = function()
-      local function is_dark()
-        return vim.fn.system("defaults read -g AppleInterfaceStyle 2>/dev/null"):find("Dark") ~= nil
-      end
-
+      -- Appearance follows nvim's own &background. Nvim 0.11+ sets it natively
+      -- from the terminal: it enables DEC mode 2031 and re-queries OSC 11 when
+      -- the terminal reports a light/dark change. With iTerm2 >= 3.6.6 and
+      -- tmux >= 3.6 forwarding the notification, toggling macOS appearance flips
+      -- &background live — no signal, no `defaults read`, no external script.
+      -- CRITICAL: never set vim.o.background here; doing so makes nvim delete its
+      -- auto-detection autocmd. We only READ it and react via OptionSet below.
       local function apply_appearance()
-        local dark = is_dark()
-        vim.o.background = dark and "dark" or "light"
+        local dark = vim.o.background == "dark"
         vim.g.catppuccin_flavour = dark and "mocha" or "latte"
         require("catppuccin").setup({
           transparent_background = true,
@@ -651,33 +653,82 @@ require("lazy").setup({
                 NormalNC = { bg = dark and "#000000" or "#dce0e8" },
                 -- visible line numbers with tmux pane dimming
                 LineNr = { fg = colors.overlay1 },
-                -- cursorline/cursorcolumn: surface0 per flavour so they are
-                -- visible in BOTH themes (were too dark in Latte). CursorColumn
-                -- is `highlight link`ed to CursorLine elsewhere, so this covers both.
-                CursorLine = { bg = dark and "#313244" or "#ccd0da" },
+                -- cursorline/cursorcolumn: a subtle band per flavour. Dark uses
+                -- mantle (just above the base bg) so it doesn't glare against the
+                -- near-black background; light uses Latte surface1. Set both groups
+                -- explicitly — catppuccin's reload re-separates them, so the old
+                -- `highlight! link CursorColumn CursorLine` didn't stick.
+                CursorLine = { bg = dark and "#13131b" or "#ccd0da" },
+                CursorColumn = { bg = dark and "#13131b" or "#ccd0da" },
               }
             end,
           },
         })
         vim.cmd.colorscheme("catppuccin")
-        -- Re-assert once-only highlight tweaks AFTER colorscheme, so a live
-        -- SIGUSR1 re-apply (which reloads the colorscheme) doesn't drop them:
-        --   * italic comments
-        --   * CursorColumn shares CursorLine's color (so the per-flavour
-        --     CursorLine bg above also fixes CursorColumn in both themes)
+        -- Re-assert italic comments AFTER colorscheme so a live re-apply (which
+        -- reloads the colorscheme) doesn't drop them. CursorLine/CursorColumn are
+        -- handled by highlight_overrides above, so no re-link is needed here.
         vim.cmd('highlight Comment cterm=italic gui=italic')
-        vim.cmd('highlight! link CursorColumn CursorLine')
       end
 
-      -- expose for the SIGUSR1 autocmd (see below)
-      _G.apply_appearance = apply_appearance
-
+      -- Initial apply: nvim has already detected &background by the time plugins
+      -- load (it queries the terminal early, before user config), so reading it
+      -- here gives the right flavour at startup. (Startup detection sets the
+      -- option before autocmds listen, so OptionSet doesn't fire for it.)
       apply_appearance()
 
-      -- Live re-detect when the iTerm2 AutoLaunch script signals a theme change.
-      vim.api.nvim_create_autocmd("Signal", {
-        pattern = "SIGUSR1",
-        callback = function() _G.apply_appearance() end,
+      -- Drive the theme straight from the terminal's OSC 11 reply.
+      --
+      -- Why not just lean on nvim's own &background auto-detection? Because
+      -- catppuccin's compiled colorscheme sets `vim.o.background` itself on every
+      -- load. nvim DELETES its built-in OSC 11 / mode-2031 detector at VimEnter
+      -- if 'background' was set explicitly during startup — so after the first
+      -- colorscheme load, nvim stops tracking the terminal and live light/dark
+      -- switching silently dies (fixed only by a restart). We therefore own the
+      -- detection: parse the OSC 11 reply ourselves and re-theme directly, which
+      -- is immune to nvim's one-time deletion.
+      --
+      -- IF YOU SWITCH COLORSCHEMES: this whole TermResponse handler exists ONLY
+      -- to work around a colorscheme that sets `vim.o.background` on load. Check
+      -- whether the new one does (grep its source/compiled output for
+      -- `background =`). If it does NOT touch &background, you can delete this
+      -- handler and the FocusGained re-query, set up your colorscheme purely on
+      -- the `OptionSet background` autocmd, and let nvim's native detector do the
+      -- work. If it DOES set &background, keep this pattern. Symptom of getting it
+      -- wrong: macOS light/dark toggle stops updating nvim until you restart.
+      local applying = false
+      local function set_bg_from_osc11(resp)
+        if type(resp) ~= "string" then return end
+        local r, g, b = resp:match("^\027%]11;rgb:(%x+)/(%x+)/(%x+)")
+        if not (r and g and b) then return end
+        local function chan(c) return tonumber(c, 16) / tonumber(("f"):rep(#c), 16) end
+        local luminance = 0.299 * chan(r) + 0.587 * chan(g) + 0.114 * chan(b)
+        local bg = luminance < 0.5 and "dark" or "light"
+        if vim.o.background == bg then return end
+        applying = true            -- guard: apply_appearance reloads the
+        vim.o.background = bg       -- colorscheme, which re-sets background and
+        apply_appearance()         -- would otherwise re-enter via OptionSet.
+        applying = false
+      end
+
+      vim.api.nvim_create_autocmd("TermResponse", {
+        nested = true,
+        callback = function(ev)
+          set_bg_from_osc11(type(ev.data) == "table" and ev.data.sequence or ev.data)
+        end,
+      })
+
+      -- Safety net: if &background changes by any OTHER route (e.g. a manual
+      -- :set background), re-theme too — but skip the re-entrant set above.
+      vim.api.nvim_create_autocmd("OptionSet", {
+        pattern = "background",
+        callback = function() if not applying then apply_appearance() end end,
+      })
+
+      -- Re-query OSC 11 on focus so a theme toggled while nvim was unfocused
+      -- (or that didn't arrive as a live notification) is still picked up.
+      vim.api.nvim_create_autocmd("FocusGained", {
+        callback = function() vim.api.nvim_ui_send("\027]11;?\007") end,
       })
     end,
   },
@@ -981,8 +1032,13 @@ if vim.g.started_by_firenvim == true then
   },
   }
 else
+    -- "catppuccin-nvim" (NOT "catppuccin", which doesn't exist and silently
+    -- falls back to a default theme). The -nvim variant takes no flavour arg, so
+    -- it re-reads vim.g.catppuccin_flavour / vim.o.background each time lualine
+    -- reloads. lualine auto-reloads on ColorScheme/OptionSet background, so the
+    -- live light/dark switch re-themes the statusline without a restart.
   require('lualine').setup{
-    theme = "catppuccin",
+    theme = "catppuccin-nvim",
     sections = {
       lualine_a = {
         {

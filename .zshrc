@@ -159,6 +159,36 @@ kbash() {
   kubectl exec --stdin --tty $1 -- /bin/bash
 }
 
+# awsbash <env> [command] — exec into the running ECS task for ussehs-web-<env>.
+# Resolves the task ARN automatically, then opens /bin/bash, or runs [command]
+# if given. e.g.  awsbash enh2
+#                 awsbash enh2 'bundle exec rails runner "puts Rails.env"'
+# Overridable: AWSBASH_CLUSTER, AWSBASH_REGION, AWSBASH_CONTAINER, AWSBASH_SERVICE_PREFIX.
+awsbash() {
+  local env="$1"
+  if [[ -z "$env" ]]; then
+    echo "usage: awsbash <env> [command]   e.g. awsbash enh2" >&2
+    return 1
+  fi
+  local cluster="${AWSBASH_CLUSTER:-ecs-mod01-stage}"
+  local region="${AWSBASH_REGION:-us-west-2}"
+  local container="${AWSBASH_CONTAINER:-main}"
+  local service="${AWSBASH_SERVICE_PREFIX:-ussehs-web-}${env}"
+  local command="${2:-/bin/bash}"
+
+  local task_arn
+  task_arn=$(aws ecs list-tasks --cluster "$cluster" --service-name "$service" \
+    --region "$region" --query 'taskArns[0]' --output text)
+  if [[ -z "$task_arn" || "$task_arn" == "None" ]]; then
+    echo "awsbash: no running task found for service '$service' in cluster '$cluster'" >&2
+    return 1
+  fi
+  echo "awsbash: exec into $service ($task_arn)" >&2
+
+  aws ecs execute-command --cluster "$cluster" --task "$task_arn" \
+    --container "$container" --interactive --region "$region" --command "$command"
+}
+
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # fzf shell integration (keybindings + completion). Needed by fzf-tab below.

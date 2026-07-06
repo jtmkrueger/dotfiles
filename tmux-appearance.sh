@@ -51,8 +51,8 @@ set -g pane-border-style bg=${border_bg},fg=magenta
 set -g status-style fg=${status_fg},bg=${status_bg}
 set -g window-status-activity-style bg=${status_bg},fg=${status_fg},blink
 set -g window-status-bell-style bg=${status_bell_bg},fg=${status_fg},blink
-setw -g window-status-format '#{?window_activity_flag, #[fg=${status_fg} bg=${status_bg}]#[blink],#[fg=${status_fg} bg=${status_bg}]}#{?window_bell_flag,#[fg=${status_fg} bg=${status_bg}]#[blink],#[fg=${status_fg} bg=${status_bg}]}  #I-#W#{?window_zoomed_flag,,} #[bg=${status_bg}, fg=${status_fg}] '
-setw -g window-status-current-format '#[bg=magenta, fg=${status_bg}]#[bg=magenta, fg=${status_bg}] #I-#W#{?window_zoomed_flag,,} #[bg=${status_bg}, fg=magenta]'
+setw -g window-status-format '#{?window_activity_flag, #[fg=${status_fg} bg=${status_bg}]#[blink],#[fg=${status_fg} bg=${status_bg}]}#{?window_bell_flag,#[fg=${status_fg} bg=${status_bg}]#[blink],#[fg=${status_fg} bg=${status_bg}]}  #I-#W#{?window_zoomed_flag,,} #[bg=${status_bg}, fg=${status_fg}] '
+setw -g window-status-current-format '#[bg=${status_bg}, fg=magenta] #[bg=magenta, fg=${status_bg}]#[bg=magenta, fg=${status_bg}] #I-#W#{?window_zoomed_flag,,} #[bg=${status_bg}, fg=magenta]'
 set -g status-left '#[bg=${status_bg}, fg=${status_left_fg}, italics]  #S #[bg=${status_bg}, fg=${status_bg}, noitalics]#[bg=${status_bg}, fg=terminal] '
 set -g status-right '#[fg=brightmagenta, italics] #[fg=green]#(~/Code/dotfiles/simplewifi.sh)'
 EOF

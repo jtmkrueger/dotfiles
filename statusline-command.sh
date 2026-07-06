@@ -167,9 +167,17 @@ if [ "$llama_up" -eq 1 ]; then
     # green dot = up & idle
     printf '%s\033[32m\xe2\x97\x8f llama\033[0m \033[2m%s\033[0m' "$sep" "$llm_model"
   fi
-  # aider running?
-  if pgrep -x aider >/dev/null 2>&1 || pgrep -f '/aider ' >/dev/null 2>&1; then
+fi
+
+# Aider indicator — hoisted OUT of the llama_up block so it shows even when the
+# server is down. That's the moment it matters most: aider retrying against a
+# dead :8080 is the exact bug this whole change fixes; the status line must not
+# hide it. When llama is down, prefix a red down-dot so the mismatch is obvious.
+if pgrep -f 'bin/aider( |$)' >/dev/null 2>&1; then
+  if [ "$llama_up" -eq 1 ]; then
     printf ' \033[35m[aider]\033[0m'
+  else
+    printf '%s\033[31m\xe2\x97\x8f llama down\033[0m \033[35m[aider]\033[0m' "$sep"
   fi
 fi
 
