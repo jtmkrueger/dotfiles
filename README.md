@@ -22,43 +22,35 @@ ln -s ~/Code/dotfiles/statusline-command.sh ~/.claude/statusline-command.sh
 
 Referenced by `~/.claude/settings.json` via the `statusLine` block.
 
-## Set up iterm for operator
+## Set up Ghostty for operator
 
-1. Install both Regular and Italic OperatorMonoNerdFonts
-2. Enable support for italic text
-    * Preferences > Profiles > Text > Italic text allowed
-3. Install xterm-256color-italic
-    * tic xterm-256color-italic
+1. Install both Regular and Italic OperatorMono Nerd Fonts (Ghostty renders
+   italics natively — no per-profile toggle needed).
+2. Symlink the Ghostty config and custom dark theme into place:
+   ```sh
+   mkdir -p ~/.config/ghostty/themes
+   ln -sf ~/Code/dotfiles/ghostty.conf ~/.config/ghostty/config
+   ln -sf ~/Code/dotfiles/ghostty-themes/catppuccin-mocha-black \
+          ~/.config/ghostty/themes/catppuccin-mocha-black
+   ```
 
 ## Appearance: light/dark (Catppuccin)
 
-nvim and tmux follow the macOS appearance — dark = Catppuccin Mocha, light =
-Catppuccin Latte. Detection uses `defaults read -g AppleInterfaceStyle`; both
-detect at startup, and `prefix r` (tmux) re-detects on demand.
+The whole stack follows the macOS appearance — dark = Catppuccin Mocha (pure
+black background), light = Catppuccin Latte — with no external script:
 
-Live switching (auto-flip when you toggle macOS appearance) is driven by an
-iTerm2 AutoLaunch script. To enable it:
+- **Ghostty** switches its own palette via `theme = light:Catppuccin
+  Latte,dark:catppuccin-mocha-black` in `ghostty.conf`. The dark theme is a
+  custom file (`ghostty-themes/catppuccin-mocha-black`) — Ghostty's built-in
+  Catppuccin Mocha with `background = #000000` — so dark mode keeps a pure-black
+  window. Light mode uses the built-in Latte.
+- **nvim** self-detects via the terminal's OSC 11 / DEC mode 2031 (nvim ≥ 0.11);
+  see `init.lua`. Terminal-agnostic, no signal.
+- **tmux** re-themes live via its native `client-light-theme` /
+  `client-dark-theme` hooks (tmux ≥ 3.6): it detects the theme flip Ghostty
+  forwards and re-sources `tmux-appearance.sh`. `prefix r` re-detects on demand;
+  startup detection runs on session create.
 
-1. Enable iTerm2's Python API: Settings → General → Magic → "Enable Python API".
-   The first time, iTerm2 downloads its Python runtime (`iterm2env`) — this only
-   happens on the next iTerm2 launch, so a restart is required (step 3).
-2. Symlink the script into iTerm2's AutoLaunch folder:
-   ```sh
-   mkdir -p ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch
-   ln -sf ~/Code/dotfiles/iterm2-autolaunch-appearance.py \
-          ~/Library/Application\ Support/iTerm2/Scripts/AutoLaunch/appearance.py
-   ```
-3. Restart iTerm2.
-
-AutoLaunch scripts load once at iTerm2 startup, so **after editing
-`iterm2-autolaunch-appearance.py` you must restart iTerm2** (or restart the
-script from the Scripts menu) for changes to take effect. The script runs from
-iTerm2's launchd environment, whose `PATH` lacks Homebrew's bin dir — so it
-prepends `/opt/homebrew/bin` and `/usr/local/bin` itself to find `tmux`. If the
-tmux side ever stops switching, check the script console (Scripts → Manage →
-Console) for errors.
-
-Without iTerm2 (or with the API disabled) you still get correct colors at
-startup/reload; only the automatic live switch is unavailable. When the
-appearance can't be read, both default to light (macOS reports no
-`AppleInterfaceStyle` key in light mode).
+Toggle macOS System Settings → Appearance and Ghostty, tmux, and nvim all flip
+together. Colors (active/inactive pane backgrounds, cursor, status) live in
+`tmux-appearance.sh` and `.tmux.conf` and are terminal-independent.
