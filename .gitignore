@@ -41,3 +41,6 @@ AIRULES.md
 
 # Beads / Dolt files (added by bd init)
 .beads/proxieddb/
+
+# Machine-local secrets sourced by ~/.zshrc; never commit
+.zsh_env_vars
