@@ -489,11 +489,30 @@ require("lazy").setup({
 
       -- Walk up from the buffer's directory to find a Ruby project root
       -- (directory containing a Gemfile). Returns the dir or nil.
+      --
+      -- Take the OUTERMOST Gemfile inside the enclosing git repo, not the
+      -- nearest one. In an engines/ monorepo the nearest Gemfile for engine
+      -- code is engines/<name>/Gemfile, a gemspec-only bundle with no
+      -- .ruby-version and no ruby-lsp in it. Rooting there makes the server
+      -- die on startup ("ruby-lsp is not currently included in the bundle"),
+      -- so nothing ever attaches and goto-preview reports the misleading
+      -- "the current language lsp might not support it".
+      --
+      -- vim.fs.find's `stop` is exclusive, so pass the git root's PARENT to
+      -- keep the git root itself searchable. `.git` is matched without a
+      -- `type` filter because worktrees use a .git file, not a directory.
       local function find_ruby_root(bufnr)
         local start = vim.api.nvim_buf_get_name(bufnr)
         if start == "" then start = vim.fn.getcwd() end
-        local found = vim.fs.find({ "Gemfile" }, { upward = true, path = start })[1]
-        return found and vim.fs.dirname(found) or nil
+        local git = vim.fs.find({ ".git" }, { upward = true, path = start })[1]
+        local gemfiles = vim.fs.find({ "Gemfile" }, {
+          upward = true,
+          path = start,
+          stop = git and vim.fs.dirname(vim.fs.dirname(git)) or nil,
+          limit = math.huge,
+        })
+        local outermost = gemfiles[#gemfiles]
+        return outermost and vim.fs.dirname(outermost) or nil
       end
 
       -- Configure ruby_lsp with per-buffer root + env. Solves three things:
